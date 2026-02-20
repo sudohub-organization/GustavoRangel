@@ -1,0 +1,90 @@
+[
+    {
+		"title": "MAUI",
+		"image": "images/honours.png/",
+		"description": "An intelligent system powered by machine learning that analyzes user requirements and suggests optimal UI component sizes to enhance usability and accessibility.",
+		"url": "/honours/index.html",
+		"emojis": ["👓", "🤖"],
+		"tools": ["Python", "Flask", "sickit-learn", "LaTeX"]
+	},
+	{
+		"title": "TinyTales",
+		"image": "images/tinytales.png",
+		"description": "A full-stack web platform engineered to enable users to author, publish, and share their own narrative content.",
+		"url": "http://tinytales.westus.cloudapp.azure.com/login",
+		"emojis": ["📖", "🌐"],
+		"tools": ["Vue", "express", "node.js", "MongoDB"]
+	},
+	{
+		"title": "RGU Hack 2025",
+		"image": "images/rguhack25.png",
+		"description": "A time-critical project developed from concept to execution during a competitive 24-hour hackathon event.",
+		"url": "rguhack2025/index.html",
+		"emojis": ["🏆", "⏱️"],
+		"tools": ["javascript", "HTML", "CSS"]
+	},
+	{
+		"title": "DATA VISUALIZATION",
+		"image": "images/dataviz.png",
+		"description": "An interactive data visualization project exploring the statistical correlation between education levels and addiction.",
+		"url": "docs/dataviz.html",
+		"emojis": ["📊", "🧠"],
+		"tools": ["Python","sickit-learn", "pandas", "matplotlib"]
+	},
+	{
+		"title": "Mobile App",
+		"image": "images/yourdestiny.png",
+		"description": "A personalized Android mobile application designed to provide users with zodiac-based insights and horoscopes.",
+		"url": "https://github.com/DefoNotGus/YourDestiny",
+		"emojis": ["📱", "✨"],
+		"tools": ["java", "Android studio", "Kotlin"]
+	},
+	{
+		"title": "NLP IN IMDb",
+		"image": "images/NLP.png",
+		"description": "Engineered a Natural Language Processing (NLP) machine learning model to perform sentiment analysis on IMDb movie reviews.",
+		"url": "https://github.com/DefoNotGus/NPLinIMDb",
+		"emojis": ["🤖", "🎬"],
+		"tools": ["Python", "NLP", "matplotlib", "sickit-learn", "pandas"]
+	},
+	{
+		"title": "SoundIT",
+		"image": "images/soundit.png",
+		"description": "A command-line utility developed in Python to efficiently extract audio streams from various video file formats.",
+		"url": "https://github.com/DefoNotGus/SoundIT",
+		"emojis": ["🐍", "🔊"],
+		"tools": ["Python", "audacity", "moviepy"]
+	},
+	{
+		"title": "LeaveIt2Me",
+		"image": "images/tavotech.png",
+		"description": "A foundational web project developed using PHP, serving as an initial exploration into server-side scripting.",
+		"url": "https://tavotech.altervista.org/",
+		"emojis": ["🐘", "🌐"],
+		"tools": ["PHP", "MySQL"]
+	},
+	{
+		"title": "5 Travel Adventures",
+		"image": "images/5ta.png",
+		"description": "A collaborative college project to deliver a static website prototype for a conceptual travel agency.",
+		"url": "https://tavotech.altervista.org/RoDaGuMiMa/home.html",
+		"emojis": ["✈️", "🤝"],
+		"tools": ["Team work"]
+	},
+	{
+		"title": "Gamersden",
+		"image": "images/gamersden.png",
+		"description": "Developed a dynamic PHP website that simulates a virtual inventory management system for gaming applications.",
+		"url": "https://tavotech.altervista.org/Gamersden/main.php",
+		"emojis": ["🎮", "📦"],
+		"tools": ["PHP", "MySQL"]
+	},
+	{
+		"title": "AND MORE!",
+		"image": "images/github.png",
+		"description": "Explore a broader collection of my work, source code, and contributions on my GitHub profile.",
+		"url": "https://github.com/DefoNotGus/",
+		"emojis": ["🐙", "📂"],
+		"tools": []
+	}
+]

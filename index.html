@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gustavo Rangel - Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Local Assets -->
+    <link rel="stylesheet" href="public/css/styles.css">
+    <script src="public/js/script.js" defer></script>
+</head>
+<body class="text-slate-100 flex flex-col md:flex-row h-screen w-screen relative">
+
+    <!-- LEFT SIDE: UI Panel -->
+    <div id="ui-panel" class="w-full md:w-5/12 h-1/2 md:h-full bg-slate-900/95 backdrop-blur-md z-10 flex flex-col p-8 md:p-16 relative shadow-2xl overflow-y-auto scrollbar-hide border-r border-slate-800">
+        
+        <!-- Hero View (Default) -->
+        <div id="hero-view" class="my-auto transition-all duration-500">
+            <div class="mb-8">
+                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-pink-500 mb-6 shadow-[0_0_30px_rgba(233,30,99,0.3)]">
+                    <img src="public/images/me.jpeg" alt="Gustavo" class="w-full h-full object-cover">
+                </div>
+                <h1 class="text-5xl md:text-6xl font-black mb-3 tracking-tight">I'm Gus.</h1>
+                <p class="text-xl text-slate-400 font-medium">Creative Developer & Designer</p>
+            </div>
+            
+            <p class="text-slate-300 mb-10 leading-relaxed max-w-md">
+                Passionate about building beautiful and functional web experiences and media content. Drag the cubes on the right to explore my universe of projects.
+            </p>
+            
+            <div class="flex items-center gap-4 flex-wrap">
+                <button onclick="showContact()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-800 text-slate-300 border border-slate-700 hover:bg-pink-600 hover:text-white hover:border-pink-500 rounded-full font-medium transition-colors text-sm">
+                    <i data-lucide="mail" class="w-4 h-4"></i> Contact Me
+                </button>
+                <div class="flex space-x-3">
+                    <a href="https://www.linkedin.com/in/gustavo-rangel-professional/" target="_blank" class="p-2.5 bg-slate-800 rounded-full hover:bg-pink-500 hover:text-white transition-colors duration-300 border border-slate-700 hover:border-pink-500">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@GustavoElProfe" target="_blank" class="p-2.5 bg-slate-800 rounded-full hover:bg-pink-500 hover:text-white transition-colors duration-300 border border-slate-700 hover:border-pink-500">
+                        <i data-lucide="youtube" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://blog.gustavoelprofe.com" target="_blank" class="p-2.5 bg-slate-800 rounded-full hover:bg-pink-500 hover:text-white transition-colors duration-300 border border-slate-700 hover:border-pink-500">
+                        <i data-lucide="notebook-pen" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-16 text-xs text-slate-500 font-medium">
+                &copy; 2026 Gustavo Rangel. All rights reserved.
+            </div>
+        </div>
+
+        <!-- Project Detail View (Hidden by default) -->
+        <div id="project-view" class="my-auto hidden absolute top-0 left-0 w-full h-full p-8 md:p-16 flex-col justify-center bg-slate-900">
+            <button id="btn-close" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-white bg-slate-800 rounded-full transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="text-4xl mb-4" id="proj-emoji">🚀</div>
+            <h2 id="proj-title" class="text-4xl md:text-5xl font-bold mb-4">Project Title</h2>
+            
+            <div id="proj-tools" class="flex flex-wrap gap-2 mb-6">
+                <!-- Tool tags injected dynamically -->
+            </div>
+            
+            <p id="proj-desc" class="text-lg text-slate-300 mb-8 leading-relaxed">
+                Project description goes here.
+            </p>
+            
+            <a id="proj-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-pink-500 transition-colors w-max">
+                Visit Project <i data-lucide="external-link" class="w-4 h-4"></i>
+            </a>
+        </div>
+
+        <!-- Contact View (Hidden by default) -->
+        <div id="contact-view" class="my-auto hidden absolute top-0 left-0 w-full h-full p-8 md:p-16 flex-col justify-center bg-slate-900 overflow-y-auto">
+            <button id="btn-close-contact" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-white bg-slate-800 rounded-full transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
+            <p class="text-lg text-slate-300 mb-8">I'm open to new opportunities. Feel free to send me a message!</p>
+            <form action="https://formspree.io/f/xbldrayw" method="POST" class="flex flex-col gap-5 max-w-md">
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-slate-300">Your Name</label>
+                    <input type="text" name="name" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-lg text-white outline-none focus:border-pink-500 transition-colors" required>
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-slate-300">Your Email</label>
+                    <input type="email" name="email" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-lg text-white outline-none focus:border-pink-500 transition-colors" required>
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-slate-300">Message</label>
+                    <textarea name="message" rows="4" class="w-full p-3 bg-slate-800 border border-slate-700 rounded-lg text-white outline-none focus:border-pink-500 transition-colors" required></textarea>
+                </div>
+                <button type="submit" class="bg-pink-600 font-bold py-3 rounded-lg hover:bg-pink-500 transition-colors">Send Message</button>
+            </form>
+        </div>
+        
+    </div>
+
+    <!-- RIGHT SIDE: 3D Canvas Container -->
+    <div id="canvas-container" class="w-full md:w-7/12 h-1/2 md:h-full bg-gradient-to-br from-slate-900 to-black relative">
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-slate-500 text-sm flex items-center gap-2 pointer-events-none bg-black/50 px-4 py-2 rounded-full">
+            <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i> Drag to spin orbit • Click to view
+        </div>
+    </div>
+
+</body>
+</html>

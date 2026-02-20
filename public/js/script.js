@@ -1,289 +1,314 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // --- Konami Code Cursor Easter Egg ---
-    const konamiCode = [
-        'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-        'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-        'b', 'a'
-    ];
-    let konamiIndex = 0;
-    document.addEventListener('keydown', function(e) {
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-            if (konamiIndex === konamiCode.length) {
-                document.body.style.cursor = 'url("images/cursor.cur"), auto';
-                // Set #page-header background to rain2.gif
-                const pageHeader = document.getElementById('page-header');
-                if (pageHeader) {
-                    pageHeader.style.backgroundImage = 'url("images/rain2.gif")';
-                    pageHeader.style.backgroundRepeat = 'repeat';
-                }
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;
-        }
-    });
-    // --- Unified Centered Popup Utility ---
-    function showCenteredPopup(message) {
-        let popup = document.getElementById('centered-popup');
-        if (popup) popup.remove();
-        popup = document.createElement('div');
-        popup.id = 'centered-popup';
-        popup.textContent = message;
-        popup.style.position = 'fixed';
-        popup.style.left = '50%';
-        popup.style.top = '50%';
-        popup.style.transform = 'translate(-50%, -50%)';
-        popup.style.background = 'rgba(30,30,30,0.97)';
-        popup.style.color = '#fff';
-        popup.style.padding = '0.75rem 1.5rem';
-        popup.style.borderRadius = '0.75rem';
-        popup.style.fontSize = '1.1rem';
-        popup.style.boxShadow = '0 2px 8px rgba(0,0,0,0.18)';
-        popup.style.zIndex = '9999';
-        popup.style.textAlign = 'center';
-        document.body.appendChild(popup);
-        setTimeout(() => { popup.remove(); }, 2000);
-    }
+let projectsData = [];
 
-    // Event delegation for all .disabled elements
-    document.body.addEventListener('click', function(e) {
-        const target = e.target.closest('.disabled');
-        if (target) {
-            e.preventDefault();
-            showCenteredPopup('work in progress :) come back later');
-        }
-    });
-    lucide.createIcons();
+// ==========================================
+// UI LOGIC (Global so HTML onclick works)
+// ==========================================
+function showHero() {
+    document.getElementById('project-view').classList.add('hidden');
+    document.getElementById('project-view').classList.remove('flex');
+    document.getElementById('contact-view').classList.add('hidden');
+    document.getElementById('contact-view').classList.remove('flex');
+    document.getElementById('hero-view').classList.remove('hidden');
+}
 
-    // --- Main Page Scrolling Logic (Unchanged) ---
-    const sections = document.querySelectorAll('.section');
-    const navItems = document.querySelectorAll('.nav-item');
-    const numSections = sections.length;
-    let currentIndex = 0;
-    let isAnimating = false;
-    const animationDuration = 800;
-
-    const updateNav = (newIndex) => {
-        navItems.forEach(item => item.classList.remove('active'));
-        const activeNavItem = document.querySelector(`.nav-item[data-index="${newIndex}"]`);
-        if (activeNavItem) activeNavItem.classList.add('active');
-    };
-
-    const goToSection = (newIndex) => {
-        if (isAnimating || newIndex === currentIndex) return;
-        isAnimating = true;
-        const currentSection = sections[currentIndex];
-        const newSection = sections[newIndex];
-        let direction = newIndex > currentIndex ? 'down' : 'up';
-        if (currentIndex === numSections - 1 && newIndex === 0) direction = 'down';
-        if (currentIndex === 0 && newIndex === numSections - 1) direction = 'up';
-        sections.forEach((sec, idx) => { if (idx !== currentIndex && idx !== newIndex) { sec.classList.remove('active', 'static-behind', 'prepare-above'); } });
-        if (direction === 'down') {
-            currentSection.classList.remove('active');
-            currentSection.classList.add('static-behind');
-            newSection.classList.add('active');
-        } else {
-            newSection.classList.add('prepare-above');
-            newSection.offsetHeight; 
-            currentSection.classList.remove('active');
-            currentSection.classList.add('static-behind');
-            newSection.classList.remove('prepare-above');
-            newSection.classList.add('active');
-        }
-        currentIndex = newIndex;
-        updateNav(currentIndex);
-        setTimeout(() => {
-            isAnimating = false;
-            currentSection.classList.remove('static-behind');
-        }, animationDuration);
-    };
-
-    window.addEventListener('wheel', (event) => {
-        if (isAnimating) return;
-        const newIndex = event.deltaY > 0 ? (currentIndex + 1) % numSections : (currentIndex - 1 + numSections) % numSections;
-        goToSection(newIndex);
-    });
-
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const newIndex = parseInt(item.getAttribute('data-index'));
-            goToSection(newIndex);
-        });
-    });
-
-    const init = () => {
-        sections[0].classList.add('active');
-        updateNav(0);
-    };
-    init();
-
-    // --- Home Section Image Hover Logic ---
-    const homeImage = document.getElementById('dynamic-home-image');
-    const socialLinks = document.querySelectorAll('.social-icons-container .social-link');
-    const imageContainer = document.querySelector('.image-container');
-    const defaultHomeImage = 'images/me.jpeg';
-
-    if (homeImage && socialLinks.length && imageContainer) {
-        socialLinks.forEach(link => {
-            // Blog link: gray out and show custom popup
-            if (link.classList.contains('blog-disabled')) {
-                link.classList.add('show-popup');
-            }
-            link.addEventListener('mouseover', () => {
-                imageContainer.classList.add('square-corners');
-                const newImgSrc = link.getAttribute('data-img-src');
-                if (newImgSrc) {
-                    homeImage.src = newImgSrc;
-                }
-            });
-            link.addEventListener('mouseout', () => {
-                imageContainer.classList.remove('square-corners');
-                homeImage.src = defaultHomeImage;
-            });
-        });
-    }
-
-
-    // --- Project Accordion Logic ---
-    const projectsContainer = document.querySelector('.projects-accordion');
-
-    const updateTechIcons = () => {
-        const allCards = document.querySelectorAll('.project-accordion-card');
-        allCards.forEach(card => {
-            const techIconsContainer = card.querySelector('.tech-icons');
-            if (!techIconsContainer) return;
-            
-            const allIcons = techIconsContainer.querySelectorAll('span:not(.plus-indicator)');
-            const plusIndicator = techIconsContainer.querySelector('.plus-indicator');
-            
-            if (plusIndicator) plusIndicator.remove();
-
-            allIcons.forEach(icon => icon.style.display = 'flex');
-
-            if (!card.classList.contains('active')) {
-                if (allIcons.length > 2) {
-                    for (let i = 2; i < allIcons.length; i++) {
-                        allIcons[i].style.display = 'none';
-                    }
-                    const remainingCount = allIcons.length - 2;
-                    const newIndicator = document.createElement('span');
-                    newIndicator.className = 'plus-indicator';
-                    newIndicator.textContent = `+${remainingCount}`;
-                    techIconsContainer.appendChild(newIndicator);
-                }
-            }
-        });
-    };
-
-    const loadProjects = async () => {
-        try {
-            const response = await fetch('../data/projects.json');
-            //TODO UNCOMMENT FOR LOCAL TESTING
-            //!const response = await fetch('projects.json');
-            const projects = await response.json();
-
-
-            projectsContainer.innerHTML = ''; // Clear existing
-            
-            projects.forEach((project, index) => {
-                const card = document.createElement('div');
-                card.className = 'project-accordion-card';
-                if (index === 0) card.classList.add('active');
-                card.style.backgroundImage = `url('${project.image}')`;
-
-                const toolTags = project.tools.map(tool => `<span class="tool-tag">${tool}</span>`).join('');
-                const emojiSpans = project.emojis.map(emoji => `<span>${emoji}</span>`).join('');
-
-                card.innerHTML = `
-                    <div class="card-content">
-                        <div class="text-content-area">
-                            <div class="collapsed-content">
-                                <h3>${project.title}</h3>
-                            </div>
-                            <div class="expanded-content">
-                                <div class="main-text">
-                                    <h3>${project.title}</h3>
-                                    <div class="tool-list">${toolTags}</div>
-                                    <p>${project.description}</p>
-                                </div>
-                                <a href="${project.url}" class="visit-btn">Visit Project</a>
-                            </div>
-                        </div>
-                        <div class="tech-icons">
-                            ${emojiSpans}
-                        </div>
-                    </div>
-                `;
-                projectsContainer.appendChild(card);
-                // Fade in the dim overlay after 1s
-                setTimeout(() => {
-                    card.classList.add('dimmed');
-                }, 1000);
-            });
-
-            setupAccordionBehavior();
-            updateTechIcons();
-
-        } catch (error) {
-            console.error('Error loading projects:', error);
-            projectsContainer.innerHTML = '<p class="text-white">Could not load projects.</p>';
-        }
-    };
-
-    const setupAccordionBehavior = () => {
-        const accordionCards = document.querySelectorAll('.project-accordion-card');
-        const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-        if (isMobile) {
-            // Mobile: Use Intersection Observer to activate card when it's centered in the viewport.
-            const observerOptions = {
-                root: document.querySelector('.accordion-scroll-container'),
-                rootMargin: '0px',
-                threshold: 0.5 // Activate when 50% of the card is visible
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        accordionCards.forEach(c => c.classList.remove('active'));
-                        entry.target.classList.add('active');
-                        updateTechIcons();
-                    }
-                });
-            }, observerOptions);
-
-            accordionCards.forEach(card => observer.observe(card));
-
-        } else {
-            // Desktop: Click to expand functionality.
-            accordionCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    if (card.classList.contains('active')) return;
-                    accordionCards.forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                    updateTechIcons();
-                });
-            });
-        }
-    };
+function showProject(index) {
+    const data = projectsData[index];
     
-    loadProjects();
+    document.getElementById('proj-title').innerText = data.title;
+    document.getElementById('proj-desc').innerText = data.description;
+    document.getElementById('proj-emoji').innerText = data.emojis.join(' ');
+    document.getElementById('proj-link').href = data.url;
+    
+    const toolsContainer = document.getElementById('proj-tools');
+    toolsContainer.innerHTML = '';
+    data.tools.forEach(tool => {
+        const span = document.createElement('span');
+        span.className = 'px-3 py-1 bg-slate-800 text-slate-300 text-sm rounded-full border border-slate-700';
+        span.innerText = tool;
+        toolsContainer.appendChild(span);
+    });
 
-    // --- Logo Modal Logic (moved from index.html) ---
-    const logoThumb = document.getElementById('logo-thumb');
-    const logoModal = document.getElementById('logo-modal');
+    document.getElementById('hero-view').classList.add('hidden');
+    document.getElementById('contact-view').classList.add('hidden');
+    document.getElementById('contact-view').classList.remove('flex');
+    document.getElementById('project-view').classList.remove('hidden');
+    document.getElementById('project-view').classList.add('flex');
+}
 
-    if (logoThumb && logoModal) {
-        logoThumb.addEventListener('click', () => {
-            logoModal.style.display = 'flex';
-        });
+function showContact() {
+    document.getElementById('hero-view').classList.add('hidden');
+    document.getElementById('project-view').classList.add('hidden');
+    document.getElementById('project-view').classList.remove('flex');
+    document.getElementById('contact-view').classList.remove('hidden');
+    document.getElementById('contact-view').classList.add('flex');
+}
 
-        logoModal.addEventListener('click', (e) => {
-            // Close modal if the background is clicked, but not the image itself
-            if (e.target === logoModal) {
-                logoModal.style.display = 'none';
-            }
-        });
-    }
+// Bind close buttons after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons(); // Initialize Icons
+
+    const btnClose = document.getElementById('btn-close');
+    const btnCloseContact = document.getElementById('btn-close-contact');
+    if (btnClose) btnClose.addEventListener('click', showHero);
+    if (btnCloseContact) btnCloseContact.addEventListener('click', showHero);
 });
+
+
+// ==========================================
+// THREE.JS 3D SCENE LOGIC
+// ==========================================
+async function init3DScene() {
+    // 1. Fetch JSON Data
+    try {
+        const response = await fetch('public/data/projects.json');
+        projectsData = await response.json();
+    } catch (error) {
+        console.error("Failed to load project data. Make sure you are running a local server.", error);
+        return;
+    }
+
+    // 2. Setup Scene
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0f172a, 0.03);
+
+    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(0, 0, 15);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0xffffff, 0.8);
+    pointLight.position.set(10, 20, 10);
+    scene.add(pointLight);
+
+    const orbitGroup = new THREE.Group();
+    scene.add(orbitGroup);
+
+    // 3. Texture & Sprite Helpers
+    function createMeTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#E91E63';
+        ctx.fillRect(0, 0, 1024, 512);
+        
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '900 90px Inter, sans-serif';
+        
+        const fullText = ("ME - ME - ").repeat(5); 
+        ctx.fillText(fullText, 512, 256, 1000);
+        
+        return new THREE.CanvasTexture(canvas);
+    }
+
+    function createLabelSprite(text) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d');
+        
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = 'bold 48px Inter, sans-serif';
+        
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 2;
+        
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(text, 256, 64);
+        
+        const texture = new THREE.CanvasTexture(canvas);
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
+        const sprite = new THREE.Sprite(spriteMaterial);
+        
+        sprite.scale.set(3, 0.75, 1); 
+        return sprite;
+    }
+
+    const interactables = [];
+
+    // 4. Generate Central "Me" Sphere
+    const meTex = createMeTexture();
+    const meGeo = new THREE.SphereGeometry(1.8, 64, 64);
+    const meMat = new THREE.MeshStandardMaterial({ map: meTex, roughness: 0.2 });
+    const meMesh = new THREE.Mesh(meGeo, meMat);
+    meMesh.userData = { type: 'me', targetScale: new THREE.Vector3(1, 1, 1) };
+    orbitGroup.add(meMesh);
+    interactables.push(meMesh);
+
+    // 5. Generate Project Shapes dynamically from JSON
+    const radius = 7; 
+    const totalItems = projectsData.length;
+
+    projectsData.forEach((project, i) => {
+        const angle = (i / totalItems) * Math.PI * 2;
+        let geometry;
+        
+        switch (project.shape) {
+            case 'pyramid': geometry = new THREE.ConeGeometry(project.size, project.size * 2, 4); break;
+            case 'octahedron': geometry = new THREE.OctahedronGeometry(project.size); break;
+            case 'prism': geometry = new THREE.CylinderGeometry(project.size, project.size, project.size * 1.5, 6); break;
+            case 'dodecahedron': geometry = new THREE.DodecahedronGeometry(project.size); break;
+            case 'torus': geometry = new THREE.TorusGeometry(project.size, project.size * 0.4, 8, 12); break;
+            case 'box': default: geometry = new THREE.BoxGeometry(project.size, project.size, project.size); break;
+        }
+        
+        const material = new THREE.MeshStandardMaterial({ color: project.color, roughness: 0.2 });
+        const obj = new THREE.Mesh(geometry, material);
+        
+        const edges = new THREE.EdgesGeometry(geometry);
+        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.2 }));
+        obj.add(line);
+
+        const sprite = createLabelSprite(project.title.toUpperCase());
+        sprite.position.y = project.size + 0.6; 
+        obj.add(sprite);
+        
+        obj.position.x = Math.cos(angle) * radius;
+        obj.position.z = Math.sin(angle) * radius;
+        obj.position.y = Math.sin(angle * 3) * 1.5;
+        obj.rotation.y = -angle;
+
+        obj.userData = { type: 'project', id: i, targetScale: new THREE.Vector3(1, 1, 1) };
+        
+        orbitGroup.add(obj);
+        interactables.push(obj);
+    });
+
+    // 6. Interaction Logic (Drag, Inertia, Raycasting)
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    
+    let angularVelocityX = 0.08; 
+    let angularVelocityY = 0.01;
+    const friction = 0.95;
+    const baseRotation = 0.0003; 
+
+    container.addEventListener('mousedown', () => isDragging = true);
+
+    container.addEventListener('mousemove', (e) => {
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+        if (isDragging) {
+            const deltaMove = { x: e.offsetX - previousMousePosition.x, y: e.offsetY - previousMousePosition.y };
+            angularVelocityX = deltaMove.x * 0.002;
+            angularVelocityY = deltaMove.y * 0.002;
+            
+            orbitGroup.rotation.y += angularVelocityX;
+            orbitGroup.rotation.x += angularVelocityY;
+        }
+        previousMousePosition = { x: e.offsetX, y: e.offsetY };
+    });
+
+    container.addEventListener('mouseup', () => isDragging = false);
+    container.addEventListener('mouseleave', () => isDragging = false);
+
+    // Click Detection
+    container.addEventListener('click', (e) => {
+        if (Math.abs(angularVelocityX) > 0.005 || Math.abs(angularVelocityY) > 0.005) return; 
+        
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(interactables, true);
+        
+        if (intersects.length > 0) {
+            let clickedObj = intersects[0].object;
+            if (clickedObj.type === 'Sprite' || clickedObj.type === 'LineSegments') {
+                clickedObj = clickedObj.parent;
+            }
+            
+            if (clickedObj.userData.type === 'project') {
+                showProject(clickedObj.userData.id);
+            } else if (clickedObj.userData.type === 'me') {
+                showHero();
+            }
+        }
+    });
+
+    // Touch Support
+    container.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        const touch = e.touches[0];
+        const rect = renderer.domElement.getBoundingClientRect();
+        previousMousePosition = { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+    }, {passive: false});
+
+    container.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        const rect = renderer.domElement.getBoundingClientRect();
+        const currentX = touch.clientX - rect.left;
+        const currentY = touch.clientY - rect.top;
+        
+        const deltaMove = { x: currentX - previousMousePosition.x, y: currentY - previousMousePosition.y };
+        angularVelocityX = deltaMove.x * 0.002;
+        angularVelocityY = deltaMove.y * 0.002;
+        orbitGroup.rotation.y += angularVelocityX;
+        orbitGroup.rotation.x += angularVelocityY;
+        
+        previousMousePosition = { x: currentX, y: currentY };
+    }, {passive: false});
+
+    container.addEventListener('touchend', () => isDragging = false);
+
+    // 7. Animation Loop
+    function animate() {
+        requestAnimationFrame(animate);
+
+        if (!isDragging) {
+            angularVelocityX *= friction;
+            angularVelocityY *= friction;
+            orbitGroup.rotation.y += angularVelocityX + baseRotation;
+            orbitGroup.rotation.x += angularVelocityY;
+        }
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(interactables, true);
+        
+        interactables.forEach(c => c.userData.targetScale.set(1, 1, 1));
+        
+        if (intersects.length > 0) {
+            let obj = intersects[0].object;
+            if (obj.type === 'Sprite' || obj.type === 'LineSegments') obj = obj.parent;
+            
+            obj.userData.targetScale.set(1.2, 1.2, 1.2);
+            document.body.style.cursor = 'pointer';
+        } else {
+            document.body.style.cursor = isDragging ? 'grabbing' : 'grab';
+        }
+
+        interactables.forEach(c => c.scale.lerp(c.userData.targetScale, 0.1));
+
+        renderer.render(scene, camera);
+    }
+
+    // 8. Handle Resize
+    window.addEventListener('resize', () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    });
+
+    // Start Rendering
+    animate();
+}
+
+// Trigger initialization on window load
+window.onload = init3DScene;

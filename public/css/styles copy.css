@@ -1,0 +1,393 @@
+/* My Projects h2 color override */
+#projects h2 {
+    color: var(--color-dark-text) !important;
+}
+
+/*
+==========================================================================
+  Core Variables & Setup
+==========================================================================
+*/
+
+/*
+  Note: The color palette was previously refactored. This section adds
+  variables for typography, transitions, layout, and effects to create
+  a more consistent and manageable design system.
+*/
+
+:root {
+  /* --- Core Palette (Light Theme) --- */
+  --color-primary: #E91E63;       /* Vibrant Pink (Slightly deeper for better contrast) */
+  --color-secondary: #00897B;     /* Darker, less saturated Teal */
+  --color-accent: #FFD43B;        /* Bright Yellow (Retained for accent) */
+  --color-dark-background: #1A1A1D; /* Deep Charcoal (For main dark sections, less stark than pure black) */
+  --color-light-text: #eae1e1;    /* Soft White (For text on dark backgrounds) */
+  --color-dark-text: #1A1A1D;     /* Dark text for light backgrounds */
+  --color-mid-gray: #4A4A4F;      /* Medium Gray (For secondary text or borders on dark) */
+  --color-light-gray: #DEDEDE;    /* Light Gray (For elements on light backgrounds) */
+  --color-shadow: rgba(0, 0, 0, 0.25); /* Adjusted shadow for subtlety */
+
+  /* --- Light Theme Backgrounds & Text --- */
+  --color-light-background: #F8F9FA; /* Very light gray, soft on the eyes */
+  --color-light-background-alt: #FFFFFF; /* Pure white for cards/headers */
+
+  /* --- Lighter Tones for Backgrounds/Elements --- */
+  --color-primary-light: #F78CB2; /* Lighter Pink */
+  --color-secondary-light: #66E0D9; /* Lighter Teal */
+  --color-accent-light: #FFE88D;  /* Lighter Yellow */
+  --color-section-background-light: #2C2C30; /* Slightly lighter dark background for contrast */
+
+  /* --- Gradients (Refactored) --- */
+  --gradient-home:
+    radial-gradient(ellipse at 50% 150%, hsla(338, 82%, 52%, 0.2) 0%, transparent 70%), var(--color-dark-background);
+  --gradient-projects:
+    linear-gradient(180deg, var(--color-light-background-alt) 0%, #E9ECEF 100%);
+  --gradient-contact:
+    radial-gradient(ellipse at 50% 150%, hsla(174, 100%, 27%, 0.25) 0%, transparent 70%), var(--color-dark-background);
+
+  /* --- Typography --- */
+  --font-family-main: 'Inter', sans-serif;
+
+  /* --- Transitions & Animations --- */
+  --transition-speed-fast: 0.3s;
+  --transition-speed-normal: 0.5s;
+  --transition-speed-slow: 0.7s;
+  --transition-timing-function: ease;
+  --transition-timing-function-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* --- Layout & Sizing --- */
+  --border-radius-small: 4px;
+  --border-radius-medium: 0.75rem;
+  --border-radius-large: 1rem;
+  --border-radius-circle: 50%;
+  --blur-default: 10px;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-family-main);
+    background-color: var(--color-light-background);
+    color: var(--color-dark-text);
+}
+
+/* --- Static Frame --- */
+.static-frame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+#page-header {
+    --header-padding-vertical: 1.5rem;
+    --header-padding-horizontal: 2rem;
+    --header-height: calc(var(--header-padding-vertical) * 2 + 2.5rem); /* 1.5rem top + 1.5rem bottom + ~2.5rem content */
+    padding: var(--header-padding-vertical) var(--header-padding-horizontal); 
+    background: rgba(26, 26, 29, 0.85); /* Dark semi-transparent background */
+    backdrop-filter: blur(var(--blur-default));
+    transition: padding 0.3s ease; /* Add transition for padding */
+}
+
+#side-nav {
+    position: fixed;
+    top: 50%;
+    left: 2rem;
+    transform: translateY(-50%);
+}
+
+/* --- Section Styling & Animations --- */
+main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.section {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    padding-top: 5.5rem; /* 1.5rem + 2rem + ~2rem content, matches #page-header */
+    transition: transform var(--transition-speed-slow) var(--transition-timing-function-cubic);
+}
+
+.content-wrapper {
+    width: 60%;
+    margin: 0 auto;
+}
+
+#projects .content-wrapper {
+    width: 80%; /* Wider wrapper for the project carousel */
+}
+
+
+#home { background: var(--gradient-home); }
+#projects { background: var(--gradient-projects); }
+#contact { background: var(--gradient-contact); }
+
+
+/* --- Section States (Unchanged) --- */
+.section { transform: translateY(100%); z-index: 1; }
+.section.active { transform: translateY(0); z-index: 3; color: var(--color-light-text); }
+.section.static-behind { transform: translateY(0); z-index: 2; color: var(--color-light-text); }
+.section.prepare-above { transform: translateY(-100%); transition: none; }
+
+
+/* --- Navigation Styling (with CSS Variables) --- */
+.nav-item { display: flex; align-items: center; margin: 1.5rem 0; cursor: pointer; }
+.nav-dot { width: 12px; height: 12px; background-color: var(--color-mid-gray); border-radius: var(--border-radius-circle); transition: all var(--transition-speed-fast) var(--transition-timing-function); }
+.nav-title { color: var(--color-dark-text); margin-left: 1rem; opacity: 0; visibility: hidden; transform: translateX(-10px); transition: all var(--transition-speed-fast) var(--transition-timing-function); white-space: nowrap; }
+.nav-item.active .nav-dot { background-color: var(--color-accent); transform: scale(1.5); }
+.nav-item.active .nav-title { opacity: 1; visibility: visible; transform: translateX(0); }
+
+/* --- Specific Nav Item Color Overrides for Contrast --- */
+/* Make Home and Contact nav titles white for dark backgrounds */
+.nav-item[data-index="0"] .nav-title,
+.nav-item[data-index="2"] .nav-title { color: var(--color-light-text); } 
+
+/* Hide nav icons on desktop, show only on small screens */
+.nav-icon { display: none !important; }
+
+@media (max-width: 1024px) {
+    .nav-icon { display: block !important; }
+}
+
+.home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+}
+.image-container {
+    width: 400px;
+    height: 400px;
+    border-radius: var(--border-radius-circle);
+    overflow: hidden;
+    border: 6px solid var(--color-secondary);
+    transition: border-color var(--transition-speed-fast) var(--transition-timing-function), box-shadow var(--transition-speed-fast) var(--transition-timing-function);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222; /* fallback */
+}
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease-out;
+}
+.social-icons-container .social-link .icon {
+    width: 36px;
+    height: 36px;
+}
+.home-content {
+    text-align: left;
+}
+.disabled{
+    pointer-events: auto;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+/*
+==========================================================================
+  Responsive Styles
+==========================================================================
+*/
+@media (max-width: 1024px) {
+    .project-card { min-width: 100%; }
+    .accordion-scroll-container { overflow-x: visible; }
+    .projects-accordion {
+        flex-direction: column;
+        height: auto;
+        gap: 1.5rem;
+        display: flex;
+        width: 100%;
+        min-height: unset;
+    }
+    .project-accordion-card {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+        height: 80px;
+        border-radius: var(--border-radius-medium);
+        margin: 0 auto; 
+        transition: height 0.5s, width 0.5s;
+    }
+    .project-accordion-card.active {
+        height: auto;
+        min-height: 280px; /* Make active card smaller */
+        width: 100%; 
+        box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    }
+    .project-accordion-card .collapsed-content {
+        writing-mode: horizontal-tb;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .collapsed-content h3 {
+        margin: 0;
+        margin-right: 1rem;
+    }
+    .expanded-content {
+        position: relative;
+        width: 100%;
+        height: auto;
+        min-height: 180px; /* Make content area smaller */
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: none;
+    }
+    .visit-btn {
+        font-size: 1rem; /* Make button text smaller */
+        padding: 0.6rem 1.2rem; /* Make button padding smaller */
+        min-width: 60vw; 
+        align-self: stretch;
+        margin-top: 1.5rem;
+        border-radius: var(--border-radius-medium);
+    }
+}
+
+@media (max-width: 768px) {
+    .content-wrapper, #projects .content-wrapper {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    /* --- Mobile Navigation Bar (Bottom) --- */
+    #side-nav {
+        left: 0;
+        right: 0;
+        top: auto;
+        bottom: 0;
+        width: 100vw;
+        height: 80px;
+        min-height: 80px; 
+        transform: none;
+        background: rgba(30, 30, 30, 0.85); 
+        backdrop-filter: blur(10px);
+        z-index: 200;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    #side-nav ul {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100vw;
+        margin: 0;
+        padding: 1rem 0 0.5rem 0;
+    }
+    #side-nav li.nav-item {
+        margin: 0;
+        min-width: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    #side-nav .icon, #side-nav .nav-icon {
+        width: 2.2rem !important;
+        height: 2.2rem !important;
+    }
+    .nav-title { display: none; }
+    .nav-dot { display: none; }
+    .nav-icon { display: block; }
+
+    /* --- Mobile Navigation Icon Color --- */
+    #side-nav .nav-item.active .nav-icon { color: var(--color-primary); }
+    #side-nav .nav-item .nav-icon { color: var(--color-light-text); }
+
+    /* --- Mobile Section Sizing Fix --- */
+    .section {
+        position: absolute;
+        left: 0;
+        top: 4.5rem; /* 1rem + 1.5rem + 2rem content, matches #page-header mobile padding */
+        width: 100vw;
+        min-height: calc(100vh - 4.5rem - 61px);
+        max-width: 100vw;
+        max-height: calc(100vh - 4.5rem - 61px);
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 1.5rem 1rem 1.5rem 1rem;
+        align-items: flex-start;
+        display: flex;
+        justify-content: center;
+    }
+
+    #page-header { 
+        padding: 0.75rem 1rem; /* Reduce header padding */
+    }
+    /* Make header buttons smaller on mobile */
+    #page-header .btn-primary { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+
+    /* --- Mobile Home Section Layout Fix --- */
+    .home-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        text-align: center; 
+        /* Fix for mobile centering */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .home-content { order: 2; }
+    .image-container { order: 1; width: 250px; height: 250px; }
+    .social-icons-container { justify-content: center; }
+    h1.text-5xl { font-size: 3rem; }
+
+    /* --- Project Cards: Always Expanded, 80vw --- */
+    .accordion-scroll-container {
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 1.5rem;
+    }
+    .projects-accordion {
+        flex-direction: row;
+        display: flex;
+        gap: 1rem;
+        width: max-content;
+        min-width: 100vw;
+        height: auto;
+    }
+    .project-accordion-card {
+        min-width: 60vw;
+        max-width: 60vw;
+        width: 60vw;
+        height: auto;
+        margin: 0;
+        scroll-snap-align: center;
+        border-radius: var(--border-radius-medium);
+        transition: height 0.5s, width 0.5s;
+    }
+    .project-accordion-card .collapsed-content,
+    .project-accordion-card .tech-icons {
+        display: none !important;
+    }
+    /* --- Smaller text for mobile project cards --- */
+    .project-accordion-card .expanded-content h3 {
+        font-size: 1.5rem; /* Reduced from 2.25rem */
+    }
+    .project-accordion-card .expanded-content p {
+        font-size: 0.875rem; /* Reduced from 1rem */
+    }
+    .visit-btn {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+        min-width: 0;
+        display: inline-block !important;
+    }
+}
