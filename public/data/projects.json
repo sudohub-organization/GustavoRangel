@@ -1,72 +1,90 @@
 [
-    { 
-        "title": "Honours Project", 
-        "description": "MAUI - An intelligent ML system that analyzes user requirements and suggests optimal UI component sizes.", 
-        "url": "/honours/index.html", 
-        "emojis": ["👓", "🤖"], 
-        "tools": ["Python", "Flask", "sickit-learn", "LaTeX"], 
-        "color": "#3b82f6", 
-        "size": 1.2, 
-        "shape": "box" 
+    {
+        "title": "Honours Project",
+        "description": "MAUI - An intelligent ML system that analyzes user requirements and suggests optimal UI component sizes.",
+        "url": "/honours/index.html",
+        "repository": null,
+        "emojis": ["👓", "🤖"],
+        "tools": ["Python", "Flask", "sickit-learn", "LaTeX"],
+        "color": "#3b82f6",
+        "size": 1.2,
+        "shape": "dodecahedron"
     },
-    { 
-        "title": "MEVR Full Stack", 
-        "description": "TinyTales -A full-stack web platform enabling users to author, publish, and share narrative content.", 
-        "url": "http://tinytales.westus.cloudapp.azure.com/login", 
-        "emojis": ["📖", "🌐"], 
-        "tools": ["Vue", "express", "node.js", "MongoDB"], 
-        "color": "#10b981", 
-        "size": 0.9, 
-        "shape": "pyramid" 
+    {
+        "title": "3D Modelling",
+        "description": "A an example of a 3D model implemented in a login page, showcasing the integration of 3D elements into web design.",
+        "url": "/projects/avatarpage/index.html",
+        "repository": "https://github.com/DefoNotGus/My_Avatar",
+        "emojis": ["🤖"],
+        "tools": ["javascript", "Three.Js", "Blender"],
+        "color": "#f33ff6",
+        "size": 1.2,
+        "shape": "prism"
     },
-    { 
-        "title": "RGU Hack 2025", 
-        "description": "A time-critical project developed from concept to execution during a 24-hour hackathon.", 
-        "url": "rguhack2025/index.html", 
-        "emojis": ["🏆", "⏱️"], 
-        "tools": ["javascript", "HTML", "CSS"], 
-        "color": "#f59e0b", 
-        "size": 1.4, 
-        "shape": "octahedron" 
+    {
+        "title": "Full Stack- MEVN",
+        "description": "TinyTales -A full-stack web platform enabling users to author, publish, and share narrative content.",
+        "url": null,
+        "repository": "https://github.com/DefoNotGus/TinyTales_MEVN",
+        "emojis": ["📖", "🌐"],
+        "tools": ["Vue", "express", "node.js", "MongoDB"],
+        "color": "#10b981",
+        "size": 0.9,
+        "shape": "pyramid"
     },
-    { 
-        "title": "Data Viz", 
-        "description": "Interactive data visualization exploring the correlation between education levels and addiction.", 
-        "url": "docs/dataviz.html", 
-        "emojis": ["📊", "🧠"], 
-        "tools": ["Python", "pandas", "matplotlib"], 
-        "color": "#ef4444", 
-        "size": 1.0, 
-        "shape": "prism" 
+    {
+        "title": "RGU Hack 2025",
+        "description": "A time-critical project developed from concept to execution during a 24-hour hackathon.",
+        "url": "rguhack2025/index.html",
+        "repository": "https://github.com/DefoNotGus/rguhack2025",
+        "emojis": ["🏆", "⏱️"],
+        "tools": ["javascript", "HTML", "CSS"],
+        "color": "#f59e0b",
+        "size": 1.4,
+        "shape": "octahedron"
     },
-    { 
-        "title": "Mobile App", 
-        "description": "A personalized Android mobile application designed to provide users with zodiac-based insights.", 
-        "url": "https://github.com/DefoNotGus/YourDestiny", 
-        "emojis": ["📱", "✨"], 
-        "tools": ["Java", "Android Studio", "Kotlin"], 
-        "color": "#8b5cf6", 
-        "size": 1.3, 
-        "shape": "dodecahedron" 
+    {
+        "title": "Data Visualization",
+        "description": "Interactive data visualization exploring the correlation between education levels and addiction.",
+        "url": "docs/dataviz.html",
+        "repository": null,
+        "emojis": ["📊", "🧠"],
+        "tools": ["Python", "pandas", "matplotlib"],
+        "color": "#ef4444",
+        "size": 1.0,
+        "shape": "prism"
     },
-    { 
-        "title": "NLP in IMDb", 
-        "description": "Engineered a Natural Language Processing model to perform sentiment analysis on movie reviews.", 
-        "url": "https://github.com/DefoNotGus/NPLinIMDb", 
-        "emojis": ["🤖", "🎬"], 
-        "tools": ["Python", "NLP", "sickit-learn"], 
-        "color": "#ec4899", 
-        "size": 0.8, 
-        "shape": "torus" 
+    {
+        "title": "Android App",
+        "description": "A personalized Android mobile application designed to provide users with zodiac-based insights.",
+        "url": null,
+        "repository": "https://github.com/DefoNotGus/YourDestiny",
+        "emojis": ["📱", "✨"],
+        "tools": ["Java", "Android Studio", "Kotlin"],
+        "color": "#8b5cf6",
+        "size": 1.3,
+        "shape": "box"
     },
-    { 
-        "title": "LeaveIt2Me", 
-        "description": "A foundational web project developed using PHP, serving as an initial exploration into server-side scripting.", 
-        "url": "https://tavotech.altervista.org/", 
-        "emojis": ["🐘", "🌐"], 
-        "tools": ["PHP", "MySQL"], 
-        "color": "#06b6d4", 
-        "size": 1.1, 
-        "shape": "box" 
+    {
+        "title": "NLP Analysis",
+        "description": "Engineered a Natural Language Processing model to perform sentiment analysis on movie reviews.",
+        "url": null,
+        "repository": "https://github.com/DefoNotGus/NPLinIMDb",
+        "emojis": ["🤖", "🎬"],
+        "tools": ["Python", "NLP", "sickit-learn"],
+        "color": "#ec4899",
+        "size": 0.8,
+        "shape": "torus"
+    },
+    {
+        "title": "PHP Project",
+        "description": "A foundational web project developed using PHP, serving as an initial exploration into server-side scripting.",
+        "url": "https://tavotech.altervista.org/",
+        "repository": null,
+        "emojis": ["🐘", "🌐"],
+        "tools": ["PHP", "MySQL"],
+        "color": "#06b6d4",
+        "size": 1.1,
+        "shape": "box"
     }
 ]

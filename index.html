@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gustavo Rangel - Portfolio</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-    
+
     <!-- External Libraries -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -25,21 +25,21 @@
 
     <!-- LEFT SIDE: UI Panel -->
     <div id="ui-panel" class="w-full md:w-5/12 h-1/2 md:h-full bg-slate-900/95 backdrop-blur-md z-10 flex flex-col p-8 md:p-16 relative shadow-2xl overflow-y-auto scrollbar-hide border-r border-slate-800">
-        
+
         <!-- Hero View (Default) -->
         <div id="hero-view" class="my-auto transition-all duration-500">
             <div class="mb-8">
                 <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-pink-500 mb-6 shadow-[0_0_30px_rgba(233,30,99,0.3)]">
                     <img src="public/images/me.jpeg" alt="Gustavo" class="w-full h-full object-cover">
                 </div>
-                <h1 class="text-5xl md:text-6xl font-black mb-3 tracking-tight">I'm Gus.</h1>
+                <h1 class="text-5xl md:text-6xl font-black mb-3 tracking-tight">I'm Gustavo.</h1>
                 <p class="text-xl text-slate-400 font-medium">Creative Developer & Designer</p>
             </div>
-            
+
             <p class="text-slate-300 mb-10 leading-relaxed max-w-md">
                 Passionate about building beautiful and functional web experiences and media content. Drag the cubes on the right to explore my universe of projects.
             </p>
-            
+
             <div class="flex items-center gap-4 flex-wrap">
                 <button onclick="showContact()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-800 text-slate-300 border border-slate-700 hover:bg-pink-600 hover:text-white hover:border-pink-500 rounded-full font-medium transition-colors text-sm">
                     <i data-lucide="mail" class="w-4 h-4"></i> Contact Me
@@ -67,21 +67,18 @@
             <button id="btn-close" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-white bg-slate-800 rounded-full transition-colors">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
-            
+
             <div class="text-4xl mb-4" id="proj-emoji">🚀</div>
             <h2 id="proj-title" class="text-4xl md:text-5xl font-bold mb-4">Project Title</h2>
-            
+
             <div id="proj-tools" class="flex flex-wrap gap-2 mb-6">
                 <!-- Tool tags injected dynamically -->
             </div>
-            
+
             <p id="proj-desc" class="text-lg text-slate-300 mb-8 leading-relaxed">
-                Project description goes here.
             </p>
-            
-            <a id="proj-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-pink-500 transition-colors w-max">
-                Visit Project <i data-lucide="external-link" class="w-4 h-4"></i>
-            </a>
+
+            <div id="proj-links" class="flex flex-wrap gap-3"></div>
         </div>
 
         <!-- Contact View (Hidden by default) -->
@@ -107,7 +104,7 @@
                 <button type="submit" class="bg-pink-600 font-bold py-3 rounded-lg hover:bg-pink-500 transition-colors">Send Message</button>
             </form>
         </div>
-        
+
     </div>
 
     <!-- RIGHT SIDE: 3D Canvas Container -->
