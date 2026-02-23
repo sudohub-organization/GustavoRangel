@@ -1,0 +1,17 @@
+[
+    { 
+        "year": "2024", 
+        "title": "Creative Developer", 
+        "desc": "Building interactive 3D web experiences." 
+    },
+    { 
+        "year": "2023", 
+        "title": "Web Developer", 
+        "desc": "Developing full-stack applications and responsive user interfaces." 
+    },
+    { 
+        "year": "2020", 
+        "title": "BSc Computer Science", 
+        "desc": "Graduated with honors, focusing on software engineering and UI/UX." 
+    }
+]

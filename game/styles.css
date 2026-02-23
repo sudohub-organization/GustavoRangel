@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #020617;
+    font-family: 'Inter', sans-serif;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Modals */
+.glass-panel {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    pointer-events: auto;
+}
+
+/* Joystick Area Base (Hidden on Desktop) */
+#joystick-zone {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 150px;
+    height: 150px;
+    pointer-events: auto;
+    display: none;
+}
+
+/* Custom Crosshair Cursor */
+#custom-cursor {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    body.game-active {
+        cursor: none;
+    }
+    
+    body.game-active #custom-cursor {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        border: 2px solid #f472b6;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: transform 0.15s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    body.game-active #custom-cursor::before,
+    body.game-active #custom-cursor::after {
+        content: '';
+        position: absolute;
+        background: #f472b6;
+        transition: background 0.15s ease-out;
+    }
+
+    body.game-active #custom-cursor::before { width: 2px; height: 100%; }
+    body.game-active #custom-cursor::after { width: 100%; height: 2px; }
+    
+    body.game-active #custom-cursor.cursor-hover {
+        transform: translate(-50%, -50%) scale(1.5) rotate(45deg);
+        background-color: rgba(34, 211, 238, 0.2);
+        border-color: #22d3ee;
+    }
+
+    body.game-active #custom-cursor.cursor-hover::before,
+    body.game-active #custom-cursor.cursor-hover::after {
+        background: #22d3ee;
+    }
+}
+
+/* Custom Scrollbar for modals */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+}
