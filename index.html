@@ -2,141 +2,174 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gustavo Rangel</title>
-    <!-- Tailwind CSS is used for utility classes, not replaced by the stylesheet -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gustavo Rangel | Portfolio</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Lucide icons for navigation -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- External Stylesheets -->
     <link rel="stylesheet" href="public/css/styles.css">
-    <link rel="stylesheet" href="public/css/components.css">
+    <link rel="stylesheet" href="public/css/smallscreens.css">
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- Static Frame Container for Header and Side Nav -->
-    <div class="static-frame">
-        <header id="page-header">
-            <div class="flex justify-between items-center max-w-7xl mx-auto">
-                <div class="flex items-center gap-2">
-                    <button id="logo-thumb" class="logo-thumb-btn" title="Expand logo">
-                        <img src="public/images/logo.png" alt="Logo" >
-                    </button>
-                    <a href="#" class="text-2xl font-bold text-white tracking-wider">Gustavo El Profe</a>
-                </div>
-                <div class="flex gap-3">
-                    <a href="game/index.html" class="btn-primary font-bold py-2 px-5 rounded-lg hover:opacity-90 transition-opacity text-sm md:text-base">
-                        Gaming
-                    </a>
-                    <a href="teaching/" class="btn-primary font-bold py-2 px-5 rounded-lg hover:opacity-90 transition-opacity text-sm md:text-base">
-                        Learn
-                    </a>
-                    <a href="#" class="btn-primary disabled font-bold py-2 px-5 rounded-lg hover:opacity-90 transition-opacity text-sm md:text-base">
-                        Play
-                    </a>
-                </div>
+    <!-- Header & Navigation -->
+    <header id="page-header" class="fixed top-0 left-0 w-full z-50 glass-header transition-all duration-300">
+        <div class="flex justify-between items-center max-w-7xl mx-auto px-4 md:px-6 py-4">
+            
+            <!-- Logo Section -->
+            <div class="flex items-center gap-3 w-1/4">
+                <button id="logo-thumb" class="rounded-lg overflow-hidden border border-gray-700 hover:border-pink-500 transition-colors shrink-0">
+                    <img src="public/images/logo.png" onerror="this.src='https://placehold.co/40x40/1A1A1D/FFF?text=GR'" alt="Logo" class="w-10 h-10 object-cover">
+                </button>
+                <a href="#" class="text-xl font-bold tracking-tight text-white hover:text-pink-500 transition-colors hidden lg:block whitespace-nowrap">Gustavo El Profe</a>
             </div>
-            <div id="logo-modal" class="logo-modal">
-                <img src="public/images/logo.png" alt="Logo Large">
+
+            <!-- Central Dots Navigation -->
+            <nav class="flex-1 flex justify-center header-nav-center">
+                <ul class="flex items-center gap-5 lg:gap-8 bg-black/30 px-6 py-2 rounded-full border border-white/5">
+                    <li class="nav-item active flex items-center gap-2 cursor-pointer group" data-index="0">
+                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Home</span>
+                    </li>
+                    <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="1">
+                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Projects</span>
+                    </li>
+                    <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="2">
+                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Experience</span>
+                    </li>
+                    <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="3">
+                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Contact</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2 w-1/4 justify-end">
+                <a id="have-fun-btn" href="game/index.html" class="bg-teal-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm">Have Fun</a>
             </div>
-        </header>
+            <style>
+                @keyframes haveFunBlink {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0; }
+                }
+                .have-fun-blink { animation: haveFunBlink 0.3s ease-in-out 2; }
+            </style>
+            <script>
+                setInterval(() => {
+                    const btn = document.getElementById('have-fun-btn');
+                    btn.classList.remove('have-fun-blink');
+                    void btn.offsetWidth;
+                    btn.classList.add('have-fun-blink');
+                }, 10000);
+            </script>
+        </div>
+    </header>
 
-        <!-- Navigation: Updated with icons for mobile view -->
-        <nav id="side-nav">
-            <ul>
-                <li class="nav-item" data-index="0">
-                    <i data-lucide="home" class="nav-icon"></i>
-                    <div class="nav-dot"></div>
-                    <span class="nav-title">Home</span>
-                </li>
-                <li class="nav-item" data-index="1">
-                    <i data-lucide="folder-kanban" class="nav-icon"></i>
-                    <div class="nav-dot"></div>
-                    <span class="nav-title">Projects</span>
-                </li>
-                <li class="nav-item" data-index="2">
-                    <i data-lucide="mail" class="nav-icon"></i>
-                    <div class="nav-dot"></div>
-                    <span class="nav-title">Contact</span>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- Main Container for Sliding Sections -->
+    <!-- Main Content Sections -->
     <main>
         <!-- Home Section -->
-        <section id="home" class="section">
-            <div class="content-wrapper">
-                <div class="home-grid">
-                    <div class="home-content">
-                        <h1 class="text-5xl md:text-6xl font-bold mb-4">I'm Gus.</h1>
-                        <p class="text-xl text-gray-300 mb-8">Creative Developer & Designer passionate about building beautiful and functional web experiences and media content.</p>
-                        <div class="social-icons-container flex space-x-6">
-                            <a href="https://www.linkedin.com/in/gustavo-rangel-professional/" target="_blank" rel="noopener" class="social-link text-white" data-img-src="public/images/linkedin.png">
-                                <i data-lucide="linkedin" class="icon"></i>
+        <section id="home" class="section bg-gradient-home active">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="home-grid md:grid md:grid-cols-2 flex flex-col items-center">
+                    <div class="home-content space-y-6">
+                        <h1 class="text-5xl md:text-7xl font-bold tracking-tight">I'm <span class="text-pink-500">Gus</span><span class="text-pink-400">tavo.</span></h1>
+                        <p class="text-lg md:text-xl text-gray-400 leading-relaxed max-w-lg">
+                            Creative Developer & Designer passionate about building beautiful, functional web experiences and engaging media content.
+                        </p>
+                        <div class="social-icons-container flex space-x-4 pt-2">
+                            <a href="https://www.linkedin.com/in/gustavo-rangel-professional/" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
+                                <i data-lucide="linkedin" class="w-6 h-6 text-white group-hover:scale-110 transition-transform"></i>
                             </a>
-                            <a href="https://www.youtube.com/@GustavoElProfe" target="_blank" rel="noopener" class="social-link text-white" data-img-src="public/images/youtube.png">
-                                <i data-lucide="youtube" class="icon"></i>
+                            <a href="https://www.youtube.com/@GustavoElProfe" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
+                                <i data-lucide="youtube" class="w-6 h-6 text-white group-hover:scale-110 transition-transform"></i>
                             </a>
-                            <a href="https://blog.gustavoelprofe.com" target="_blank" rel="noopener" class="social-link text-white" data-img-src="public/images/blog.jpg">
-                                <i data-lucide="notebook-pen" class="icon"></i>
+                            <a href="https://blog.gustavoelprofe.com" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
+                                <i data-lucide="notebook-pen" class="w-6 h-6 text-white group-hover:scale-110 transition-transform"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="image-container">
-                        <img id="dynamic-home-image" src="public/images/me.jpeg" alt="Gustavo El Profe Portrait">
+                    <div class="flex justify-center md:justify-end w-full">
+                        <div class="image-container w-64 h-64 md:w-96 md:h-96 relative group cursor-pointer">
+                            <img id="dynamic-home-image" src="public/images/me.jpeg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=800&q=80'" alt="Gustavo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="section">
-            <div class="content-wrapper">
-                 <div class="w-full mx-auto">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-12 text-center">My Projects</h2>
-                    <div class="accordion-scroll-container">
-                        <!-- Projects will be loaded here by script.js -->
-                        <div class="projects-accordion"></div>
-                    </div>
-                 </div>
+        <section id="projects" class="section bg-gradient-projects upcoming">
+            <div class="max-w-[1400px] mx-auto w-full h-full flex flex-col justify-center py-10">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 text-center md:text-left px-4">Selected Work</h2>
+                <div class="projects-accordion mx-auto px-4" id="projects-container">
+                    <!-- Cards Injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Timeline Section -->
+        <section id="experience" class="section bg-gradient-experience upcoming">
+            <div class="max-w-4xl mx-auto w-full h-full flex flex-col py-10">
+                <h2 class="text-3xl md:text-5xl font-bold mb-10 text-center md:text-left px-4 text-blue-400">Experience</h2>
+                
+                <div class="relative border-l-2 border-gray-800 ml-4 md:ml-8" id="experience-container">
+                    <!-- Timeline Items Injected via JS -->
+                </div>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="section">
-            <div class="content-wrapper">
-                <div class="text-center mx-auto">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
-                    <p class="text-lg text-gray-300 mb-8">I'm open to new opportunities. Feel free to send me a message!</p>
-                    <div class="card p-8 rounded-lg shadow-lg text-left">
-                        <form action="https://formspree.io/f/xbldrayw" method="POST">
-                            <div class="form-group">
-                                <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Your Name</label>
-                                <input type="text" id="name" name="name" class="form-input" required>
+        <section id="contact" class="section bg-gradient-contact upcoming">
+            <div class="max-w-3xl mx-auto w-full text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Let's Connect</h2>
+                <p class="text-gray-400 mb-8 max-w-lg mx-auto">Open to new opportunities, collaborations, or just a quick chat. Drop a message below!</p>
+                
+                <div class="bg-gray-900 bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-gray-800 text-left shadow-2xl">
+                    <form action="https://formspree.io/f/xbldrayw" method="POST" class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+                                <input type="text" name="name" class="form-input w-full p-3 rounded-xl" placeholder="John Doe" required>
                             </div>
-                            <div class="form-group">
-                                <label for="email" class="block mb-2 text-sm font-medium text-gray-300">Your Email</label>
-                                <input type="email" id="email" name="email" class="form-input" required>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Email</label>
+                                <input type="email" name="email" class="form-input w-full p-3 rounded-xl" placeholder="john@example.com" required>
                             </div>
-                            <div class="form-group">
-                                <label for="message" class="block mb-2 text-sm font-medium text-gray-300">Message</label>
-                                <textarea id="message" name="message" rows="4" class="form-input" placeholder="Your message..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn-primary w-full font-bold py-3 px-5 rounded-lg hover:opacity-90 transition-opacity">Send Message</button>
-                        </form>
-                    </div>
-                    <div class="mt-8 text-xs text-gray-400">&copy; 2025 Gustavo Rangel. All rights reserved.<br>
-                    <p class="mt-8 text-xs text-white">KONAMI CODE AVAILABLE</p>
-                    </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Message</label>
+                            <textarea name="message" rows="4" class="form-input w-full p-3 rounded-xl resize-none" placeholder="How can we work together?" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-pink-500/30">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="mt-12 text-sm text-gray-600">
+                    <p>&copy; 2026 Gustavo Rangel. All rights reserved.</p>
+                    <p class="mt-2 text-xs font-mono text-gray-500 tracking-widest opacity-50 hover:opacity-100 transition-opacity">↑ ↑ ↓ ↓ ← → ← → B A</p>
                 </div>
             </div>
         </section>
     </main>
     
-    <script src="public/js/script.js" defer></script>
+    <!-- Modals -->
+    <div id="logo-modal" class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm cursor-pointer transition-opacity">
+        <img src="public/images/logo.png" onerror="this.src='https://placehold.co/400x400/1A1A1D/FFF?text=GR'" alt="Logo Large" class="max-w-full max-h-[80vh] rounded-2xl shadow-2xl cursor-default">
+    </div>
+
+    <!-- External Script -->
+    <script src="public/js/script.js"></script>
 </body>
 </html>

@@ -1,289 +1,324 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Konami Code Cursor Easter Egg ---
-    const konamiCode = [
-        'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-        'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-        'b', 'a'
-    ];
-    let konamiIndex = 0;
-    document.addEventListener('keydown', function(e) {
-        if (e.key === konamiCode[konamiIndex]) {
-            konamiIndex++;
-            if (konamiIndex === konamiCode.length) {
-                document.body.style.cursor = 'url("public/images/cursor.cur"), auto';
-                // Set #page-header background to rain2.gif
-                const pageHeader = document.getElementById('page-header');
-                if (pageHeader) {
-                    pageHeader.style.backgroundImage = 'url("public/images/rain2.gif")';
-                    pageHeader.style.backgroundRepeat = 'repeat';
-                }
-                konamiIndex = 0;
-            }
-        } else {
-            konamiIndex = 0;
-        }
-    });
-    // --- Unified Centered Popup Utility ---
+    // Initialize icons
+    lucide.createIcons();
+
     function showCenteredPopup(message) {
         let popup = document.getElementById('centered-popup');
         if (popup) popup.remove();
         popup = document.createElement('div');
         popup.id = 'centered-popup';
         popup.textContent = message;
-        popup.style.position = 'fixed';
-        popup.style.left = '50%';
-        popup.style.top = '50%';
-        popup.style.transform = 'translate(-50%, -50%)';
-        popup.style.background = 'rgba(30,30,30,0.97)';
-        popup.style.color = '#fff';
-        popup.style.padding = '0.75rem 1.5rem';
-        popup.style.borderRadius = '0.75rem';
-        popup.style.fontSize = '1.1rem';
-        popup.style.boxShadow = '0 2px 8px rgba(0,0,0,0.18)';
-        popup.style.zIndex = '9999';
-        popup.style.textAlign = 'center';
         document.body.appendChild(popup);
-        setTimeout(() => { popup.remove(); }, 2000);
+        setTimeout(() => popup.remove(), 2000);
     }
 
-    // Event delegation for all .disabled elements
-    document.body.addEventListener('click', function(e) {
-        const target = e.target.closest('.disabled');
-        if (target) {
+    document.querySelectorAll('.disabled').forEach(el => {
+        el.addEventListener('click', (e) => {
             e.preventDefault();
-            showCenteredPopup('work in progress :) come back later');
-        }
+            showCenteredPopup('Work in progress! Come back later.');
+        });
     });
-    lucide.createIcons();
 
-    // --- Main Page Scrolling Logic (Unchanged) ---
+    // --- Section Overlapping Logic ---
     const sections = document.querySelectorAll('.section');
     const navItems = document.querySelectorAll('.nav-item');
-    const numSections = sections.length;
     let currentIndex = 0;
     let isAnimating = false;
-    const animationDuration = 800;
 
-    const updateNav = (newIndex) => {
-        navItems.forEach(item => item.classList.remove('active'));
-        const activeNavItem = document.querySelector(`.nav-item[data-index="${newIndex}"]`);
-        if (activeNavItem) activeNavItem.classList.add('active');
-    };
+    sections.forEach((sec, idx) => { sec.style.zIndex = idx + 1; });
 
-    const goToSection = (newIndex) => {
-        if (isAnimating || newIndex === currentIndex) return;
+    function goToSection(index) {
+        if (isAnimating || index === currentIndex) return;
         isAnimating = true;
-        const currentSection = sections[currentIndex];
-        const newSection = sections[newIndex];
-        let direction = newIndex > currentIndex ? 'down' : 'up';
-        if (currentIndex === numSections - 1 && newIndex === 0) direction = 'down';
-        if (currentIndex === 0 && newIndex === numSections - 1) direction = 'up';
-        sections.forEach((sec, idx) => { if (idx !== currentIndex && idx !== newIndex) { sec.classList.remove('active', 'static-behind', 'prepare-above'); } });
-        if (direction === 'down') {
-            currentSection.classList.remove('active');
-            currentSection.classList.add('static-behind');
-            newSection.classList.add('active');
-        } else {
-            newSection.classList.add('prepare-above');
-            newSection.offsetHeight; 
-            currentSection.classList.remove('active');
-            currentSection.classList.add('static-behind');
-            newSection.classList.remove('prepare-above');
-            newSection.classList.add('active');
-        }
-        currentIndex = newIndex;
-        updateNav(currentIndex);
-        setTimeout(() => {
-            isAnimating = false;
-            currentSection.classList.remove('static-behind');
-        }, animationDuration);
-    };
 
-    window.addEventListener('wheel', (event) => {
-        if (isAnimating) return;
-        const newIndex = event.deltaY > 0 ? (currentIndex + 1) % numSections : (currentIndex - 1 + numSections) % numSections;
-        goToSection(newIndex);
-    });
-
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const newIndex = parseInt(item.getAttribute('data-index'));
-            goToSection(newIndex);
+        sections.forEach((sec, idx) => {
+            sec.classList.remove('active', 'previous', 'upcoming');
+            if (idx < index) sec.classList.add('previous');
+            else if (idx === index) sec.classList.add('active');
+            else sec.classList.add('upcoming');
         });
-    });
 
-    const init = () => {
-        sections[0].classList.add('active');
-        updateNav(0);
-    };
-    init();
+        navItems.forEach(item => item.classList.remove('active'));
+        if (navItems[index]) navItems[index].classList.add('active');
 
-    // --- Home Section Image Hover Logic ---
-    const homeImage = document.getElementById('dynamic-home-image');
-    const socialLinks = document.querySelectorAll('.social-icons-container .social-link');
-    const imageContainer = document.querySelector('.image-container');
-    const defaultHomeImage = 'public/images/me.jpeg';
-
-    if (homeImage && socialLinks.length && imageContainer) {
-        socialLinks.forEach(link => {
-            // Blog link: gray out and show custom popup
-            if (link.classList.contains('blog-disabled')) {
-                link.classList.add('show-popup');
-            }
-            link.addEventListener('mouseover', () => {
-                imageContainer.classList.add('square-corners');
-                const newImgSrc = link.getAttribute('data-img-src');
-                if (newImgSrc) {
-                    homeImage.src = newImgSrc;
-                }
-            });
-            link.addEventListener('mouseout', () => {
-                imageContainer.classList.remove('square-corners');
-                homeImage.src = defaultHomeImage;
-            });
-        });
+        currentIndex = index;
+        setTimeout(() => { isAnimating = false; }, 800); 
     }
 
+    // --- Advanced Wheel Scroll Detection ---
+    window.addEventListener('wheel', (e) => {
+        if (isAnimating) return;
+        
+        const activeSection = sections[currentIndex];
 
-    // --- Project Accordion Logic ---
-    const projectsContainer = document.querySelector('.projects-accordion');
-
-    const updateTechIcons = () => {
-        const allCards = document.querySelectorAll('.project-accordion-card');
-        allCards.forEach(card => {
-            const techIconsContainer = card.querySelector('.tech-icons');
-            if (!techIconsContainer) return;
-            
-            const allIcons = techIconsContainer.querySelectorAll('span:not(.plus-indicator)');
-            const plusIndicator = techIconsContainer.querySelector('.plus-indicator');
-            
-            if (plusIndicator) plusIndicator.remove();
-
-            allIcons.forEach(icon => icon.style.display = 'flex');
-
-            if (!card.classList.contains('active')) {
-                if (allIcons.length > 2) {
-                    for (let i = 2; i < allIcons.length; i++) {
-                        allIcons[i].style.display = 'none';
-                    }
-                    const remainingCount = allIcons.length - 2;
-                    const newIndicator = document.createElement('span');
-                    newIndicator.className = 'plus-indicator';
-                    newIndicator.textContent = `+${remainingCount}`;
-                    techIconsContainer.appendChild(newIndicator);
+        // HORIZONTAL SCROLL INTERCEPTION
+        if (activeSection.id === 'projects') {
+            const projectsContainer = document.getElementById('projects-container');
+            if (projectsContainer && projectsContainer.contains(e.target)) {
+                
+                const isAtLeft = projectsContainer.scrollLeft === 0;
+                const isAtRight = Math.ceil(projectsContainer.scrollLeft) >= (projectsContainer.scrollWidth - projectsContainer.clientWidth - 1);
+                
+                if (e.deltaY > 0 && !isAtRight) {
+                    projectsContainer.scrollBy({ left: e.deltaY * 2, behavior: 'auto' });
+                    e.preventDefault(); 
+                    return; 
+                } else if (e.deltaY < 0 && !isAtLeft) {
+                    projectsContainer.scrollBy({ left: e.deltaY * 2, behavior: 'auto' });
+                    e.preventDefault();
+                    return; 
                 }
             }
-        });
-    };
+        }
+        
+        // Normal Vertical Section Overlap Logic
+        const atTop = activeSection.scrollTop === 0;
+        const atBottom = Math.abs(activeSection.scrollHeight - activeSection.clientHeight - activeSection.scrollTop) < 1;
+        
+        if (e.deltaY > 0 && atBottom) {
+            goToSection(Math.min(currentIndex + 1, sections.length - 1));
+        } else if (e.deltaY < 0 && atTop) {
+            goToSection(Math.max(currentIndex - 1, 0));
+        }
+    }, { passive: false }); 
 
-    const loadProjects = async () => {
+    // Nav Clicks
+    navItems.forEach((item, index) => {
+        item.addEventListener('click', () => goToSection(index));
+    });
+
+    // Mobile Swipe Detection
+    let touchStartY = 0;
+    let touchEndY = 0;
+    window.addEventListener('touchstart', e => { touchStartY = e.changedTouches[0].screenY; }, {passive: true});
+    window.addEventListener('touchend', e => {
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe(e);
+    }, {passive: true});
+
+    function handleSwipe(e) {
+        if (isAnimating) return;
+        const activeSection = sections[currentIndex];
+        
+        if (activeSection.id === 'projects') {
+            const projectsContainer = document.getElementById('projects-container');
+            if (projectsContainer && projectsContainer.contains(e.target)) return;
+        }
+
+        const atTop = activeSection.scrollTop === 0;
+        const atBottom = Math.abs(activeSection.scrollHeight - activeSection.clientHeight - activeSection.scrollTop) < 1;
+
+        if (touchStartY - touchEndY > 50 && atBottom) {
+            goToSection(Math.min(currentIndex + 1, sections.length - 1));
+        } else if (touchEndY - touchStartY > 50 && atTop) {
+            goToSection(Math.max(currentIndex - 1, 0));
+        }
+    }
+
+    // Helper to get technology icons
+    function getIconUrl(tool) {
+        const map = {
+            'python': 'python/python-original',
+            'flask': 'flask/flask-original',
+            'sickit-learn': 'scikitlearn/scikitlearn-original',
+            'latex': 'latex/latex-original',
+            'javascript': 'javascript/javascript-original',
+            'three.js': 'threejs/threejs-original',
+            'blender': 'blender/blender-original',
+            'vue': 'vuejs/vuejs-original',
+            'express': 'express/express-original',
+            'node.js': 'nodejs/nodejs-original',
+            'mongodb': 'mongodb/mongodb-original',
+            'html': 'html5/html5-original',
+            'css': 'css3/css3-original',
+            'pandas': 'pandas/pandas-original',
+            'matplotlib': 'python/python-original', 
+            'java': 'java/java-original',
+            'android studio': 'androidstudio/androidstudio-original',
+            'kotlin': 'kotlin/kotlin-original',
+            'nlp': 'python/python-original', 
+            'php': 'php/php-original',
+            'mysql': 'mysql/mysql-original'
+        };
+        const key = tool.toLowerCase().trim();
+        const iconPath = map[key] || 'html5/html5-original'; 
+        return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${iconPath}.svg`;
+    }
+
+    // --- Fetch and Load Projects ---
+    async function loadProjects() {
         try {
             const response = await fetch('public/data/projects.json');
-            //TODO UNCOMMENT FOR LOCAL TESTING
-            //!const response = await fetch('public/data/projects.json');
-            const projects = await response.json();
-
-
-            projectsContainer.innerHTML = ''; // Clear existing
+            if (!response.ok) throw new Error('Failed to load projects');
+            const projectsData = await response.json();
             
-            projects.forEach((project, index) => {
+            const projectsContainer = document.getElementById('projects-container');
+            projectsContainer.innerHTML = '';
+            
+            projectsData.forEach((project) => {
                 const card = document.createElement('div');
-                card.className = 'project-accordion-card';
-                if (index === 0) card.classList.add('active');
-                card.style.backgroundImage = `url('${project.image}')`;
+                card.className = `project-card group`;
+                card.style.background = `linear-gradient(145deg, ${project.color}33 0%, var(--color-section-bg) 100%)`;
+                card.style.border = `1px solid ${project.color}50`;
+                
+                const iconThumbnails = project.tools.map(t => 
+                    `<img src="${getIconUrl(t)}" alt="${t}" title="${t}" class="w-8 h-8 object-contain drop-shadow-md bg-white/10 rounded-md p-1 backdrop-blur-sm">`
+                ).join('');
 
-                const toolTags = project.tools.map(tool => `<span class="tool-tag">${tool}</span>`).join('');
-                const emojiSpans = project.emojis.map(emoji => `<span>${emoji}</span>`).join('');
+                const collapsedIcons = project.tools.slice(0, 3).map(t => 
+                    `<img src="${getIconUrl(t)}" alt="${t}" class="w-7 h-7 object-contain opacity-80 drop-shadow-md">`
+                ).join('');
+
+                let linksHtml = '<div class="flex flex-wrap gap-3 mt-auto">';
+                if (project.url) {
+                    linksHtml += `<a href="${project.url}" target="_blank" class="inline-flex items-center justify-center bg-white text-black font-semibold py-2 px-5 rounded-lg hover:bg-gray-200 transition-colors text-sm">View Live</a>`;
+                }
+                if (project.repository) {
+                    linksHtml += `<a href="${project.repository}" target="_blank" class="inline-flex items-center justify-center bg-gray-800 text-white border border-gray-600 font-semibold py-2 px-5 rounded-lg hover:bg-gray-700 transition-colors text-sm">View Repo</a>`;
+                }
+                if (!project.url && !project.repository) {
+                    linksHtml += `<a href="#" class="disabled inline-flex items-center justify-center bg-gray-600 text-gray-300 font-semibold py-2 px-5 rounded-lg cursor-not-allowed text-sm">Coming Soon</a>`;
+                }
+                linksHtml += '</div>';
 
                 card.innerHTML = `
-                    <div class="card-content">
-                        <div class="text-content-area">
-                            <div class="collapsed-content">
-                                <h3>${project.title}</h3>
-                            </div>
-                            <div class="expanded-content">
-                                <div class="main-text">
-                                    <h3>${project.title}</h3>
-                                    <div class="tool-list">${toolTags}</div>
-                                    <p>${project.description}</p>
-                                </div>
-                                <a href="${project.url}" class="visit-btn">Visit Project</a>
-                            </div>
+                    <div class="project-title-vertical flex flex-col items-center justify-center p-4">
+                        <div class="flex flex-col gap-4 mb-6">${collapsedIcons}</div>
+                        <span class="font-bold tracking-widest uppercase text-xl whitespace-nowrap" style="writing-mode: vertical-rl; transform: rotate(180deg); color: ${project.color}">${project.title}</span>
+                    </div>
+                    <div class="project-overlay">
+                        <div class="flex flex-wrap gap-2 mb-3">${iconThumbnails}</div>
+                        <h3 class="text-2xl md:text-3xl font-bold mb-3 leading-tight" style="color: ${project.color}">${project.title}</h3>
+                        <p class="text-gray-300 text-sm md:text-base mb-6 line-clamp-3">${project.description}</p>
+                        ${linksHtml}
+                    </div>
+                `;
+                
+                projectsContainer.appendChild(card);
+            });
+            
+            // Floating hover popup — appended to body so it escapes overflow clipping
+            document.getElementById('project-hover-popup')?.remove();
+            const popup = document.createElement('div');
+            popup.id = 'project-hover-popup';
+            popup.className = 'project-hover-popup';
+            document.body.appendChild(popup);
+
+            projectsContainer.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const overlayEl = card.querySelector('.project-overlay');
+                    if (overlayEl) popup.innerHTML = overlayEl.innerHTML;
+                    popup.style.borderColor = card.style.borderColor || 'rgba(255,255,255,0.12)';
+                    const rect = card.getBoundingClientRect();
+                    const pw = 300;
+                    let left = rect.left + rect.width / 2 - pw / 2;
+                    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+                    popup.style.left = left + 'px';
+                    popup.style.top = rect.top + 'px';
+                    popup.classList.add('visible');
+                });
+                card.addEventListener('mouseleave', () => popup.classList.remove('visible'));
+            });
+
+            // Re-bind click listener for disabled links generated dynamically
+            projectsContainer.addEventListener('click', (e) => {
+                if(e.target.classList.contains('disabled')) {
+                    e.preventDefault();
+                    showCenteredPopup('Work in progress! Come back later.');
+                }
+            });
+            
+        } catch (error) {
+            console.error(error);
+            document.getElementById('projects-container').innerHTML = '<p class="text-red-400 p-4">Failed to load projects. (Make sure you are running a local server to fetch JSON)</p>';
+        }
+    }
+
+    // --- Fetch and Load Experience Timeline ---
+    async function loadExperience() {
+        try {
+            const response = await fetch('public/data/timeline.json');
+            if (!response.ok) throw new Error('Failed to load timeline');
+            const experienceData = await response.json();
+            
+            const expContainer = document.getElementById('experience-container');
+            expContainer.innerHTML = '';
+            
+            experienceData.forEach((job) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'mb-8 ml-8 md:ml-12 relative timeline-card cursor-pointer';
+                
+                timelineItem.innerHTML = `
+                    <span class="absolute -left-[41px] md:-left-[57px] top-1.5 h-4 w-4 rounded-full border-2 border-gray-900 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></span>
+                    <div class="bg-gray-900/40 backdrop-blur-sm border border-gray-800 hover:border-blue-500/50 rounded-xl p-5 md:p-6 transition-colors shadow-lg">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-2 gap-2">
+                            <h3 class="text-xl md:text-2xl font-bold text-white">${job.title}</h3>
+                            <span class="text-blue-400 text-sm font-semibold tracking-wide bg-blue-500/10 px-3 py-1 rounded-full w-max">${job.date}</span>
                         </div>
-                        <div class="tech-icons">
-                            ${emojiSpans}
+                        <p class="text-gray-400 font-medium mb-1">${job.company}</p>
+                        
+                        <div class="timeline-body">
+                            <div>
+                                <p class="text-gray-300 text-sm md:text-base leading-relaxed border-t border-gray-800 pt-4">${job.description}</p>
+                            </div>
                         </div>
                     </div>
                 `;
-                projectsContainer.appendChild(card);
-                // Fade in the dim overlay after 1s
-                setTimeout(() => {
-                    card.classList.add('dimmed');
-                }, 1000);
-            });
 
-            setupAccordionBehavior();
-            updateTechIcons();
-
-        } catch (error) {
-            console.error('Error loading projects:', error);
-            projectsContainer.innerHTML = '<p class="text-white">Could not load projects.</p>';
-        }
-    };
-
-    const setupAccordionBehavior = () => {
-        const accordionCards = document.querySelectorAll('.project-accordion-card');
-        const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-        if (isMobile) {
-            // Mobile: Use Intersection Observer to activate card when it's centered in the viewport.
-            const observerOptions = {
-                root: document.querySelector('.accordion-scroll-container'),
-                rootMargin: '0px',
-                threshold: 0.5 // Activate when 50% of the card is visible
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        accordionCards.forEach(c => c.classList.remove('active'));
-                        entry.target.classList.add('active');
-                        updateTechIcons();
+                timelineItem.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        const isExpanded = timelineItem.classList.contains('expanded');
+                        document.querySelectorAll('.timeline-card').forEach(c => c.classList.remove('expanded'));
+                        if (!isExpanded) timelineItem.classList.add('expanded');
                     }
                 });
-            }, observerOptions);
 
-            accordionCards.forEach(card => observer.observe(card));
-
-        } else {
-            // Desktop: Click to expand functionality.
-            accordionCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    if (card.classList.contains('active')) return;
-                    accordionCards.forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                    updateTechIcons();
-                });
+                expContainer.appendChild(timelineItem);
             });
+        } catch (error) {
+            console.error(error);
+            document.getElementById('experience-container').innerHTML = '<p class="text-red-400 p-4">Failed to load timeline.</p>';
         }
-    };
-    
+    }
+
+    // Execute fetches
     loadProjects();
+    loadExperience();
 
-    // --- Logo Modal Logic (moved from index.html) ---
-    const logoThumb = document.getElementById('logo-thumb');
+    // --- Interactive Image on Home ---
+    const imageContainer = document.querySelector('.image-container');
+    if (imageContainer) {
+        imageContainer.addEventListener('mouseenter', () => { imageContainer.classList.add('square-corners'); });
+        imageContainer.addEventListener('mouseleave', () => { imageContainer.classList.remove('square-corners'); });
+    }
+
+    // --- Logo Modal ---
+    const logoBtn = document.getElementById('logo-thumb');
     const logoModal = document.getElementById('logo-modal');
-
-    if (logoThumb && logoModal) {
-        logoThumb.addEventListener('click', () => {
-            logoModal.style.display = 'flex';
+    if (logoBtn && logoModal) {
+        logoBtn.addEventListener('click', () => {
+            logoModal.classList.remove('hidden'); logoModal.classList.add('flex');
         });
-
         logoModal.addEventListener('click', (e) => {
-            // Close modal if the background is clicked, but not the image itself
             if (e.target === logoModal) {
-                logoModal.style.display = 'none';
+                logoModal.classList.add('hidden'); logoModal.classList.remove('flex');
             }
         });
     }
+
+    // --- Konami Code Easter Egg ---
+    const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let kIndex = 0;
+    document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[kIndex]) {
+            kIndex++;
+            if (kIndex === konamiCode.length) {
+                showCenteredPopup('🎮 Konami Code Activated!');
+                document.body.style.filter = 'hue-rotate(90deg)';
+                kIndex = 0;
+            }
+        } else {
+            kIndex = 0;
+        }
+    });
 });

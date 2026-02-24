@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Creative Developer",
+        "company": "Freelance",
+        "date": "2024 - Present",
+        "description": "Designing and developing modern, responsive web applications for various clients. Focusing on user-centric design, performance optimization, and implementing interactive 3D elements using WebGL/Three.js."
+    },
+    {
+        "title": "Front-End Engineer Intern",
+        "company": "Tech Solutions Inc.",
+        "date": "Summer 2023",
+        "description": "Collaborated with the design team to rebuild the company's main dashboard using React and Tailwind CSS. Improved performance scores by 30% and enhanced mobile accessibility."
+    },
+    {
+        "title": "Computer Science BSc",
+        "company": "University of Excellence",
+        "date": "2021 - 2025",
+        "description": "Honours project focused on Machine Learning UI/UX optimizations (MAUI). Active member of the University Hackathon society."
+    }
+]
