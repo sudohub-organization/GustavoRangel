@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { startDiscoMusic, stopDiscoMusic } from './audio.js';
 
 const danceBtn = document.getElementById('dance-btn');
 const modal = document.getElementById('dance-modal');
@@ -156,15 +157,15 @@ function initThreeJS() {
 danceBtn.addEventListener('click', (e) => {
     e.preventDefault();
     modal.classList.remove('hidden');
-    // Re-render Lucide icons in case they were added dynamically
     if(window.lucide) lucide.createIcons();
     initThreeJS();
+    startDiscoMusic();
 });
 
 closeBtn.addEventListener('click', () => {
     modal.classList.add('hidden');
-    // Reset dialog background when closed
     dialog.style.backgroundColor = '';
     dialog.style.boxShadow = '';
     dialog.style.borderColor = '';
+    stopDiscoMusic();
 });

@@ -17,10 +17,10 @@ lucide.createIcons();
 async function initializeGame() {
     try {
         // Fetch external JSON files
-        const projRes = await fetch('projects.json');
+        const projRes = await fetch('../public/data/projects.json');
         projectsData = await projRes.json();
 
-        const timeRes = await fetch('Timeline.json');
+        const timeRes = await fetch('../public/data/timeline.json');
         timelineData = await timeRes.json();
 
         // Populate Timeline DOM
