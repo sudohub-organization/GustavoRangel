@@ -1,0 +1,75 @@
+/* Base resets and fonts are handled by Tailwind, these are pure custom overrides */
+
+body { 
+    margin: 0; 
+    overflow: hidden; 
+    font-family: 'Inter', sans-serif; 
+    background-color: #0f172a; 
+}
+
+/* Custom scrollbar for left panel */
+.scrollbar-hide::-webkit-scrollbar { 
+    display: none; 
+}
+
+.scrollbar-hide { 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+/* Interactive Cursor States for 3D Canvas */
+#canvas-container { 
+    cursor: grab; 
+}
+
+#canvas-container:active { 
+    cursor: grabbing; 
+}
+
+/* --- MOBILE RESPONSIVE OVERRIDES --- */
+@media (max-width: 767px) {
+    /* 1. Pull the 3D Canvas into the background and make it full screen */
+    #canvas-container {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 1 !important;
+    }
+
+    /* 2. Transform the UI Panel into a floating bottom window */
+    #ui-panel {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        top: auto !important;
+        width: 100vw !important;
+        height: auto !important;
+        /* max-height leaves the top 45% of the screen completely free for 3D touching */
+        max-height: 55vh !important; 
+        z-index: 10 !important;
+        background-color: rgba(15, 23, 42, 0.92) !important;
+        border-top-left-radius: 2rem !important;
+        border-top-right-radius: 2rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding: 1.5rem !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* 3. Scale down the profile picture and text slightly to fit the new window */
+    #hero-view h1 { 
+        font-size: 2.25rem !important; 
+        margin-bottom: 0.5rem !important; 
+    }
+    #hero-view .w-32.h-32 { 
+        width: 5rem !important; 
+        height: 5rem !important; 
+        margin-bottom: 1rem !important;
+    }
+    
+    /* 4. Adjust the X close buttons to align with the new padding */
+    #btn-close, #btn-close-contact {
+        top: 1rem !important;
+        right: 1rem !important;
+    }
+}

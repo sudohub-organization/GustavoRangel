@@ -1,0 +1,26 @@
+/* Mobile Overrides */
+@media (max-width: 768px) {
+    #joystick-zone {
+        display: block;
+    }
+    
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    /* Adjust padding for smaller screens */
+    #modal-project,
+    #modal-timeline,
+    #modal-character {
+        padding: 1.5rem;
+    }
+
+    /* Resize stranded message */
+    #stranded-msg h2 {
+        font-size: 2rem;
+    }
+    #stranded-msg {
+        width: 90vw;
+        padding: 2rem;
+    }
+}

@@ -1,0 +1,129 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+header {
+    background-color: rgb(155, 76, 155);
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.back-button {
+    font-size: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    padding-left: 100px;
+}
+
+.welcome-section {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.welcome-section h1 {
+    font-size: 36px;
+}
+
+.welcome-section p {
+    font-size: 18px;
+}
+
+.topic-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.topic-container h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.topic-container p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.topic-container .button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.topic-container .button:hover {
+    background-color: #45a049;
+}
+
+footer {
+    margin-top: 50px;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    background-color: #f1f1f1;
+}
+
+/* Shine */
+@keyframes shine {
+    0% {
+        background-position: -200px;
+    }
+    100% {
+        background-position: 200px;
+    }
+}
+
+@keyframes grow {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.shine {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0.1) 75%
+    );
+    background-size: 200px 100%;
+    animation: shine 1.5s ease-in-out, grow 1s ease-in-out;
+    animation-fill-mode: forwards;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Grey scaled*/
+.grey {
+    filter: grayscale(90%);
+}
+
+.grey:hover {
+    filter: grayscale(100%);
+}

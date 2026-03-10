@@ -1,0 +1,80 @@
+{
+    "Lab": {
+        "description": "There is smoke and a burnt smell in the air... \n I wonder who is cooking ",
+        "exits": ["Hallway"],
+        "items": [],
+        "negative_impact": [],
+        "positive_impact": [],
+        "room_damage": "0",
+        "options": [
+            "activate alarms",
+            "jump out of a windows",
+            "keep working",
+            "leave the room"
+        ]
+    },
+    "Lab again": {
+        "description": "Alarm is going loud now... Probably woke up other sleepers",
+        "exits": ["Lab", "Hallway"],
+        "items": ["mask", "fire gloves", "lab coat"],
+        "negative_impact": [],
+        "positive_impact": [],
+        "room_damage": "0",
+        "options": [
+            "jump out of a windows",
+            "keep working",
+            "exit the room"
+        ]
+    },
+    "Hallway": {
+        "description": "is full of smoke in here, its hard to breathe",
+        "exits": ["Lab2", "Lobby", "BlockedLobby"],
+        "items": ["fire extinguisher", "cycling helmet", "power bank"],
+        "negative_impact": [],
+        "positive_impact": ["mask"],
+        "room_damage": "25",
+        "options": [
+            "use the elevator",
+            "use staircase",
+            "return to the lab",
+            "follow emergency exit signs"
+        ]
+    },
+    "Lobby": {
+        "description": "*there is fire everywhere* this room smells like a BBQ... oh wait... it's me!",
+        "exits": ["Hallway", "Assambly Point"],
+        "items": ["plastic boot", "soup in can", "pillow"],
+        "negative_impact": ["cycling helmet", "lab coat"],
+        "positive_impact": ["mask"],
+        "room_damage": "25%",
+        "options": [
+            "extinguish fire",
+            "return to hallway",
+            "steal from the vending machine"
+        ]
+    },
+    "BlockedLobby": {
+        "description": "This room is burning and the emergency doors are closed!",
+        "exits": ["Hallway", "Assambly Point"],
+        "items": ["plastic boot", "soup in can", "pillow"],
+        "negative_impact": ["cycling helmet", "lab coat"],
+        "positive_impact": [],
+        "room_damage": "55%",
+        "options": [
+            "return to hallway",
+            "scream for help"
+        ]
+    },
+    "Assembly Point": {
+        "description": "the space outside where everyone is safe",
+        "exits": ["Lobby"],
+        "items": ["pizza!"],
+        "negative_impact": ["plastic boot", "cycling helmet"],
+        "positive_impact": [],
+        "room_damage": "0",
+        "options": [
+            "celebrate safety",
+            "post it on Instagram"
+        ]
+    }
+}

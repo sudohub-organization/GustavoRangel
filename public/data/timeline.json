@@ -1,0 +1,26 @@
+[
+    {
+        "title": "Software Developer - internship",
+        "company": "Dev4 online",
+        "date": "2025 - Present",
+        "description": "Designing and developing enterprise software in diverse stacks including ASP.NET Core, Blazor, Vue, Python and others."
+    },
+        {
+        "title": "BSc in Software Development (Honours)",
+        "company": "Robert Gordon University",
+        "date": "2023 - 2025",
+        "description": "Honours project focused on Machine Learning UI/UX optimizations (MAUI). member of the University Hackathon"
+    },
+    {
+        "title": "College Lecturer",
+        "company": "North East Scotland College",
+        "date": "2023 - 2025",
+        "description": "Lecturing on a range of subjects including programming, databases, web development and Cyber Security. Developed and delivered engaging course materials and assessments. As well as supporting students in their learning journey and providing mentorship."
+    },
+        {
+        "title": "HND in Software Development",
+        "company": "North East Scotland College",
+        "date": "2021 - 2023",
+        "description": "Studied a range of subjects including Python, Java, Web development, Databases, Cyber Security and Networking. Completed a final project focused on developing a web application using PHP MySQL and JavaScript. Achieved a Distinction grade for the HND."
+    }
+]
