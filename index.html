@@ -16,6 +16,16 @@
     <!-- External Stylesheets -->
     <link rel="stylesheet" href="public/css/styles.css">
     <link rel="stylesheet" href="public/css/smallscreens.css">
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
 </head>
 <body>
 
@@ -54,7 +64,10 @@
             </nav>
 
             <!-- Action Buttons -->
-            <div class="flex gap-2 w-1/4 justify-end">
+            <div class="flex gap-2 w-1/4 justify-end items-center">
+                <button id="dance-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm transition-colors">
+                    Dance
+                </button>
                 <a id="have-fun-btn" href="game/index.html" class="bg-teal-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm">Have Fun</a>
             </div>
             <style>
@@ -169,7 +182,30 @@
         <img src="public/images/logo.png" onerror="this.src='https://placehold.co/400x400/1A1A1D/FFF?text=GR'" alt="Logo Large" class="max-w-full max-h-[80vh] rounded-2xl shadow-2xl cursor-default">
     </div>
 
-    <!-- External Script -->
+    <!-- Draggable Dance Modal -->
+    <div id="dance-modal" class="fixed inset-0 z-[110] hidden items-center justify-center pointer-events-none">
+        <!-- Dialog Container (pointer-events-auto makes it interactive while background remains clickable if wanted) -->
+        <div id="dance-dialog" class="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl pointer-events-auto absolute w-[320px] md:w-[450px] overflow-hidden flex flex-col" style="top: 20%; left: 50%; transform: translateX(-50%);">
+            
+            <!-- Draggable Header -->
+            <div id="dance-dialog-header" class="bg-gray-800 p-3 flex justify-between items-center cursor-move border-b border-gray-700 select-none">
+                <h3 class="text-white font-semibold text-sm m-0 flex items-center gap-2">
+                    <i data-lucide="music" class="w-4 h-4 text-pink-500"></i> Gus is Dancing!
+                </h3>
+                <button id="close-dance-btn" class="text-gray-400 hover:text-white transition-colors p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- 3D Canvas Container -->
+            <div id="dance-avatar-container" class="w-full h-[350px] md:h-[450px] relative bg-black/50"></div>
+        </div>
+    </div>
+
+    <!-- External Script (Original scripts) -->
     <script src="public/js/script.js"></script>
+
+    <!-- Three.js Setup and Modal Logic -->
+    <script type="module" src="public/js/dance.js"></script>
 </body>
 </html>

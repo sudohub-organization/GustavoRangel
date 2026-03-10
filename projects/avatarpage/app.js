@@ -41,7 +41,7 @@ let leftArm;
 let rightArm;
 const gltfLoader = new GLTFLoader();
 
-gltfLoader.load('tag2.glb', (gltf) => {
+gltfLoader.load('tag.glb', (gltf) => {
   mascot = gltf.scene;
   headBone = mascot.getObjectByName('mixamorigHead');
   
