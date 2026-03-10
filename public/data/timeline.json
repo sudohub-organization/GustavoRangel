@@ -1,20 +1,26 @@
 [
     {
-        "title": "Creative Developer",
-        "company": "Freelance",
-        "date": "2024 - Present",
-        "description": "Designing and developing modern, responsive web applications for various clients. Focusing on user-centric design, performance optimization, and implementing interactive 3D elements using WebGL/Three.js."
+        "title": "Software Developer - internship",
+        "company": "Dev4 online",
+        "date": "2025 - Present",
+        "description": "Designing and developing enterprise software in diverse stacks including ASP.NET Core, Blazor, Vue, Python and others."
+    },
+        {
+        "title": "BSc in Software Development (Honours)",
+        "company": "Robert Gordon University",
+        "date": "2023 - 2025",
+        "description": "Honours project focused on Machine Learning UI/UX optimizations (MAUI). member of the University Hackathon"
     },
     {
-        "title": "Front-End Engineer Intern",
-        "company": "Tech Solutions Inc.",
-        "date": "Summer 2023",
-        "description": "Collaborated with the design team to rebuild the company's main dashboard using React and Tailwind CSS. Improved performance scores by 30% and enhanced mobile accessibility."
+        "title": "College Lecturer",
+        "company": "North East Scotland College",
+        "date": "2023 - 2025",
+        "description": "Lecturing on a range of subjects including programming, databases, web development and Cyber Security. Developed and delivered engaging course materials and assessments. As well as supporting students in their learning journey and providing mentorship."
     },
-    {
-        "title": "Computer Science BSc",
-        "company": "University of Excellence",
-        "date": "2021 - 2025",
-        "description": "Honours project focused on Machine Learning UI/UX optimizations (MAUI). Active member of the University Hackathon society."
+        {
+        "title": "HND in Software Development",
+        "company": "North East Scotland College",
+        "date": "2021 - 2023",
+        "description": "Studied a range of subjects including Python, Java, Web development, Databases, Cyber Security and Networking. Completed a final project focused on developing a web application using PHP MySQL and JavaScript. Achieved a Distinction grade for the HND."
     }
 ]

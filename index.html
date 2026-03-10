@@ -64,27 +64,15 @@
             </nav>
 
             <!-- Action Buttons -->
-            <div class="flex gap-2 w-1/4 justify-end items-center">
-                <button id="dance-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm transition-colors">
-                    Dance
-                </button>
-                <a id="have-fun-btn" href="game/index.html" class="bg-teal-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm">Have Fun</a>
+            <div class="w-1/4 flex justify-end items-center">
+                <div class="btn-glow-wrapper">
+                    <div id="btn-glow"></div>
+                    <button id="dance-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm transition-colors">
+                        Dance
+                    </button>
+                    <a id="have-fun-btn" href="game/index.html" class="bg-teal-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm">Have Fun</a>
+                </div>
             </div>
-            <style>
-                @keyframes haveFunBlink {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0; }
-                }
-                .have-fun-blink { animation: haveFunBlink 0.3s ease-in-out 2; }
-            </style>
-            <script>
-                setInterval(() => {
-                    const btn = document.getElementById('have-fun-btn');
-                    btn.classList.remove('have-fun-blink');
-                    void btn.offsetWidth;
-                    btn.classList.add('have-fun-blink');
-                }, 10000);
-            </script>
         </div>
     </header>
 
