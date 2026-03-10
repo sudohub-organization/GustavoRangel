@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gustavo Rangel | Portfolio</title>
+    <link rel="icon" href="public/images/logo.png" type="image/png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Fonts -->
@@ -46,18 +47,22 @@
                 <ul class="flex items-center gap-5 lg:gap-8 bg-black/30 px-6 py-2 rounded-full border border-white/5">
                     <li class="nav-item active flex items-center gap-2 cursor-pointer group" data-index="0">
                         <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <i data-lucide="home" class="nav-icon hidden w-5 h-5"></i>
                         <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Home</span>
                     </li>
                     <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="1">
                         <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <i data-lucide="layout-grid" class="nav-icon hidden w-5 h-5"></i>
                         <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Projects</span>
                     </li>
                     <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="2">
                         <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <i data-lucide="briefcase" class="nav-icon hidden w-5 h-5"></i>
                         <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Experience</span>
                     </li>
                     <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="3">
                         <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
+                        <i data-lucide="mail" class="nav-icon hidden w-5 h-5"></i>
                         <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Contact</span>
                     </li>
                 </ul>
@@ -67,10 +72,14 @@
             <div class="w-1/4 flex justify-end items-center">
                 <div class="btn-glow-wrapper">
                     <div id="btn-glow"></div>
-                    <button id="dance-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm transition-colors">
-                        Dance
+                    <button id="dance-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm transition-colors flex items-center gap-1.5">
+                        <i data-lucide="music" class="w-4 h-4 shrink-0"></i>
+                        <span class="btn-label">Dance</span>
                     </button>
-                    <a id="have-fun-btn" href="game/index.html" class="bg-teal-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm">Have Fun</a>
+                    <a id="have-fun-btn" href="game/index.html" class="bg-teal-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm flex items-center gap-1.5">
+                        <i data-lucide="gamepad-2" class="w-4 h-4 shrink-0"></i>
+                        <span class="btn-label">Have Fun</span>
+                    </a>
                 </div>
             </div>
         </div>

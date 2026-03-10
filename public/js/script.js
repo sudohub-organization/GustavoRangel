@@ -309,12 +309,58 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Konami Code Easter Egg ---
     const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
     let kIndex = 0;
+    let konamiActive = false;
+    let dotInterval = null;
+    const funkyCursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cline x1='20' y1='2' x2='20' y2='38' stroke='%23ff00ff' stroke-width='2.5'/%3E%3Cline x1='2' y1='20' x2='38' y2='20' stroke='%23ff00ff' stroke-width='2.5'/%3E%3Ccircle cx='20' cy='20' r='6' fill='none' stroke='%2300ffff' stroke-width='2'/%3E%3Ccircle cx='20' cy='20' r='2' fill='%23ff00ff'/%3E%3C/svg%3E") 20 20, crosshair`;
+    const dotColors = ['#ff00ff','#00ffff','#ff6600','#ffff00','#00ff88','#ff3388','#8800ff','#00aaff'];
+
+    function spawnDot() {
+        const dot = document.createElement('div');
+        const size = 10 + Math.random() * 16;
+        const color = dotColors[Math.floor(Math.random() * dotColors.length)];
+        dot.style.cssText = `
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            border-radius: 50%;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            box-shadow: 0 0 ${size * 1.5}px ${color};
+            left: ${Math.random() * (window.innerWidth - size)}px;
+            top: ${Math.random() * (window.innerHeight - size)}px;
+            opacity: 1;
+            transition: opacity 1s ease;
+        `;
+        document.body.appendChild(dot);
+        // fade out and remove after 5 seconds
+        setTimeout(() => { dot.style.opacity = '0'; }, 4000);
+        setTimeout(() => { dot.remove(); }, 5000);
+    }
+
+    function scheduleNextDot() {
+        if (!konamiActive) return;
+        const delay = 2000 + Math.random() * 2000;
+        dotInterval = setTimeout(() => {
+            spawnDot();
+            scheduleNextDot();
+        }, delay);
+    }
+
     document.addEventListener('keydown', (e) => {
         if (e.key === konamiCode[kIndex]) {
             kIndex++;
             if (kIndex === konamiCode.length) {
-                showCenteredPopup('🎮 Konami Code Activated!');
-                document.body.style.filter = 'hue-rotate(90deg)';
+                konamiActive = !konamiActive;
+                if (konamiActive) {
+                    showCenteredPopup('🎮 Funky mode ON!');
+                    document.body.style.cursor = funkyCursor;
+                    scheduleNextDot();
+                } else {
+                    showCenteredPopup('🎮 Funky mode OFF!');
+                    document.body.style.cursor = '';
+                    clearTimeout(dotInterval);
+                }
                 kIndex = 0;
             }
         } else {
