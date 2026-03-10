@@ -311,31 +311,117 @@ document.addEventListener('DOMContentLoaded', () => {
     let kIndex = 0;
     let konamiActive = false;
     let dotInterval = null;
+    let dotScore = 0;
     const funkyCursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cline x1='20' y1='2' x2='20' y2='38' stroke='%23ff00ff' stroke-width='2.5'/%3E%3Cline x1='2' y1='20' x2='38' y2='20' stroke='%23ff00ff' stroke-width='2.5'/%3E%3Ccircle cx='20' cy='20' r='6' fill='none' stroke='%2300ffff' stroke-width='2'/%3E%3Ccircle cx='20' cy='20' r='2' fill='%23ff00ff'/%3E%3C/svg%3E") 20 20, crosshair`;
     const dotColors = ['#ff00ff','#00ffff','#ff6600','#ffff00','#00ff88','#ff3388','#8800ff','#00aaff'];
 
+    // HUD overlay element (score + exit hint)
+    let konamiHUD = null;
+    // Blocking overlay to intercept all page clicks
+    let konamiOverlay = null;
+
+    function createKonamiUI() {
+        // Full-screen transparent overlay — blocks all underlying interactions
+        konamiOverlay = document.createElement('div');
+        konamiOverlay.id = 'konami-overlay';
+        konamiOverlay.style.cssText = `
+            position: fixed; inset: 0;
+            z-index: 9990;
+            background: transparent;
+            cursor: inherit;
+        `;
+        document.body.appendChild(konamiOverlay);
+
+        // HUD pinned to top-left
+        konamiHUD = document.createElement('div');
+        konamiHUD.id = 'konami-hud';
+        konamiHUD.style.cssText = `
+            position: fixed;
+            background: rgba(0, 0, 0, 0.85);
+            top: 1rem; left: 1rem;
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            pointer-events: none;
+            font-family: monospace;
+        `;
+        konamiHUD.innerHTML = `
+            <div id="konami-score" style="
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: #ff00ff;
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+                letter-spacing: 0.05em;
+            ">💥 Score: 0</div>
+            <div style="
+                font-size: 0.65rem;
+                color: rgba(255,255,255,0.45);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            ">↑↑↓↓←→←→BA to exit</div>
+        `;
+        document.body.appendChild(konamiHUD);
+    }
+
+    function destroyKonamiUI() {
+        konamiOverlay?.remove(); konamiOverlay = null;
+        konamiHUD?.remove();    konamiHUD = null;
+        // Remove any lingering dots
+        document.querySelectorAll('.konami-dot').forEach(d => d.remove());
+        dotScore = 0;
+    }
+
+    function updateScore() {
+        const scoreEl = document.getElementById('konami-score');
+        if (scoreEl) scoreEl.textContent = `💥 Score: ${dotScore}`;
+    }
+
     function spawnDot() {
         const dot = document.createElement('div');
-        const size = 10 + Math.random() * 16;
+        dot.className = 'konami-dot';
+        const size = 14 + Math.random() * 22;
         const color = dotColors[Math.floor(Math.random() * dotColors.length)];
+        // Keep dots away from top-left HUD area
+        const safeLeft = 160 + Math.random() * (window.innerWidth - size - 160);
+        const safeTop  = 20  + Math.random() * (window.innerHeight - size - 20);
         dot.style.cssText = `
             position: fixed;
-            z-index: 9999;
-            pointer-events: none;
+            z-index: 9995;
             border-radius: 50%;
             width: ${size}px;
             height: ${size}px;
             background: ${color};
-            box-shadow: 0 0 ${size * 1.5}px ${color};
-            left: ${Math.random() * (window.innerWidth - size)}px;
-            top: ${Math.random() * (window.innerHeight - size)}px;
+            box-shadow: 0 0 ${size * 1.5}px ${color}, 0 0 ${size * 0.5}px #fff inset;
+            left: ${safeLeft}px;
+            top: ${safeTop}px;
             opacity: 1;
-            transition: opacity 1s ease;
+            cursor: none;
+            transition: transform 0.1s ease, opacity 0.8s ease;
+            transform: scale(1);
         `;
         document.body.appendChild(dot);
-        // fade out and remove after 5 seconds
-        setTimeout(() => { dot.style.opacity = '0'; }, 4000);
-        setTimeout(() => { dot.remove(); }, 5000);
+
+        // Click-to-destroy
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dotScore++;
+            updateScore();
+            // Burst animation then remove
+            dot.style.transform = 'scale(2)';
+            dot.style.opacity = '0';
+            setTimeout(() => dot.remove(), 300);
+        });
+
+        // Natural fade-out after 5 seconds if not clicked
+        const autoFadeTimer  = setTimeout(() => { dot.style.opacity = '0'; }, 4200);
+        const autoRemoveTimer = setTimeout(() => { dot.remove(); }, 5000);
+
+        // If clicked early, clear the auto timers
+        dot.addEventListener('click', () => {
+            clearTimeout(autoFadeTimer);
+            clearTimeout(autoRemoveTimer);
+        }, { once: true });
     }
 
     function scheduleNextDot() {
@@ -353,13 +439,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (kIndex === konamiCode.length) {
                 konamiActive = !konamiActive;
                 if (konamiActive) {
-                    showCenteredPopup('🎮 Funky mode ON!');
+                    showCenteredPopup('🎮 Funky mode ON! Pop the dots!');
                     document.body.style.cursor = funkyCursor;
+                    createKonamiUI();
                     scheduleNextDot();
                 } else {
-                    showCenteredPopup('🎮 Funky mode OFF!');
+                    showCenteredPopup(`🎮 Funky mode OFF! Final score: ${dotScore}`);
                     document.body.style.cursor = '';
                     clearTimeout(dotInterval);
+                    destroyKonamiUI();
                 }
                 kIndex = 0;
             }
