@@ -37,7 +37,7 @@
             <!-- Logo Section -->
             <div class="flex items-center gap-3 w-1/4">
                 <button id="logo-thumb" class="rounded-lg overflow-hidden hover:border-pink-500 transition-colors shrink-0">
-                    <img src="public/images/logo-color.png" onerror="this.src='https://placehold.co/40x40/1A1A1D/FFF?text=GR'" alt="Logo" class="h-14 w-auto">
+                    <img src="public/images" onerror="this.src='https://placehold.co/40x40/1A1A1D/FFF?text=GR'" alt="Logo" class="h-14 w-auto">
                 </button>
                 <a href="#" class="text-xl font-bold tracking-tight text-white hover:text-pink-500 transition-colors hidden lg:block whitespace-nowrap">Gustavo Rangel</a>
             </div>
@@ -98,10 +98,12 @@
                         </p>
                         <div class="social-icons-container flex space-x-4 pt-2">
                             <a href="https://www.linkedin.com/in/gustavo-rangel-professional/" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
-                                <i data-lucide="linkedin" class="w-6 h-6 text-white group-hover:scale-110 transition-transform"></i>
+                                <svg viewBox="0 0 24 24" aria-label="LinkedIn" class="w-6 h-6 text-white group-hover:scale-110 transition-transform" fill="currentColor" role="img">
+                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.266 2.37 4.266 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9H7.12v11.452z"/>
+                                </svg>
                             </a>
                             <a href="https://www.youtube.com/@GustavoElProfe" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
-                                <i data-lucide="youtube" class="w-6 h-6 text-white group-hover:scale-110 transition-transform"></i>
+                                <img src="https://cdn.simpleicons.org/youtube/white" alt="YouTube" class="w-6 h-6 group-hover:scale-110 transition-transform">
                             </a>
                             <a href="https://linktr.ee/defonotgus" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
                                 <i data-lucide="link" class="w-6 h-6 text-white group-hover:scale-110 transition-transform"></i>
@@ -173,6 +175,18 @@
             </div>
         </section>
     </main>
+
+    <div class="floating-container">
+        <a href="https://linktr.ee/defonotgus" target="_blank" class="bubble-link" style="background-color: #43E660;" title="Linktree">
+            <img src="https://cdn.simpleicons.org/linktree/white" alt="Linktree">
+        </a>
+        <a href="https://github.com/DefoNotGus" target="_blank" class="bubble-link" style="background-color: #333333;" title="GitHub">
+            <img src="https://cdn.simpleicons.org/github/white" alt="GitHub">
+        </a>
+        <a href="https://www.buymeacoffee.com/defonotgus" target="_blank" class="bubble-link" style="background-color: #FFDD00;" title="Buy me a coffee">
+            <img src="https://cdn.simpleicons.org/buymeacoffee/000000" alt="Buy Me A Coffee">
+        </a>
+    </div>
     
     <!-- Modals -->
     <div id="logo-modal" class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm cursor-pointer transition-opacity">
