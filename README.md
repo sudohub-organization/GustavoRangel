@@ -2,7 +2,7 @@
 
 A personal portfolio website built to showcase projects, experience, and a bit of personality. It's a fully static, single-page app with smooth section transitions, a 3D interactive avatar, and a few surprises hidden inside.
 
-🌐 **Live site:** [gustavoelprofe.web.app](https://gustavoelprofe.web.app)
+🌐 **Live site:** [gustavorangel.sudohub.org](https://gustavorangel.sudohub.org)
 
 ---
 
