@@ -1,97 +1,98 @@
-# Hey, I'm Gustavo 👋
+# Gustavo Rangel — Portfolio Site
 
-I'm a **Creative Developer & Designer** who genuinely loves building things — whether that's a slick web experience, a machine learning model, or a 3D interactive avatar that dances when you ask it to (yes, really, check the site).
+A personal portfolio website built to showcase projects, experience, and a bit of personality. It's a fully static, single-page app with smooth section transitions, a 3D interactive avatar, and a few surprises hidden inside.
 
-I'm currently a **Software Developer Intern at Dev4 Online**, where I work across a bunch of stacks — ASP.NET Core, Blazor, Vue, Python… you name it. Before that I spent a couple of years **lecturing at North East Scotland College**, teaching programming, web dev, databases, and Cyber Security. Teaching people to code is genuinely one of my favourite things.
-
-I hold a **BSc (Hons) in Software Development** from Robert Gordon University, where my honours project — MAUI — used machine learning to suggest optimal UI component sizes. And before that, an **HND in Software Development** (with a Distinction 🎉) from NESCol.
+🌐 **Live site:** [gustavoelprofe.web.app](https://gustavoelprofe.web.app)
 
 ---
 
-## 🛠️ What's in this repo
+## ✨ Features
 
-This is the source for my personal portfolio site. It's built with:
-
-- **Tailwind CSS** — for fast, clean styling
-- **Three.js** — because flat pages are boring
-- **Vanilla JS** — no framework needed for the core logic
-- **Formspree** — for the contact form
-
-The site has four sections: Home, Projects, Experience, and Contact. Projects and the experience timeline are loaded from JSON files so they're easy to update without touching the HTML.
-
-Oh, and there's a hidden Konami code easter egg. 👾
+- **Single-page navigation** — four sections (Home, Projects, Experience, Contact) with animated dot-based nav
+- **Interactive 3D avatar** — click *Dance* to open a draggable modal with a Three.js-powered dancing character
+- **Accordion project cards** — each card expands with a live 3D shape, project description, tools used, and links to the live demo or repo
+- **Experience timeline** — scrollable vertical timeline pulled from a JSON file
+- **Contact form** — powered by Formspree, no backend needed
+- **Floating social bubbles** — quick links to GitHub, Linktree, and Buy Me a Coffee
+- **Konami code easter egg** — ↑ ↑ ↓ ↓ ← → ← → B A 👾
+- **Responsive design** — works on mobile and desktop, with a separate small-screen stylesheet
 
 ---
 
-## 🚀 Projects featured
+## 🗂️ Project structure
 
-| Project | What it is |
-|---|---|
-| **Honours Project (MAUI)** | ML system that analyses requirements and suggests optimal UI component sizes |
-| **3D Modelling** | A Three.js 3D avatar integrated into a login page |
-| **TinyTales** | Full-stack MEVN platform for writing and sharing short stories |
-| **RGU Hack 2025** | 24-hour hackathon project, concept to working product |
-| **Data Visualization** | Interactive charts exploring education levels and addiction |
-| **Android App** | Zodiac-based insights app built in Java/Kotlin |
-| **NLP Analysis** | Sentiment analysis on IMDb movie reviews |
-| **PHP Project** | My early deep-dive into server-side scripting |
-
----
-
-## 💻 Running it locally
-
-The site uses `fetch()` to load JSON data, so you **need** to serve it from a local server — opening the HTML file directly won't work.
-
-```bash
-# Option 1 — Node.js
-npm install -g serve
-serve .
-
-# Option 2 — Python
-python -m http.server 5000
-
-# Option 3 — Firebase (if you have the CLI)
-firebase serve
+```
+├── index.html                  # Main entry point
+├── public/
+│   ├── css/
+│   │   ├── styles.css          # Core styles & animations
+│   │   ├── components.css      # Reusable UI component styles
+│   │   └── smallscreens.css    # Mobile/small-screen overrides
+│   ├── js/
+│   │   ├── script.js           # Navigation, project cards, timeline logic
+│   │   ├── dance.js            # Three.js avatar setup & dance modal
+│   │   └── audio.js            # Audio handling
+│   ├── data/
+│   │   ├── projects.json       # Project card content & 3D shape config
+│   │   └── timeline.json       # Experience timeline entries
+│   └── images/                 # Photos, logo, and other assets
+├── game/                       # Mini browser game (linked from header)
+├── honours/                    # Honours project showcase page
+└── projects/                   # Individual project sub-pages
 ```
 
-Then open the URL shown in your terminal (usually `http://localhost:3000` for `serve` and `http://localhost:5000` for Python/Firebase).
+---
+
+## 💻 Running locally
+
+The site uses `fetch()` to load JSON data, so it needs to be served — opening `index.html` directly via `file://` won't work.
+
+```bash
+# Node.js
+npm install -g serve
+serve .
+# → http://localhost:3000
+
+# Python
+python -m http.server 5000
+# → http://localhost:5000
+
+# Firebase CLI
+firebase serve
+# → http://localhost:5000
+```
 
 ---
 
 ## 📦 Deploying
 
-The whole site is static, so it'll work on any host.
+The site is fully static and works on any host.
 
-**Firebase (what I use):**
+**Firebase Hosting:**
 ```bash
 npm install -g firebase-tools
 firebase login
-firebase init hosting   # set the root as the public directory
+firebase init hosting   # use the repo root as the public directory
 firebase deploy
 ```
 
-**Any other static host (Netlify, Vercel, GitHub Pages):**
-Just upload the repository root. Make sure asset paths resolve correctly.
+**Netlify / Vercel / GitHub Pages:**
+Upload the repository root. No build step required — just make sure asset paths resolve from the root.
 
 ---
 
-## ✏️ Customising
+## ✏️ Updating content
 
-- **Projects** → `public/data/projects.json`
-- **Experience timeline** → `public/data/timeline.json`
-- **Styles** → `public/css/styles.css`
-- **Core logic** → `public/js/script.js`
-- **3D dance avatar** → `public/js/dance.js`
+All content is data-driven and easy to change without touching HTML or JS:
 
----
+| What | File |
+|---|---|
+| Add / edit projects | `public/data/projects.json` |
+| Add / edit experience entries | `public/data/timeline.json` |
+| Change colours, fonts, layout | `public/css/styles.css` |
+| Change mobile layout | `public/css/smallscreens.css` |
 
-## 📬 Find me elsewhere
-
-- 🔗 [LinkedIn](https://www.linkedin.com/in/gustavo-rangel-professional/)
-- 📺 [YouTube — @GustavoElProfe](https://www.youtube.com/@GustavoElProfe)
-- 🌿 [Linktree](https://linktr.ee/defonotgus)
-- 🐙 [GitHub — @DefoNotGus](https://github.com/DefoNotGus)
-- ☕ [Buy me a coffee](https://www.buymeacoffee.com/defonotgus)
+Each project entry supports a title, description, URL, GitHub repo link, emoji list, tech tools, colour accent, 3D shape type, and size scale — tweak away.
 
 ---
 
