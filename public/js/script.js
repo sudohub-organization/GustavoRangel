@@ -206,6 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let activeCard = null;
 
+            // Mobile backdrop overlay
+            let mobileBackdrop = document.getElementById('project-mobile-backdrop');
+            if (!mobileBackdrop) {
+                mobileBackdrop = document.createElement('div');
+                mobileBackdrop.id = 'project-mobile-backdrop';
+                mobileBackdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;display:none;';
+                document.body.appendChild(mobileBackdrop);
+                mobileBackdrop.addEventListener('click', () => closePopup());
+            }
+
             function openPopup(card) {
                 const overlayEl = card.querySelector('.project-overlay');
                 if (overlayEl) {
@@ -213,18 +223,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 popup.style.borderColor = card.style.borderColor || 'rgba(255,255,255,0.12)';
                 const rect = card.getBoundingClientRect();
-                const pw = 300;
-                let left = rect.left + rect.width / 2 - pw / 2;
-                left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
-                popup.style.left = left + 'px';
-                popup.style.top = rect.top + 'px';
+                const isMobile = window.innerWidth <= 768;
+                const pw = isMobile ? 260 : 300;
+
+                if (isMobile) {
+                    // Center popup on screen as a modal overlay
+                    popup.classList.add('mobile-modal');
+                    popup.style.left = '';
+                    popup.style.top = '';
+                } else {
+                    popup.classList.remove('mobile-modal');
+                    let left = rect.left + rect.width / 2 - pw / 2;
+                    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+                    popup.style.left = left + 'px';
+
+                    // Check if popup would clip above viewport; if so, place below the card
+                    const popupHeight = popup.offsetHeight || 280;
+                    if (rect.top - popupHeight - 12 < 0) {
+                        popup.style.top = (rect.bottom + 12) + 'px';
+                        popup.classList.add('below');
+                    } else {
+                        popup.style.top = rect.top + 'px';
+                        popup.classList.remove('below');
+                    }
+                }
+
                 popup.classList.add('visible');
                 activeCard = card;
                 card.classList.add('active');
+
+                // Show backdrop on mobile
+                if (isMobile) {
+                    mobileBackdrop.style.display = 'block';
+                }
             }
 
             function closePopup() {
                 popup.classList.remove('visible');
+                popup.classList.remove('mobile-modal');
+                popup.classList.remove('below');
+                mobileBackdrop.style.display = 'none';
                 if (activeCard) {
                     activeCard.classList.remove('active');
                     activeCard = null;

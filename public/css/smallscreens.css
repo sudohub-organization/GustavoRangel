@@ -92,10 +92,24 @@
     .project-card { 
         width: 90px; 
     }
-    .project-hover-popup { 
-        width: 260px;
+    /* Mobile: popup becomes a centered modal overlay */
+    .project-hover-popup.mobile-modal {
+        width: calc(100% - 2rem);
+        max-width: 320px;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0;
+        pointer-events: none;
         padding: 1.25rem;
     }
+    .project-hover-popup.mobile-modal.visible {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+
 
     /* --- Experience section: wider panels, smaller content, bigger circles --- */
     #experience-container {

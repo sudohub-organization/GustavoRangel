@@ -184,6 +184,14 @@ main { position: relative; width: 100%; height: 100dvh; overflow: hidden; }
     transform: translateY(calc(-100% - 12px));
 }
 
+/* When popup is placed below the card instead of above */
+.project-hover-popup.below {
+    transform: translateY(0);
+}
+.project-hover-popup.below.visible {
+    transform: translateY(0);
+}
+
 /* Active card state (selected) */
 .project-card.active {
     filter: grayscale(0%) brightness(1);
