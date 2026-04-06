@@ -197,27 +197,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 projectsContainer.appendChild(card);
             });
             
-            // Floating hover popup — appended to body so it escapes overflow clipping
+            // Floating click popup — appended to body so it escapes overflow clipping
             document.getElementById('project-hover-popup')?.remove();
             const popup = document.createElement('div');
             popup.id = 'project-hover-popup';
             popup.className = 'project-hover-popup';
             document.body.appendChild(popup);
 
+            let activeCard = null;
+
+            function openPopup(card) {
+                const overlayEl = card.querySelector('.project-overlay');
+                if (overlayEl) {
+                    popup.innerHTML = '<button class="project-popup-close" aria-label="Close">&times;</button>' + overlayEl.innerHTML;
+                }
+                popup.style.borderColor = card.style.borderColor || 'rgba(255,255,255,0.12)';
+                const rect = card.getBoundingClientRect();
+                const pw = 300;
+                let left = rect.left + rect.width / 2 - pw / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+                popup.style.left = left + 'px';
+                popup.style.top = rect.top + 'px';
+                popup.classList.add('visible');
+                activeCard = card;
+                card.classList.add('active');
+            }
+
+            function closePopup() {
+                popup.classList.remove('visible');
+                if (activeCard) {
+                    activeCard.classList.remove('active');
+                    activeCard = null;
+                }
+            }
+
             projectsContainer.querySelectorAll('.project-card').forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    const overlayEl = card.querySelector('.project-overlay');
-                    if (overlayEl) popup.innerHTML = overlayEl.innerHTML;
-                    popup.style.borderColor = card.style.borderColor || 'rgba(255,255,255,0.12)';
-                    const rect = card.getBoundingClientRect();
-                    const pw = 300;
-                    let left = rect.left + rect.width / 2 - pw / 2;
-                    left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
-                    popup.style.left = left + 'px';
-                    popup.style.top = rect.top + 'px';
-                    popup.classList.add('visible');
+                card.addEventListener('click', (e) => {
+                    // Don't close popup when clicking links inside the popup
+                    if (e.target.closest('.project-hover-popup')) return;
+                    e.stopPropagation();
+                    if (activeCard === card) {
+                        closePopup();
+                    } else {
+                        closePopup();
+                        openPopup(card);
+                    }
                 });
-                card.addEventListener('mouseleave', () => popup.classList.remove('visible'));
+            });
+
+            // Close popup when clicking the close button
+            popup.addEventListener('click', (e) => {
+                if (e.target.classList.contains('project-popup-close')) {
+                    closePopup();
+                }
+            });
+
+            // Close popup when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.project-card') && !e.target.closest('.project-hover-popup')) {
+                    closePopup();
+                }
             });
 
             // Re-bind click listener for disabled links generated dynamically
