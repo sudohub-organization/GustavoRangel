@@ -1,561 +1,139 @@
-// ==========================================
-// GLOBAL STATE & DATA
-// ==========================================
-let projectsData = [];
-let timelineData = [];
+const PLAY_BOUNDS = {
+    x: 12,
+    y: 6.5
+};
 
-let activeModal = null;
-let isGamePaused = false;
-let isStranded = false;
+const PLAYER_RADIUS = 1.15;
+const OBSTACLE_RADIUS = 1.75;
+const OBSTACLE_START_Z = -95;
+const OBSTACLE_CLEAR_Z = 12;
+const MAX_ACTIVE_OBSTACLES = 4;
+const MIN_OBSTACLE_SPAWN_GAP = 1;
+const MAX_OBSTACLE_SPAWN_GAP = 2;
+const BASE_OBSTACLE_SPEED = 20;
+const SPEED_GAIN_PER_SECOND = 0.56;
+const PLAYER_ACCELERATION = 38;
+const PLAYER_FRICTION = 0.86;
+const PLAYER_MAX_SPEED = 16;
+const TIMER_UPDATE_INTERVAL = 0.15;
+const SHIP_MODEL_ROTATION = { x: Math.PI / 2, y: Math.PI, z: Math.PI };
+const FALLBACK_SHIP_ROTATION = { x: -Math.PI / 2, y: Math.PI, z: Math.PI };
 
-// Initialize Icons
+const keys = { w: false, a: false, s: false, d: false };
+const gameState = {
+    isRunning: true,
+    elapsed: 0,
+    nextTimerPaint: 0,
+    obstacles: [],
+    nextObstacleAt: 0,
+    lastObstaclePosition: new THREE.Vector2(0, 0),
+    contactLoaded: false
+};
+
+let joystickVector = new THREE.Vector2(0, 0);
+
 lucide.createIcons();
+window.addEventListener('load', initGame);
 
-// ==========================================
-// DATA FETCHING & INITIALIZATION
-// ==========================================
-async function initializeGame() {
-    try {
-        // Fetch external JSON files
-        const projRes = await fetch('../public/data/projects.json');
-        projectsData = await projRes.json();
-
-        const timeRes = await fetch('../public/data/timeline.json');
-        timelineData = await timeRes.json();
-
-        // Populate Timeline DOM
-        populateTimeline();
-
-        // Initialize 3D Scene
-        init3DScene();
-    } catch (error) {
-        console.error("Failed to load JSON data. Ensure you are running a local server.", error);
-    }
-}
-
-function populateTimeline() {
-    const timelineContainer = document.getElementById('timeline-content');
-    timelineContainer.innerHTML = ''; // clear initial
-    timelineData.forEach(item => {
-        timelineContainer.innerHTML += `
-            <div class="relative">
-                <div class="absolute w-4 h-4 bg-cyan-400 rounded-full -left-[32px] top-1.5 shadow-[0_0_10px_#22d3ee]"></div>
-                <span class="text-sm font-bold text-cyan-400 tracking-wider">${item.year}</span>
-                <h3 class="text-2xl font-bold text-white mt-1 mb-2">${item.title}</h3>
-                <p class="text-slate-400 text-base">${item.desc}</p>
-            </div>
-        `;
-    });
-}
-
-// Start sequence when page loads
-window.addEventListener('load', initializeGame);
-
-// ==========================================
-// UI LOGIC (Modals)
-// ==========================================
-function openModal(id) {
-    closeModals();
-    document.body.classList.remove('game-active'); // Re-enable default mouse cursor
-    document.getElementById('modal-backdrop').classList.remove('hidden');
-    document.getElementById(id).classList.remove('hidden');
-    activeModal = id;
-    isGamePaused = true; // Stop movement when reading
-}
-
-function closeModals() {
-    document.getElementById('modal-backdrop').classList.add('hidden');
-    document.querySelectorAll('.glass-panel').forEach(el => {
-        if (el.id.startsWith('modal-')) el.classList.add('hidden');
-    });
-    if (!isStranded) document.body.classList.add('game-active'); // Bring back crosshair if not stranded
-    activeModal = null;
-    setTimeout(() => isGamePaused = false, 100); // Slight delay to prevent immediate re-trigger
-}
-
-function openProject(index) {
-    const data = projectsData[index];
-    
-    document.getElementById('proj-title').innerText = data.title;
-    document.getElementById('proj-desc').innerText = data.description;
-    
-    // Parse Emojis (handle case if emojis array is missing)
-    if(data.emojis && data.emojis.length > 0) {
-        document.getElementById('proj-emoji').innerText = data.emojis.join(' ');
-    } else {
-        document.getElementById('proj-emoji').innerText = "🚀";
-    }
-    
-    // Populate Tools
-    const toolsContainer = document.getElementById('proj-tools');
-    toolsContainer.innerHTML = '';
-    if (data.tools) {
-        data.tools.forEach(tool => {
-            toolsContainer.innerHTML += `<span class="px-3 py-1 bg-slate-800 text-sm font-medium rounded-full border border-slate-700">${tool}</span>`;
-        });
-    }
-
-    // Populate Links (URL / Repository)
-    const linksContainer = document.getElementById('proj-links');
-    linksContainer.innerHTML = '';
-    
-    if (data.url) {
-        linksContainer.innerHTML += `<a href="${data.url}" target="_blank" class="inline-flex items-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-pink-500 transition-colors">Visit Project <i data-lucide="external-link" class="w-4 h-4"></i></a>`;
-    }
-    if (data.repository) {
-        linksContainer.innerHTML += `<a href="${data.repository}" target="_blank" class="inline-flex items-center gap-2 bg-slate-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-slate-600 transition-colors border border-slate-600">Repository <i data-lucide="github" class="w-4 h-4"></i></a>`;
-    }
-    
-    // Re-initialize dynamic icons inside links
-    lucide.createIcons({ nodes: [linksContainer] });
-    
-    openModal('modal-project');
-}
-
-// ==========================================
-// THREE.JS SCENE LOGIC
-// ==========================================
-function init3DScene() {
+function initGame() {
     const container = document.getElementById('canvas-container');
+    const timerValue = document.getElementById('timer-value');
+    const speedValue = document.getElementById('speed-value');
+    const lossBackdrop = document.getElementById('loss-backdrop');
+    const lossModal = document.getElementById('loss-modal');
+    const finalScore = document.getElementById('final-score');
+    const contactContainer = document.getElementById('score-contact-container');
+
+    document.getElementById('dismiss-instructions')?.addEventListener('click', () => {
+        document.getElementById('instructions')?.classList.add('hidden');
+    });
+
+    document.getElementById('restart-game')?.addEventListener('click', () => {
+        window.location.reload();
+    });
+
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x020617, 0.015);
+    scene.background = new THREE.Color(0x020617);
+    scene.fog = new THREE.FogExp2(0x020617, 0.018);
 
-    // Camera setup (Top-down tilted)
-    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-    const cameraOffset = new THREE.Vector3(0, 15, 20); // Height and distance behind ship
+    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 220);
+    camera.position.set(0, 5, 24);
+    camera.lookAt(0, -13, -45);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setClearColor(0x020617, 1);
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     scene.add(ambientLight);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(10, 20, 10);
-    scene.add(dirLight);
 
-    // --- Space Background (Stars) ---
-    const starsGeometry = new THREE.BufferGeometry();
-    const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true, opacity: 0.8 });
-    const starsVertices = [];
-    for (let i = 0; i < 2000; i++) {
-        starsVertices.push(
-            (Math.random() - 0.5) * 200,
-            (Math.random() - 0.5) * 200,
-            (Math.random() - 0.5) * 200
-        );
-    }
-    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
-    const starField = new THREE.Points(starsGeometry, starsMaterial);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    keyLight.position.set(8, 12, 12);
+    scene.add(keyLight);
+
+    const rimLight = new THREE.PointLight(0xf472b6, 2.3, 26);
+    rimLight.position.set(0, -4, 6);
+    scene.add(rimLight);
+
+    const starField = createStarField();
     scene.add(starField);
 
-    // --- The Player (Spaceship GLB) ---
-    const shipGroup = new THREE.Group();
-    shipGroup.position.set(0, 0, 30); // Start behind the other objects
+    const tunnel = createLaneTunnel();
+    scene.add(tunnel);
+
+    const shipGroup = createPlayerShip();
     scene.add(shipGroup);
 
-    const gltfLoader = new THREE.GLTFLoader();
-    gltfLoader.load('spaceship.glb', (gltf) => {
-        const model = gltf.scene;
-        model.rotation.x = Math.PI / 2; // Point forward
-        shipGroup.add(model);
-    });
-    
-    const engineLight = new THREE.PointLight(0xf472b6, 2, 5);
-    engineLight.position.set(0, 0, 1.5);
-    shipGroup.add(engineLight);
+    loadShipModel(shipGroup);
+    setupKeyboardControls();
+    setupJoystick();
 
-    const interactables = []; // Interactive items for raycaster
-
-    // Helper to create text labels
-    function createLabelSprite(text) {
-        const canvas = document.createElement('canvas');
-        canvas.width = 512;
-        canvas.height = 128;
-        const ctx = canvas.getContext('2d');
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.font = 'bold 48px Inter, sans-serif';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        ctx.shadowBlur = 6;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 2;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText(text, 256, 64);
-        const texture = new THREE.CanvasTexture(canvas);
-        const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
-        const sprite = new THREE.Sprite(spriteMaterial);
-        sprite.scale.set(5, 1.25, 1);
-        sprite.renderOrder = 999;
-        return sprite;
-    }
-
-    // --- Character (Center Star) ---
-    const characterGroup = new THREE.Group();
-    characterGroup.position.set(0, 0, 0);
-    scene.add(characterGroup);
-
-    const starGeo = new THREE.IcosahedronGeometry(4, 1);
-    const starMat = new THREE.MeshBasicMaterial({ color: 0xfacc15, wireframe: true });
-    const star = new THREE.Mesh(starGeo, starMat);
-    
-    const coreGeo = new THREE.IcosahedronGeometry(3.5, 2);
-    const coreMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
-    const core = new THREE.Mesh(coreGeo, coreMat);
-    star.add(core);
-
-    const starLight = new THREE.PointLight(0xfacc15, 2, 50);
-    characterGroup.add(starLight);
-
-    star.userData = { isPortal: true, target: 'modal-character' };
-    characterGroup.add(star);
-    interactables.push(star);
-
-    const hitGeoChar = new THREE.SphereGeometry(5, 16, 16);
-    const hitMatChar = new THREE.MeshBasicMaterial({ visible: false });
-    const hitBoxChar = new THREE.Mesh(hitGeoChar, hitMatChar);
-    hitBoxChar.userData = { isPortal: true, target: 'modal-character' };
-    characterGroup.add(hitBoxChar);
-    interactables.push(hitBoxChar);
-
-    const charLabel = createLabelSprite("CHARACTER");
-    charLabel.position.y = 6;
-    charLabel.userData = { isPortal: true, target: 'modal-character' };
-    characterGroup.add(charLabel);
-    interactables.push(charLabel);
-
-
-    // --- My Projects (Right Hub) ---
-    const projectsHubGroup = new THREE.Group();
-    projectsHubGroup.position.set(30, 0, 0);
-    scene.add(projectsHubGroup);
-
-    const planetGeo = new THREE.SphereGeometry(4, 32, 32);
-    const planetMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.8, emissive: 0x0f172a });
-    const planet = new THREE.Mesh(planetGeo, planetMat);
-    projectsHubGroup.add(planet);
-
-    const planetLabel = createLabelSprite("MY PROJECTS");
-    planetLabel.position.y = 6;
-    projectsHubGroup.add(planetLabel);
-
-    const ringGeo = new THREE.RingGeometry(6, 6.1, 64);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x334155, side: THREE.DoubleSide, transparent: true, opacity: 0.5 });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = Math.PI / 2;
-    projectsHubGroup.add(ring);
-
-    // --- Orbiting Projects (Dynamically Generated from JSON) ---
-    const orbitGroup = new THREE.Group();
-    projectsHubGroup.add(orbitGroup);
-
-    projectsData.forEach((project, i) => {
-        const angle = (i / projectsData.length) * Math.PI * 2;
-        const radius = 8;
-        const sz = project.size || 1;
-        
-        let geo;
-        switch (project.shape) {
-            case 'pyramid': geo = new THREE.ConeGeometry(sz, sz * 2, 4); break;
-            case 'octahedron': geo = new THREE.OctahedronGeometry(sz); break;
-            case 'prism': geo = new THREE.CylinderGeometry(sz, sz, sz * 1.5, 6); break;
-            case 'dodecahedron': geo = new THREE.DodecahedronGeometry(sz); break;
-            case 'torus': geo = new THREE.TorusGeometry(sz, sz * 0.4, 8, 12); break;
-            case 'box': default: geo = new THREE.BoxGeometry(sz, sz, sz); break;
-        }
-
-        const mat = new THREE.MeshStandardMaterial({ color: project.color, roughness: 0.2, emissive: project.color, emissiveIntensity: 0.2 });
-        const mesh = new THREE.Mesh(geo, mat);
-
-        const label = createLabelSprite(project.title);
-        label.position.y = sz + 1.5;
-        mesh.add(label);
-
-        mesh.userData = { angle: angle, radius: radius, speed: 0.0008, id: i, isProject: true, isHovered: false };
-        orbitGroup.add(mesh);
-        interactables.push(mesh);
-    });
-
-    // --- Portals (Zones) ---
-    function createPortal(color, position, labelText, modalId) {
-        const group = new THREE.Group();
-        group.position.copy(position);
-
-        const portalGeo = new THREE.TorusGeometry(3, 0.2, 16, 100);
-        const portalMat = new THREE.MeshBasicMaterial({ color: color });
-        const portal = new THREE.Mesh(portalGeo, portalMat);
-        portal.rotation.x = Math.PI / 2;
-        portal.userData = { isPortal: true, target: modalId };
-        group.add(portal);
-        interactables.push(portal);
-
-        const label = createLabelSprite(labelText);
-        label.position.y = 6;
-        label.userData = { isPortal: true, target: modalId };
-        group.add(label);
-        interactables.push(label);
-
-        const hitGeoPort = new THREE.SphereGeometry(4, 16, 16);
-        const hitMatPort = new THREE.MeshBasicMaterial({ visible: false });
-        const hitBoxPort = new THREE.Mesh(hitGeoPort, hitMatPort);
-        hitBoxPort.userData = { isPortal: true, target: modalId };
-        group.add(hitBoxPort);
-        interactables.push(hitBoxPort);
-
-        const pGeo = new THREE.BufferGeometry();
-        const pVerts = [];
-        for(let i=0; i<50; i++) pVerts.push((Math.random()-0.5)*4, 0, (Math.random()-0.5)*4);
-        pGeo.setAttribute('position', new THREE.Float32BufferAttribute(pVerts, 3));
-        const pMat = new THREE.PointsMaterial({ color: color, size: 0.2 });
-        const particles = new THREE.Points(pGeo, pMat);
-        group.add(particles);
-
-        scene.add(group);
-        return { group, portal, particles };
-    }
-
-    const timelinePortal = createPortal(0x22d3ee, new THREE.Vector3(-30, 0, 0), "Timeline", "modal-timeline");
-
-
-    // ==========================================
-    // INPUT CONTROLS
-    // ==========================================
-    const keys = { w: false, a: false, s: false, d: false };
-    let joystickVector = new THREE.Vector2(0, 0);
-    
-    window.addEventListener('keydown', (e) => {
-        if(isGamePaused) return;
-        const key = e.key.toLowerCase();
-        if (keys.hasOwnProperty(key)) keys[key] = true;
-        if (e.key === 'ArrowUp') keys.w = true;
-        if (e.key === 'ArrowDown') keys.s = true;
-        if (e.key === 'ArrowLeft') keys.a = true;
-        if (e.key === 'ArrowRight') keys.d = true;
-    });
-
-    window.addEventListener('keyup', (e) => {
-        const key = e.key.toLowerCase();
-        if (keys.hasOwnProperty(key)) keys[key] = false;
-        if (e.key === 'ArrowUp') keys.w = false;
-        if (e.key === 'ArrowDown') keys.s = false;
-        if (e.key === 'ArrowLeft') keys.a = false;
-        if (e.key === 'ArrowRight') keys.d = false;
-    });
-
-    // Joystick for mobile
-    const joystickManager = nipplejs.create({
-        zone: document.getElementById('joystick-zone'),
-        mode: 'static',
-        position: { left: '50%', top: '50%' },
-        color: '#f472b6'
-    });
-
-    joystickManager.on('move', (evt, data) => {
-        if(isGamePaused) return;
-        const force = Math.min(data.force, 1);
-        joystickVector.x = Math.cos(data.angle.radian) * force;
-        joystickVector.y = Math.sin(data.angle.radian) * force;
-    });
-
-    joystickManager.on('end', () => {
-        joystickVector.set(0, 0);
-    });
-
-    // ==========================================
-    // RAYCASTING (Clicking Projects)
-    // ==========================================
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    function onMouseClick(event) {
-        if(isGamePaused) return;
-        
-        const rect = renderer.domElement.getBoundingClientRect();
-        let clientX = event.clientX;
-        let clientY = event.clientY;
-
-        if(event.changedTouches) {
-            clientX = event.changedTouches[0].clientX;
-            clientY = event.changedTouches[0].clientY;
-        }
-
-        mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(interactables, true);
-
-        if (intersects.length > 0) {
-            let clicked = intersects[0].object;
-            
-            if (clicked.type === 'Sprite' && clicked.parent && clicked.parent.userData.isProject) {
-                clicked = clicked.parent;
-            }
-
-            if (clicked.userData && clicked.userData.isProject) {
-                openProject(clicked.userData.id);
-            } else if (clicked.userData && clicked.userData.isPortal) {
-                openModal(clicked.userData.target);
-            }
-        }
-    }
-
-    window.addEventListener('click', onMouseClick);
-    renderer.domElement.addEventListener('touchstart', (e) => {
-        if(e.touches[0].clientX > window.innerWidth / 2) { 
-            onMouseClick(e);
-        }
-    }, {passive: false});
-
-
-    // ==========================================
-    // GAME LOOP & PHYSICS
-    // ==========================================
     const clock = new THREE.Clock();
-    const shipVelocity = new THREE.Vector3();
-    const maxSpeed = 0.15;
-    const acceleration = 0.01;
-    const friction = 0.95;
+    const shipVelocity = new THREE.Vector2(0, 0);
+
+    addObstacle(scene);
 
     function animate() {
         requestAnimationFrame(animate);
-        const delta = clock.getDelta();
+        const delta = Math.min(clock.getDelta(), 0.05);
 
-        if (!isGamePaused) {
-            if (!isStranded) {
-                // --- Ship Movement ---
-                let inputVector = new THREE.Vector3(0, 0, 0);
+        if (gameState.isRunning) {
+            gameState.elapsed += delta;
+            updateTimer(timerValue, gameState.elapsed);
+            updateSpeed(speedValue, gameState.elapsed);
+            updatePlayer(shipGroup, shipVelocity, delta);
+            updateObstacles(scene, delta);
+            updateBackground(starField, tunnel, delta);
 
-                if (keys.w) inputVector.z -= 1;
-                if (keys.s) inputVector.z += 1;
-                if (keys.a) inputVector.x -= 1;
-                if (keys.d) inputVector.x += 1;
-
-                if (joystickVector.length() > 0.1) {
-                    inputVector.x = joystickVector.x;
-                    inputVector.z = -joystickVector.y;
-                }
-
-                if (inputVector.length() > 0) inputVector.normalize();
-
-                shipVelocity.x += inputVector.x * acceleration;
-                shipVelocity.z += inputVector.z * acceleration;
-
-                shipVelocity.multiplyScalar(friction);
-                if (shipVelocity.length() > maxSpeed) {
-                    shipVelocity.normalize().multiplyScalar(maxSpeed);
-                }
-
-                shipGroup.position.add(shipVelocity);
-
-                if (shipVelocity.length() > 0.01) {
-                    const targetAngle = Math.atan2(shipVelocity.x, shipVelocity.z);
-                    let currentAngle = shipGroup.rotation.y;
-                    let diff = targetAngle - currentAngle;
-                    while (diff < -Math.PI) diff += Math.PI * 2;
-                    while (diff > Math.PI) diff -= Math.PI * 2;
-                    shipGroup.rotation.y += diff * 0.1;
-                    shipGroup.rotation.z = -shipVelocity.x * 0.5;
-                } else {
-                    shipGroup.rotation.z *= 0.9;
-                }
-
-                // --- Out of Bounds Logic ---
-                const dist = shipGroup.position.length();
-                if (dist > 120) {
-                    isStranded = true;
-                    document.getElementById('warning-msg').classList.add('hidden');
-                    document.getElementById('stranded-msg').classList.remove('hidden');
-                    document.body.classList.remove('game-active');
-                    shipVelocity.set(0, 0, 0);
-                } else if (dist > 70) {
-                    document.getElementById('warning-msg').classList.remove('hidden');
-                } else {
-                    document.getElementById('warning-msg').classList.add('hidden');
-                }
-
-            } else {
-                // Stranded helpless spin
-                shipGroup.rotation.x += 0.005;
-                shipGroup.rotation.y += 0.01;
-                shipGroup.rotation.z += 0.002;
+            if (hasCollision(shipGroup, gameState.obstacles)) {
+                endGame();
             }
-
-            // Camera Follow
-            const targetCameraPos = shipGroup.position.clone().add(cameraOffset);
-            camera.position.lerp(targetCameraPos, 0.05);
-            camera.lookAt(shipGroup.position);
-        }
-
-        // --- Animations & Raycaster Hover Logic ---
-        let isHoveringSomething = false;
-
-        if (!isGamePaused && window.innerWidth > 768) {
-            raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(interactables, true);
-            
-            interactables.forEach(m => {
-                if(m.userData) m.userData.isHovered = false;
-                if(m.userData && m.userData.isProject) {
-                    m.scale.lerp(new THREE.Vector3(1,1,1), 0.1);
-                }
+        } else {
+            shipGroup.rotation.z *= 0.96;
+            gameState.obstacles.forEach((obstacle) => {
+                obstacle.mesh.rotation.x += delta * 0.8;
+                obstacle.mesh.rotation.y += delta * 0.9;
             });
-
-            if (intersects.length > 0) {
-                let hovered = intersects[0].object;
-                
-                if (hovered.type === 'Sprite' && hovered.parent && hovered.parent.userData && hovered.parent.userData.isProject) {
-                    hovered = hovered.parent;
-                }
-
-                if (hovered.userData && (hovered.userData.isProject || hovered.userData.isPortal)) {
-                    hovered.userData.isHovered = true;
-                    isHoveringSomething = true;
-                    
-                    if (hovered.userData.isProject) {
-                        hovered.scale.lerp(new THREE.Vector3(1.4, 1.4, 1.4), 0.2);
-                    }
-                }
-            }
-        }
-
-        const cursorEl = document.getElementById('custom-cursor');
-        if (cursorEl) {
-            if (isHoveringSomething) cursorEl.classList.add('cursor-hover');
-            else cursorEl.classList.remove('cursor-hover');
-        }
-
-        const isTargetHovered = (targetId) => interactables.some(m => m.userData && m.userData.isHovered && m.userData.target === targetId);
-        const charHovered = isTargetHovered('modal-character');
-        const timelineHovered = isTargetHovered('modal-timeline');
-
-        interactables.forEach(mesh => {
-            if (mesh.userData && mesh.userData.isProject) {
-                const data = mesh.userData;
-                if (!data.isHovered) {
-                    data.angle += data.speed;
-                }
-                mesh.position.x = Math.cos(data.angle) * data.radius;
-                mesh.position.z = Math.sin(data.angle) * data.radius;
-            }
-        });
-
-        if (!charHovered) {
-            star.rotation.y += 0.005;
-            star.rotation.z += 0.002;
-        }
-
-        if (!timelineHovered) {
-            timelinePortal.portal.rotation.z += 0.01;
-            timelinePortal.particles.rotation.y -= 0.005;
         }
 
         renderer.render(scene, camera);
     }
 
-    // --- Window Resize ---
+    function endGame() {
+        if (!gameState.isRunning) return;
+
+        gameState.isRunning = false;
+        const score = formatTime(gameState.elapsed);
+        finalScore.textContent = score;
+        lossBackdrop.classList.remove('hidden');
+        lossModal.classList.remove('hidden');
+        lossModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('game-over');
+        loadContactForm(contactContainer, score);
+    }
+
     window.addEventListener('resize', () => {
         const width = container.clientWidth;
         const height = container.clientHeight;
@@ -564,19 +142,344 @@ function init3DScene() {
         camera.updateProjectionMatrix();
     });
 
-    // Track mouse
-    window.addEventListener('mousemove', (e) => {
-        if(isGamePaused) return;
-        const rect = renderer.domElement.getBoundingClientRect();
-        mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-        
-        const cursorEl = document.getElementById('custom-cursor');
-        if(cursorEl) {
-            cursorEl.style.left = e.clientX + 'px';
-            cursorEl.style.top = e.clientY + 'px';
-        }
+    animate();
+}
+
+function createStarField() {
+    const starsGeometry = new THREE.BufferGeometry();
+    const starsMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.09,
+        transparent: true,
+        opacity: 0.82
+    });
+    const starsVertices = [];
+
+    for (let i = 0; i < 2600; i += 1) {
+        starsVertices.push(
+            (Math.random() - 0.5) * 140,
+            (Math.random() - 0.5) * 80,
+            -Math.random() * 180
+        );
+    }
+
+    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+    return new THREE.Points(starsGeometry, starsMaterial);
+}
+
+function createLaneTunnel() {
+    const tunnel = new THREE.Group();
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x22d3ee,
+        transparent: true,
+        opacity: 0.22
     });
 
-    animate();
+    for (let i = 0; i < 9; i += 1) {
+        const z = -12 - i * 10;
+        const points = [
+            new THREE.Vector3(-PLAY_BOUNDS.x, -PLAY_BOUNDS.y, z),
+            new THREE.Vector3(PLAY_BOUNDS.x, -PLAY_BOUNDS.y, z),
+            new THREE.Vector3(PLAY_BOUNDS.x, PLAY_BOUNDS.y, z),
+            new THREE.Vector3(-PLAY_BOUNDS.x, PLAY_BOUNDS.y, z),
+            new THREE.Vector3(-PLAY_BOUNDS.x, -PLAY_BOUNDS.y, z)
+        ];
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        tunnel.add(new THREE.Line(geometry, lineMaterial));
+    }
+
+    return tunnel;
+}
+
+function createPlayerShip(fallbackRotation = FALLBACK_SHIP_ROTATION) {
+    const shipGroup = new THREE.Group();
+    shipGroup.position.set(0, 0, 0);
+
+    const engineLight = new THREE.PointLight(0xf472b6, 2.6, 8);
+    engineLight.position.set(0, -0.4, 1.6);
+    shipGroup.add(engineLight);
+
+    const fallbackGeometry = new THREE.ConeGeometry(0.8, 2.2, 4);
+    const fallbackMaterial = new THREE.MeshStandardMaterial({
+        color: 0xf472b6,
+        emissive: 0x7c2d52,
+        roughness: 0.35
+    });
+    const fallbackShip = new THREE.Mesh(fallbackGeometry, fallbackMaterial);
+    applyRotation(fallbackShip, fallbackRotation);
+    fallbackShip.name = 'fallback-ship';
+    shipGroup.add(fallbackShip);
+
+    return shipGroup;
+}
+
+function loadShipModel(shipGroup, modelRotation = SHIP_MODEL_ROTATION) {
+    const gltfLoader = new THREE.GLTFLoader();
+
+    gltfLoader.load('spaceship.glb', (gltf) => {
+        const fallbackShip = shipGroup.getObjectByName('fallback-ship');
+        if (fallbackShip) shipGroup.remove(fallbackShip);
+
+        const model = gltf.scene;
+        applyRotation(model, modelRotation);
+        model.scale.setScalar(0.85);
+        shipGroup.add(model);
+    });
+}
+
+function applyRotation(object, rotation) {
+    object.rotation.set(rotation.x, rotation.y, rotation.z);
+}
+
+function setupKeyboardControls() {
+    window.addEventListener('keydown', (event) => {
+        const key = event.key.toLowerCase();
+        if (Object.prototype.hasOwnProperty.call(keys, key)) keys[key] = true;
+        if (event.key === 'ArrowUp') keys.w = true;
+        if (event.key === 'ArrowDown') keys.s = true;
+        if (event.key === 'ArrowLeft') keys.a = true;
+        if (event.key === 'ArrowRight') keys.d = true;
+    });
+
+    window.addEventListener('keyup', (event) => {
+        const key = event.key.toLowerCase();
+        if (Object.prototype.hasOwnProperty.call(keys, key)) keys[key] = false;
+        if (event.key === 'ArrowUp') keys.w = false;
+        if (event.key === 'ArrowDown') keys.s = false;
+        if (event.key === 'ArrowLeft') keys.a = false;
+        if (event.key === 'ArrowRight') keys.d = false;
+    });
+}
+
+function setupJoystick() {
+    const joystickZone = document.getElementById('joystick-zone');
+    if (!joystickZone || !window.nipplejs) return;
+
+    const joystickManager = nipplejs.create({
+        zone: joystickZone,
+        mode: 'static',
+        position: { left: '50%', top: '50%' },
+        color: '#f472b6'
+    });
+
+    joystickManager.on('move', (evt, data) => {
+        if (!gameState.isRunning) return;
+        if (evt?.preventDefault) evt.preventDefault();
+        const force = Math.min(data.force, 1);
+        joystickVector.x = Math.cos(data.angle.radian) * force;
+        joystickVector.y = Math.sin(data.angle.radian) * force;
+    });
+
+    joystickManager.on('end', () => {
+        joystickVector.set(0, 0);
+    });
+}
+
+function updatePlayer(shipGroup, shipVelocity, delta) {
+    const inputVector = new THREE.Vector2(0, 0);
+
+    if (keys.w) inputVector.y += 1;
+    if (keys.s) inputVector.y -= 1;
+    if (keys.a) inputVector.x -= 1;
+    if (keys.d) inputVector.x += 1;
+
+    if (joystickVector.length() > 0.1) {
+        inputVector.copy(joystickVector);
+    }
+
+    if (inputVector.length() > 0) {
+        inputVector.normalize();
+        shipVelocity.x += inputVector.x * PLAYER_ACCELERATION * delta;
+        shipVelocity.y += inputVector.y * PLAYER_ACCELERATION * delta;
+    }
+
+    shipVelocity.multiplyScalar(Math.pow(PLAYER_FRICTION, delta * 60));
+    if (shipVelocity.length() > PLAYER_MAX_SPEED) {
+        shipVelocity.normalize().multiplyScalar(PLAYER_MAX_SPEED);
+    }
+
+    shipGroup.position.x = clamp(shipGroup.position.x + shipVelocity.x * delta, -PLAY_BOUNDS.x, PLAY_BOUNDS.x);
+    shipGroup.position.y = clamp(shipGroup.position.y + shipVelocity.y * delta, -PLAY_BOUNDS.y, PLAY_BOUNDS.y);
+
+    if (Math.abs(shipGroup.position.x) >= PLAY_BOUNDS.x) shipVelocity.x = 0;
+    if (Math.abs(shipGroup.position.y) >= PLAY_BOUNDS.y) shipVelocity.y = 0;
+
+    shipGroup.rotation.z = THREE.MathUtils.lerp(shipGroup.rotation.z, -shipVelocity.x * 0.035, 0.16);
+    shipGroup.rotation.x = THREE.MathUtils.lerp(shipGroup.rotation.x, shipVelocity.y * 0.018, 0.12);
+}
+
+function addObstacle(scene, spawnDelay = getNextObstacleGap()) {
+    if (gameState.obstacles.length >= MAX_ACTIVE_OBSTACLES) return;
+
+    gameState.obstacles.push(spawnObstacle(scene));
+    gameState.nextObstacleAt = gameState.elapsed + spawnDelay;
+}
+
+function getNextObstacleGap() {
+    return THREE.MathUtils.randFloat(MIN_OBSTACLE_SPAWN_GAP, MAX_OBSTACLE_SPAWN_GAP);
+}
+
+function spawnObstacle(scene) {
+    const obstacleGroup = new THREE.Group();
+    const shape = Math.floor(Math.random() * 4);
+    const size = THREE.MathUtils.randFloat(1.35, 2.15);
+
+    let geometry;
+    if (shape === 0) geometry = new THREE.IcosahedronGeometry(size, 1);
+    else if (shape === 1) geometry = new THREE.OctahedronGeometry(size, 1);
+    else if (shape === 2) geometry = new THREE.DodecahedronGeometry(size, 0);
+    else geometry = new THREE.TorusKnotGeometry(size * 0.62, size * 0.22, 72, 8);
+
+    const material = new THREE.MeshStandardMaterial({
+        color: 0xf59e0b,
+        emissive: 0x7c2d12,
+        emissiveIntensity: 0.3,
+        roughness: 0.55,
+        metalness: 0.12
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    obstacleGroup.add(mesh);
+
+    const glow = new THREE.PointLight(0xf97316, 1.2, 10);
+    obstacleGroup.add(glow);
+
+    const nextPosition = getRandomObstaclePosition();
+    obstacleGroup.position.set(nextPosition.x, nextPosition.y, OBSTACLE_START_Z);
+    gameState.lastObstaclePosition.copy(nextPosition);
+    scene.add(obstacleGroup);
+
+    return {
+        mesh: obstacleGroup,
+        radius: OBSTACLE_RADIUS * (size / 1.75),
+        spin: new THREE.Vector3(
+            THREE.MathUtils.randFloat(0.7, 1.4),
+            THREE.MathUtils.randFloat(0.5, 1.2),
+            THREE.MathUtils.randFloat(0.4, 1.1)
+        )
+    };
+}
+
+function getRandomObstaclePosition() {
+    const candidate = new THREE.Vector2();
+
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+        candidate.set(
+            THREE.MathUtils.randFloat(-PLAY_BOUNDS.x + 1.4, PLAY_BOUNDS.x - 1.4),
+            THREE.MathUtils.randFloat(-PLAY_BOUNDS.y + 1.4, PLAY_BOUNDS.y - 1.4)
+        );
+
+        if (candidate.distanceTo(gameState.lastObstaclePosition) > 4) {
+            return candidate;
+        }
+    }
+
+    return candidate;
+}
+
+function updateObstacles(scene, delta) {
+    const speed = getObstacleSpeed(gameState.elapsed);
+
+    for (let index = gameState.obstacles.length - 1; index >= 0; index -= 1) {
+        const obstacle = gameState.obstacles[index];
+        obstacle.mesh.position.z += speed * delta;
+        obstacle.mesh.rotation.x += obstacle.spin.x * delta;
+        obstacle.mesh.rotation.y += obstacle.spin.y * delta;
+        obstacle.mesh.rotation.z += obstacle.spin.z * delta;
+
+        if (obstacle.mesh.position.z > OBSTACLE_CLEAR_Z) {
+            scene.remove(obstacle.mesh);
+            disposeObject(obstacle.mesh);
+            gameState.obstacles.splice(index, 1);
+        }
+    }
+
+    if (
+        gameState.obstacles.length === 0 ||
+        (gameState.obstacles.length < MAX_ACTIVE_OBSTACLES && gameState.elapsed >= gameState.nextObstacleAt)
+    ) {
+        addObstacle(scene);
+    }
+}
+
+function hasCollision(shipGroup, obstacles) {
+    return obstacles.some((obstacle) => {
+        const dx = shipGroup.position.x - obstacle.mesh.position.x;
+        const dy = shipGroup.position.y - obstacle.mesh.position.y;
+        const dz = shipGroup.position.z - obstacle.mesh.position.z;
+        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        return distance <= PLAYER_RADIUS + obstacle.radius;
+    });
+}
+
+function updateBackground(starField, tunnel, delta) {
+    const speed = getObstacleSpeed(gameState.elapsed) * 0.12;
+    starField.position.z += speed * delta;
+    tunnel.position.z += speed * delta;
+
+    if (starField.position.z > 45) starField.position.z = 0;
+    if (tunnel.position.z > 10) tunnel.position.z = 0;
+}
+
+function updateTimer(timerValue, elapsed) {
+    if (elapsed < gameState.nextTimerPaint) return;
+    timerValue.textContent = formatTime(elapsed);
+    gameState.nextTimerPaint = elapsed + TIMER_UPDATE_INTERVAL;
+}
+
+function updateSpeed(speedValue, elapsed) {
+    const multiplier = getObstacleSpeed(elapsed) / BASE_OBSTACLE_SPEED;
+    speedValue.textContent = `${multiplier.toFixed(1)}x`;
+}
+
+function getObstacleSpeed(elapsed) {
+    return BASE_OBSTACLE_SPEED + elapsed * SPEED_GAIN_PER_SECOND;
+}
+
+async function loadContactForm(container, score) {
+    if (gameState.contactLoaded) return;
+    gameState.contactLoaded = true;
+    container.innerHTML = `
+        <form action="https://formspree.io/f/xbldrayw" method="POST" class="score-contact-form">
+            <div class="score-contact-grid">
+                <label class="score-contact-field">
+                    <span>Name</span>
+                    <input type="text" name="name" placeholder="John Doe" required>
+                </label>
+                <label class="score-contact-field">
+                    <span>Email</span>
+                    <input type="email" name="email" placeholder="john@example.com" required>
+                </label>
+            </div>
+            <label class="score-contact-field">
+                <span>Message</span>
+                <textarea name="message" rows="4" required>I scored ${score} in the rocket dodger game.</textarea>
+            </label>
+            <button type="submit" class="score-contact-submit">Send Score</button>
+        </form>
+    `;
+}
+
+function formatTime(totalSeconds) {
+    const safeSeconds = Math.max(0, Math.floor(totalSeconds));
+    const minutes = Math.floor(safeSeconds / 60).toString().padStart(2, '0');
+    const seconds = (safeSeconds % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+}
+
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+}
+
+function disposeObject(object) {
+    object.traverse((child) => {
+        if (child.geometry) child.geometry.dispose();
+        if (child.material) {
+            if (Array.isArray(child.material)) {
+                child.material.forEach((material) => material.dispose());
+            } else {
+                child.material.dispose();
+            }
+        }
+    });
 }

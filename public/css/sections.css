@@ -1,0 +1,31 @@
+.bg-gradient-home {
+    background:
+        radial-gradient(circle at 85% 18%, rgba(110, 146, 135, 0.09), transparent 26%),
+        radial-gradient(circle at 12% 18%, rgba(210, 107, 124, 0.08), transparent 34%),
+        linear-gradient(180deg, #171a1e 0%, var(--color-section-bg) 100%);
+}
+
+.bg-gradient-projects {
+    background:
+        radial-gradient(circle at 80% 20%, rgba(110, 146, 135, 0.08), transparent 28%),
+        linear-gradient(180deg, #14181b 0%, var(--color-section-bg) 100%);
+}
+
+.bg-gradient-skills {
+    background:
+        radial-gradient(circle at 20% 24%, rgba(210, 107, 124, 0.07), transparent 28%),
+        radial-gradient(circle at 84% 72%, rgba(110, 146, 135, 0.08), transparent 26%),
+        linear-gradient(180deg, #15181c 0%, var(--color-section-bg) 100%);
+}
+
+.bg-gradient-experience {
+    background:
+        radial-gradient(circle at 18% 76%, rgba(120, 145, 186, 0.08), transparent 24%),
+        linear-gradient(180deg, #14171b 0%, var(--color-section-bg) 100%);
+}
+
+.bg-gradient-contact {
+    background:
+        radial-gradient(circle at 50% 100%, rgba(210, 107, 124, 0.07), transparent 30%),
+        linear-gradient(180deg, #15181c 0%, var(--color-section-bg) 100%);
+}

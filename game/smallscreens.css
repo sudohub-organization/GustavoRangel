@@ -1,26 +1,99 @@
-/* Mobile Overrides */
 @media (max-width: 768px) {
     #joystick-zone {
         display: block;
     }
-    
+
     .hide-on-mobile {
         display: none !important;
     }
 
-    /* Adjust padding for smaller screens */
-    #modal-project,
-    #modal-timeline,
-    #modal-character {
-        padding: 1.5rem;
+    #back-to-portfolio {
+        top: auto;
+        bottom: 1rem;
+        left: auto;
+        right: 1rem;
+        padding: 0.75rem;
     }
 
-    /* Resize stranded message */
-    #stranded-msg h2 {
-        font-size: 2rem;
+    #back-to-portfolio span {
+        display: none;
     }
-    #stranded-msg {
-        width: 90vw;
-        padding: 2rem;
+
+    #timer-hud {
+        top: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+
+    #speed-hud {
+        top: 4.8rem;
+        right: 0.75rem;
+        padding: 0.65rem 0.85rem;
+    }
+
+    .timer-value {
+        font-size: 1.55rem;
+    }
+
+    .loss-panel {
+        padding: 1.25rem;
+    }
+
+    .loss-header,
+    .form-grid,
+    .score-contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .loss-header {
+        display: grid;
+    }
+
+    .restart-btn {
+        width: 100%;
+    }
+
+    .score-contact-container .section-title {
+        font-size: 1.45rem;
+    }
+
+    .form-grid,
+    .score-contact-grid {
+        display: grid;
+    }
+}
+
+@media (max-width: 480px) {
+    #timer-hud {
+        left: 0.75rem;
+        max-width: calc(100vw - 1.5rem);
+        transform: none;
+    }
+
+    #speed-hud {
+        top: 0.75rem;
+        right: 0.75rem;
+    }
+
+    #mobile-hint {
+        right: 0.75rem;
+        bottom: 4.4rem;
+        max-width: 9.5rem;
+        text-align: right;
+    }
+
+    #joystick-zone {
+        bottom: 0.85rem;
+        left: 0.75rem;
+        width: 128px;
+        height: 128px;
+    }
+
+    .loss-panel {
+        width: calc(100vw - 1rem);
+        max-height: calc(100vh - 1rem);
+    }
+
+    .form-input {
+        padding: 0.8rem 0.85rem;
     }
 }

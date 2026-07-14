@@ -1,0 +1,98 @@
+{
+    "hero": {
+        "kicker": "Software developer in Aberdeen, Scotland",
+        "title": "Gustavo Rangel",
+        "copy": "I build practical web products, teaching tools, and data-backed interfaces that make complex ideas easier to use.",
+        "image": "/public/images/me.jpeg",
+        "imageAlt": "Portrait of Gustavo Rangel",
+        "actions": [
+            {
+                "label": "View Work",
+                "href": "#projects",
+                "style": "primary"
+            },
+            {
+                "label": "Contact Me",
+                "href": "#contact",
+                "style": "secondary"
+            }
+        ],
+        "socialLinks": [
+            {
+                "label": "LinkedIn",
+                "href": "https://www.linkedin.com/in/gustavo-rangel-professional/",
+                "icon": "linkedin"
+            },
+            {
+                "label": "GitHub",
+                "href": "https://github.com/DefoNotGus",
+                "icon": "github"
+            },
+            {
+                "label": "YouTube",
+                "href": "https://www.youtube.com/@GustavoElProfe",
+                "icon": "youtube"
+            }
+        ]
+    },
+    "projects": {
+        "kicker": "Featured work",
+        "title": "Some of my Projects",
+        "intro": "A small set of projects selected for engineering value, product thinking, and presentation strength."
+    },
+    "skills": {
+        "kicker": "Skills and stack",
+        "title": "What I can do",
+        "items": [
+            {
+                "title": "Web",
+                "description": "JavaScript, Vue, Flask, Node.js, Express, ASP.NET Core, Blazor"
+            },
+            {
+                "title": "Data and ML",
+                "description": "Python, pandas, scikit-learn, NLP, matplotlib, research reporting"
+            },
+            {
+                "title": "Tools",
+                "description": "Git, GitHub, Azure, Coolify, MongoDB, MySQL, Android Studio, Blender, Three.js"
+            }
+        ]
+    },
+    "experience": {
+        "kicker": "Experience",
+        "title": "Work, teaching, and study.",
+        "intro": "Recent roles and education focused on software development, teaching, and practical problem solving.",
+        "items": [
+            {
+                "title": "Software Developer - Software Developer",
+                "company": "Dev4 Online",
+                "date": "2025 - Present",
+                "description": "Designing and developing enterprise software across ASP.NET Core, Blazor, Vue, Python, and related stacks."
+            },
+            {
+                "title": "BSc Software Development (Honours)",
+                "company": "Robert Gordon University",
+                "date": "2023 - 2025",
+                "description": "Completed an honours project focused on machine learning UI and UX optimization, with hackathon participation alongside the degree."
+            },
+            {
+                "title": "College Lecturer",
+                "company": "North East Scotland College",
+                "date": "2023 - 2025",
+                "description": "Lectured in programming, databases, web development, and cyber security while developing course material and supporting students."
+            },
+            {
+                "title": "HND Software Development",
+                "company": "North East Scotland College",
+                "date": "2021 - 2023",
+                "description": "Studied Python, Java, web development, databases, cyber security, and networking, graduating with distinction."
+            }
+        ]
+    },
+    "contact": {
+        "kicker": "Contact",
+        "title": "Let's connect.",
+        "intro": "Open to opportunities, collaborations, and direct conversations about product, design, or code.",
+        "footer": "\u00a9 2026 Gustavo Rangel. All rights reserved."
+    }
+}

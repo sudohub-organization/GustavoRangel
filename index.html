@@ -1,24 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gustavo Rangel | Portfolio</title>
-    <link rel="icon" href="public/images/logo-color.png" type="image/png">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
+    <link rel="icon" href="public/images/logo-color.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- External Stylesheets -->
-    <link rel="stylesheet" href="public/css/styles.css">
-    <link rel="stylesheet" href="public/css/smallscreens.css">
-
-    <!-- Three.js Import Map -->
+    <link rel="stylesheet" href="public/css/styles.css" />
     <script type="importmap">
       {
         "imports": {
@@ -27,196 +21,651 @@
         }
       }
     </script>
-</head>
-<body>
-
-    <!-- Header & Navigation -->
-    <header id="page-header" class="fixed top-0 left-0 w-full z-50 glass-header transition-all duration-300">
-        <div class="flex justify-between items-center max-w-7xl mx-auto px-4 md:px-6 py-4">
-            
-            <!-- Logo Section -->
-            <div class="flex items-center gap-3 w-1/4">
-                <button id="logo-thumb" class="rounded-lg overflow-hidden hover:border-pink-500 transition-colors shrink-0">
-                    <img src="public/images" onerror="this.src='https://placehold.co/40x40/1A1A1D/FFF?text=GR'" alt="Logo" class="h-14 w-auto">
-                </button>
-                <a href="#" class="text-xl font-bold tracking-tight text-white hover:text-pink-500 transition-colors hidden lg:block whitespace-nowrap">Gustavo Rangel</a>
-            </div>
-
-            <!-- Central Dots Navigation -->
-            <nav class="flex-1 flex justify-center header-nav-center">
-                <ul class="flex items-center gap-5 lg:gap-8 bg-black/30 px-6 py-2 rounded-full border border-white/5">
-                    <li class="nav-item active flex items-center gap-2 cursor-pointer group" data-index="0">
-                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
-                        <i data-lucide="home" class="nav-icon hidden w-5 h-5"></i>
-                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Home</span>
-                    </li>
-                    <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="1">
-                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
-                        <i data-lucide="layout-grid" class="nav-icon hidden w-5 h-5"></i>
-                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Projects</span>
-                    </li>
-                    <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="2">
-                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
-                        <i data-lucide="briefcase" class="nav-icon hidden w-5 h-5"></i>
-                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Experience</span>
-                    </li>
-                    <li class="nav-item flex items-center gap-2 cursor-pointer group" data-index="3">
-                        <div class="nav-dot w-2.5 h-2.5 rounded-full transition-all duration-300"></div>
-                        <i data-lucide="mail" class="nav-icon hidden w-5 h-5"></i>
-                        <span class="nav-title text-sm font-semibold tracking-widest transition-colors uppercase">Contact</span>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Action Buttons -->
-            <div class="w-1/4 flex justify-end items-center">
-                <div class="btn-glow-wrapper">
-                    <div id="btn-glow"></div>
-                    <button id="dance-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm transition-colors flex items-center gap-1.5">
-                        <i data-lucide="music" class="w-4 h-4 shrink-0"></i>
-                        <span class="btn-label">Dance</span>
-                    </button>
-                    <a id="have-fun-btn" href="game/index.html" class="bg-teal-500 text-white font-semibold py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm flex items-center gap-1.5">
-                        <i data-lucide="gamepad-2" class="w-4 h-4 shrink-0"></i>
-                        <span class="btn-label">Have Fun</span>
-                    </a>
-                </div>
-            </div>
+  </head>
+  <body>
+    <header id="page-header" class="site-header">
+      <div class="site-header__inner container">
+        <div class="site-header__brand-row">
+          <a href="#home" class="logo-link" aria-label="Go to home">
+            <img
+              src="public/images/logo-color.png"
+              alt="Gustavo Rangel logo"
+              class="logo-link__image"
+            />
+          </a>
+          <a href="#home" class="site-name">Gustavo Rangel</a>
         </div>
+
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav__list">
+            <li class="site-nav__item">
+              <a class="nav-link" href="#home" data-section-link="home">
+                <i
+                  data-lucide="home"
+                  class="nav-link__icon"
+                  aria-hidden="true"
+                ></i>
+                <span class="nav-link__label">Home</span>
+              </a>
+            </li>
+            <li class="site-nav__item">
+              <a class="nav-link" href="#projects" data-section-link="projects">
+                <i
+                  data-lucide="layout-grid"
+                  class="nav-link__icon"
+                  aria-hidden="true"
+                ></i>
+                <span class="nav-link__label">Work</span>
+              </a>
+            </li>
+            <li class="site-nav__item">
+              <a class="nav-link" href="#skills" data-section-link="skills">
+                <i
+                  data-lucide="sparkles"
+                  class="nav-link__icon"
+                  aria-hidden="true"
+                ></i>
+                <span class="nav-link__label">Skills</span>
+              </a>
+            </li>
+            <li class="site-nav__item">
+              <a
+                class="nav-link"
+                href="#experience"
+                data-section-link="experience"
+              >
+                <i
+                  data-lucide="briefcase"
+                  class="nav-link__icon"
+                  aria-hidden="true"
+                ></i>
+                <span class="nav-link__label">Experience</span>
+              </a>
+            </li>
+            <li class="site-nav__item">
+              <a class="nav-link" href="#contact" data-section-link="contact">
+                <i
+                  data-lucide="mail"
+                  class="nav-link__icon"
+                  aria-hidden="true"
+                ></i>
+                <span class="nav-link__label">Contact</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button
+            id="dance-btn"
+            class="action-btn action-btn--secondary"
+            type="button"
+          >
+            <i
+              data-lucide="music"
+              class="action-btn__icon"
+              aria-hidden="true"
+            ></i>
+            <span>Dance</span>
+          </button>
+          <a
+            id="have-fun-btn"
+            href="game/index.html"
+            class="action-btn action-btn--primary"
+          >
+            <i
+              data-lucide="gamepad-2"
+              class="action-btn__icon"
+              aria-hidden="true"
+            ></i>
+            <span>Have Fun</span>
+          </a>
+        </div>
+      </div>
     </header>
 
-    <!-- Main Content Sections -->
-    <main>
-        <!-- Home Section -->
-        <section id="home" class="section bg-gradient-home active">
-            <div class="max-w-6xl mx-auto w-full">
-                <div class="home-grid md:grid md:grid-cols-2 flex flex-col items-center">
-                    <div class="home-content space-y-6">
-                        <h1 class="text-5xl md:text-7xl font-bold tracking-tight">I'm <span class="text-pink-500">Gus</span><span class="text-pink-400">tavo.</span></h1>
-                        <p class="text-lg md:text-xl text-gray-400 leading-relaxed max-w-lg">
-                            Creative Developer & Designer passionate about building beautiful, functional web experiences and engaging media content.
-                        </p>
-                        <div class="social-icons-container flex space-x-4 pt-2">
-                            <a href="https://www.linkedin.com/in/gustavo-rangel-professional/" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
-                                <svg viewBox="0 0 24 24" aria-label="LinkedIn" class="w-6 h-6 text-white group-hover:scale-110 transition-transform" fill="currentColor" role="img">
-                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.266 2.37 4.266 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.555V9H7.12v11.452z"/>
-                                </svg>
-                            </a>
-                            <a href="https://www.youtube.com/@GustavoElProfe" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
-                                <img src="https://cdn.simpleicons.org/youtube/white" alt="YouTube" class="w-6 h-6 group-hover:scale-110 transition-transform">
-                            </a>
-                            <a href="https://linktr.ee/defonotgus" target="_blank" class="p-3 bg-gray-800 hover:bg-pink-600 rounded-full transition-colors group">
-                                <i data-lucide="link" class="w-6 h-6 text-white group-hover:scale-110 transition-transform"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex justify-center md:justify-end w-full">
-                        <div class="image-container w-64 h-64 md:w-96 md:h-96 relative group cursor-pointer">
-                            <img id="dynamic-home-image" src="public/images/me.jpeg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=800&q=80'" alt="Gustavo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        </div>
-                    </div>
-                </div>
+    <main class="site-main">
+      <section id="home" class="site-section bg-gradient-home">
+        <div class="section-shell container section-shell--hero">
+          <div class="hero-copy-group">
+            <p class="section-kicker" data-content="hero.kicker">
+              Software developer in Aberdeen, Scotland
+            </p>
+            <h1 class="hero-title" data-content="hero.title">Gustavo Rangel</h1>
+            <p class="hero-copy" data-content="hero.copy">
+              I build practical web products, teaching tools, and data-backed
+              interfaces that make complex ideas easier to use.
+            </p>
+            <div class="hero-actions" data-content-list="hero.actions">
+              <a href="#projects" class="hero-cta hero-cta--primary"
+                >View Work</a
+              >
+              <a href="#contact" class="hero-cta hero-cta--secondary"
+                >Contact Me</a
+              >
             </div>
-        </section>
+            <div
+              class="social-links"
+              aria-label="Social links"
+              data-content-list="hero.socialLinks"
+            >
+              <a
+                href="https://www.linkedin.com/in/gustavo-rangel-professional/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                aria-label="LinkedIn"
+              >
+                <svg
+                  class="social-link__icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.32 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13Zm1.78 13.02H3.54V9H7.1v11.45ZM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0Z" />
+                </svg>
+              </a>
+              <a
+                href="https://github.com/DefoNotGus"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                aria-label="GitHub"
+              >
+                <svg
+                  class="social-link__icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M12 .3a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.49 11.49 0 0 1 12 6.1c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.82 1.1.82 2.23v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .3Z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.youtube.com/@GustavoElProfe"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                aria-label="YouTube"
+              >
+                <svg
+                  class="social-link__icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M23.5 6.2a3.02 3.02 0 0 0-2.13-2.13C19.49 3.56 12 3.56 12 3.56s-7.49 0-9.37.51A3.02 3.02 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.02 3.02 0 0 0 2.13 2.13c1.88.51 9.37.51 9.37.51s7.49 0 9.37-.51a3.02 3.02 0 0 0 2.13-2.13C24 15.92 24 12 24 12s0-3.92-.5-5.8ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z" />
+                </svg>
+              </a>
+            </div>
+          </div>
 
-        <!-- Projects Section -->
-        <section id="projects" class="section bg-gradient-projects upcoming">
-            <div class="max-w-[1400px] mx-auto w-full h-full flex flex-col justify-center py-10">
-                <h2 class="text-3xl md:text-5xl font-bold mb-6 text-center md:text-left px-4">Selected Work</h2>
-                <div class="projects-accordion mx-auto px-4" id="projects-container">
-                    <!-- Cards Injected via JS -->
-                </div>
+          <div class="hero-visual">
+            <div class="portrait-frame">
+              <img
+                id="dynamic-home-image"
+                src="public/images/me.jpeg"
+                alt="Portrait of Gustavo Rangel"
+                class="portrait-frame__image"
+                data-content-image="hero.image"
+              />
             </div>
-        </section>
+            <article id="latest-blog-card" class="blog-preview hidden">
+              <div class="blog-preview__meta">
+                <p class="blog-preview__eyebrow">Latest post</p>
+                <time id="latest-blog-date" class="blog-preview__date"></time>
+              </div>
+              <h2 id="latest-blog-title" class="blog-preview__title"></h2>
+              <p id="latest-blog-excerpt" class="blog-preview__excerpt"></p>
+              <button
+                id="latest-blog-open"
+                class="blog-preview__button"
+                type="button"
+                aria-haspopup="dialog"
+                aria-controls="blog-modal"
+              >
+                <span>Show more</span>
+                <i data-lucide="arrow-down" aria-hidden="true"></i>
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
 
-        <!-- Experience Timeline Section -->
-        <section id="experience" class="section bg-gradient-experience upcoming">
-            <div class="max-w-4xl mx-auto w-full h-full flex flex-col py-10">
-                <h2 class="text-3xl md:text-5xl font-bold mb-10 text-center md:text-left px-4 text-blue-400">Experience</h2>
-                
-                <div class="relative border-l-2 border-gray-800 ml-4 md:ml-8" id="experience-container">
-                    <!-- Timeline Items Injected via JS -->
-                </div>
+      <section id="projects" class="site-section bg-gradient-projects">
+        <div class="section-shell container">
+          <div class="projects-heading">
+            <div class="projects-heading__copy">
+              <p class="section-kicker" data-content="projects.kicker">
+                Featured work
+              </p>
+              <h2 class="section-title" data-content="projects.title">
+                Some of my Projects
+              </h2>
+              <p class="section-intro" data-content="projects.intro">
+                A small set of projects selected for engineering value, product
+                thinking, and presentation strength.
+              </p>
             </div>
-        </section>
+          </div>
 
-        <!-- Contact Section -->
-        <section id="contact" class="section bg-gradient-contact upcoming">
-            <div class="max-w-3xl mx-auto w-full text-center">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Let's Connect</h2>
-                <p class="text-gray-400 mb-8 max-w-lg mx-auto">Open to new opportunities, collaborations, or just a quick chat. Drop a message below!</p>
-                
-                <div class="bg-gray-900 bg-opacity-60 backdrop-blur-md p-8 rounded-2xl border border-gray-800 text-left shadow-2xl">
-                    <form action="https://formspree.io/f/xbldrayw" method="POST" class="space-y-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-400 mb-2">Name</label>
-                                <input type="text" name="name" class="form-input w-full p-3 rounded-xl" placeholder="John Doe" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-400 mb-2">Email</label>
-                                <input type="email" name="email" class="form-input w-full p-3 rounded-xl" placeholder="john@example.com" required>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Message</label>
-                            <textarea name="message" rows="4" class="form-input w-full p-3 rounded-xl resize-none" placeholder="How can we work together?" required></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-4 rounded-xl transition-all hover:shadow-lg hover:shadow-pink-500/30">
-                            Send Message
-                        </button>
-                    </form>
+          <div id="projects-container" class="project-grid" aria-live="polite">
+            <article class="project-card">
+              <div class="project-card__content">
+                <div class="project-card__meta">
+                  <p class="project-card__eyebrow">Featured project</p>
+                  <span class="project-card__meta-pill">2025</span>
                 </div>
-                
-                <div class="mt-12 text-sm text-gray-600">
-                    <p>&copy; 2026 Gustavo Rangel. All rights reserved.</p>
-                    <p class="mt-2 text-xs font-mono text-gray-500 tracking-widest opacity-50 hover:opacity-100 transition-opacity">↑ ↑ ↓ ↓ ← → ← → B A</p>
+                <h3 class="project-card__title">Honours Project</h3>
+                <p class="project-card__description">
+                  An ML-assisted system that recommends UI component sizes from
+                  user requirements.
+                </p>
+                <p class="project-card__role">
+                  <strong>Role:</strong> Researcher and full-stack developer
+                </p>
+                <div class="project-tool-row">
+                  <span class="project-tool-pill">Python</span>
+                  <span class="project-tool-pill">Flask</span>
+                  <span class="project-tool-pill">scikit-learn</span>
                 </div>
-            </div>
-        </section>
+                <div class="project-card__links">
+                  <a
+                    href="/honours/index.html"
+                    class="project-card__link project-card__link--primary"
+                    >Live</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-card__content">
+                <div class="project-card__meta">
+                  <p class="project-card__eyebrow">Featured project</p>
+                  <span class="project-card__meta-pill">2025</span>
+                </div>
+                <h3 class="project-card__title">RGU Hack 2025</h3>
+                <p class="project-card__description">
+                  A 24-hour safety-themed browser game built from concept to
+                  playable demo.
+                </p>
+                <p class="project-card__role">
+                  <strong>Role:</strong> Front-end developer and gameplay
+                  designer
+                </p>
+                <div class="project-tool-row">
+                  <span class="project-tool-pill">JavaScript</span>
+                  <span class="project-tool-pill">HTML</span>
+                  <span class="project-tool-pill">CSS</span>
+                </div>
+                <div class="project-card__links">
+                  <a
+                    href="/projects/rguhack2025/index.html"
+                    class="project-card__link project-card__link--primary"
+                    >Live</a
+                  >
+                  <a
+                    href="https://github.com/DefoNotGus/rguhack2025"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="project-card__link"
+                    >Repo</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-card__content">
+                <div class="project-card__meta">
+                  <p class="project-card__eyebrow">Featured project</p>
+                  <span class="project-card__meta-pill">2024</span>
+                </div>
+                <h3 class="project-card__title">3D Avatar Login</h3>
+                <p class="project-card__description">
+                  A login page prototype using a Blender model and Three.js
+                  interaction.
+                </p>
+                <p class="project-card__role">
+                  <strong>Role:</strong> 3D integration developer
+                </p>
+                <div class="project-tool-row">
+                  <span class="project-tool-pill">JavaScript</span>
+                  <span class="project-tool-pill">Three.js</span>
+                  <span class="project-tool-pill">Blender</span>
+                </div>
+                <div class="project-card__links">
+                  <a
+                    href="/projects/avatarpage/index.html"
+                    class="project-card__link project-card__link--primary"
+                    >Live</a
+                  >
+                  <a
+                    href="https://github.com/DefoNotGus/My_Avatar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="project-card__link"
+                    >Repo</a
+                  >
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="site-section bg-gradient-skills">
+        <div class="section-shell container section-shell--narrow">
+          <p class="section-kicker" data-content="skills.kicker">
+            Skills and stack
+          </p>
+          <h2 class="section-title" data-content="skills.title">
+            What I can do
+          </h2>
+          <div class="skills-grid" data-content-list="skills.items">
+            <section class="skill-group" aria-labelledby="skill-web">
+              <h3 id="skill-web">Web</h3>
+              <p>
+                JavaScript, Vue, Flask, Node.js, Express, ASP.NET Core, Blazor
+              </p>
+            </section>
+            <section class="skill-group" aria-labelledby="skill-data">
+              <h3 id="skill-data">Data and ML</h3>
+              <p>
+                Python, pandas, scikit-learn, NLP, matplotlib, research
+                reporting
+              </p>
+            </section>
+            <section class="skill-group" aria-labelledby="skill-tools">
+              <h3 id="skill-tools">Tools</h3>
+              <p>
+                Git, GitHub, Azure, Coolify, MongoDB, MySQL, Android Studio,
+                Blender, Three.js
+              </p>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="site-section bg-gradient-experience">
+        <div class="section-shell container section-shell--narrow">
+          <p class="section-kicker" data-content="experience.kicker">
+            Experience
+          </p>
+          <h2 class="section-title" data-content="experience.title">
+            Work, teaching, and study.
+          </h2>
+          <p class="section-intro" data-content="experience.intro">
+            Recent roles and education focused on software development,
+            teaching, and practical problem solving.
+          </p>
+          <div class="timeline-list" data-content-list="experience.items">
+            <article class="timeline-card">
+              <div class="timeline-marker" aria-hidden="true"></div>
+              <div class="timeline-panel">
+                <div class="timeline-panel__header">
+                  <div>
+                    <h3 class="timeline-panel__title">
+                      Software Developer - Software Developer
+                    </h3>
+                    <p class="timeline-company">Dev4 Online</p>
+                  </div>
+                  <span class="timeline-date">2025 - Present</span>
+                </div>
+                <p class="timeline-description">
+                  Designing and developing enterprise software across ASP.NET
+                  Core, Blazor, Vue, Python, and related stacks.
+                </p>
+              </div>
+            </article>
+            <article class="timeline-card">
+              <div class="timeline-marker" aria-hidden="true"></div>
+              <div class="timeline-panel">
+                <div class="timeline-panel__header">
+                  <div>
+                    <h3 class="timeline-panel__title">
+                      BSc Software Development (Honours)
+                    </h3>
+                    <p class="timeline-company">Robert Gordon University</p>
+                  </div>
+                  <span class="timeline-date">2023 - 2025</span>
+                </div>
+                <p class="timeline-description">
+                  Completed an honours project focused on machine learning UI
+                  and UX optimization, with hackathon participation alongside
+                  the degree.
+                </p>
+              </div>
+            </article>
+            <article class="timeline-card">
+              <div class="timeline-marker" aria-hidden="true"></div>
+              <div class="timeline-panel">
+                <div class="timeline-panel__header">
+                  <div>
+                    <h3 class="timeline-panel__title">College Lecturer</h3>
+                    <p class="timeline-company">North East Scotland College</p>
+                  </div>
+                  <span class="timeline-date">2023 - 2025</span>
+                </div>
+                <p class="timeline-description">
+                  Lectured in programming, databases, web development, and cyber
+                  security while developing course material and supporting
+                  students.
+                </p>
+              </div>
+            </article>
+            <article class="timeline-card">
+              <div class="timeline-marker" aria-hidden="true"></div>
+              <div class="timeline-panel">
+                <div class="timeline-panel__header">
+                  <div>
+                    <h3 class="timeline-panel__title">
+                      HND Software Development
+                    </h3>
+                    <p class="timeline-company">North East Scotland College</p>
+                  </div>
+                  <span class="timeline-date">2021 - 2023</span>
+                </div>
+                <p class="timeline-description">
+                  Studied Python, Java, web development, databases, cyber
+                  security, and networking, graduating with distinction.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="site-section bg-gradient-contact">
+        <div class="section-shell container section-shell--contact">
+          <div class="contact-copy">
+            <p class="section-kicker" data-content="contact.kicker">Contact</p>
+            <h2 class="section-title" data-content="contact.title">
+              Let's connect.
+            </h2>
+            <p class="section-intro" data-content="contact.intro">
+              Open to opportunities, collaborations, and direct conversations
+              about product, design, or code.
+            </p>
+          </div>
+
+          <div class="contact-panel">
+            <form
+              action="https://formspree.io/f/xbldrayw"
+              method="POST"
+              class="contact-form"
+            >
+              <div class="form-grid">
+                <div class="form-field">
+                  <label class="form-label" for="contact-name">Name</label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    name="name"
+                    class="form-input"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="contact-email">Email</label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    name="email"
+                    class="form-input"
+                    placeholder="john@example.com"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="contact-message">Message</label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows="5"
+                  class="form-input form-input--area"
+                  placeholder="How can we work together?"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+          </div>
+
+          <div class="footer-meta">
+            <p data-content="contact.footer">
+              &copy; 2026 Gustavo Rangel. All rights reserved.
+            </p>
+            <p class="footer-meta__code">↑ ↑ ↓ ↓ ← → ← → B A</p>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <div class="floating-container">
-        <a href="https://linktr.ee/defonotgus" target="_blank" class="bubble-link" style="background-color: #43E660;" title="Linktree">
-            <img src="https://cdn.simpleicons.org/linktree/white" alt="Linktree">
-        </a>
-        <a href="https://github.com/DefoNotGus" target="_blank" class="bubble-link" style="background-color: #333333;" title="GitHub">
-            <img src="https://cdn.simpleicons.org/github/white" alt="GitHub">
-        </a>
-        <a href="https://www.buymeacoffee.com/defonotgus" target="_blank" class="bubble-link" style="background-color: #FFDD00;" title="Buy me a coffee">
-            <img src="https://cdn.simpleicons.org/buymeacoffee/000000" alt="Buy Me A Coffee">
-        </a>
-    </div>
-    
-    <!-- Modals -->
-    <div id="logo-modal" class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm cursor-pointer transition-opacity">
-        <img src="public/images/logo-color.png" onerror="this.src='https://placehold.co/400x400/1A1A1D/FFF?text=GR'" alt="Logo Large" class="max-w-full max-h-[80vh] rounded-2xl shadow-2xl cursor-default">
+    <div class="floating-container" aria-label="Quick links">
+      <a
+        href="https://linktr.ee/defonotgus"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bubble-link"
+        style="--bubble-color: #43e660; --bubble-icon-color: #ffffff"
+        aria-label="Linktree"
+      >
+        <i
+          data-lucide="link-2"
+          class="bubble-link__icon"
+          aria-hidden="true"
+        ></i>
+      </a>
+      <a
+        href="https://github.com/DefoNotGus"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bubble-link"
+        style="--bubble-color: #333333; --bubble-icon-color: #ffffff"
+        aria-label="GitHub"
+      >
+        <svg
+          class="bubble-link__icon"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M12 .3a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.49 11.49 0 0 1 12 6.1c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.82 1.1.82 2.23v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .3Z" />
+        </svg>
+      </a>
+      <a
+        href="https://www.buymeacoffee.com/defonotgus"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bubble-link"
+        style="--bubble-color: #ffdd00; --bubble-icon-color: #0f1113"
+        aria-label="Buy me a coffee"
+      >
+        <i
+          data-lucide="coffee"
+          class="bubble-link__icon"
+          aria-hidden="true"
+        ></i>
+      </a>
     </div>
 
-    <!-- Draggable Dance Modal -->
-    <div id="dance-modal" class="fixed inset-0 z-[110] hidden items-center justify-center pointer-events-none">
-        <!-- Dialog Container (pointer-events-auto makes it interactive while background remains clickable if wanted) -->
-        <div id="dance-dialog" class="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl pointer-events-auto absolute w-[320px] md:w-[450px] overflow-hidden flex flex-col" style="top: 20%; left: 50%; transform: translateX(-50%);">
-            
-            <!-- Draggable Header -->
-            <div id="dance-dialog-header" class="bg-gray-800 p-3 flex justify-between items-center cursor-move border-b border-gray-700 select-none">
-                <h3 class="text-white font-semibold text-sm m-0 flex items-center gap-2">
-                    <i data-lucide="music" class="w-4 h-4 text-pink-500"></i> Gus is Dancing!
-                </h3>
-                <button id="close-dance-btn" class="text-gray-400 hover:text-white transition-colors p-1">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            
-            <!-- 3D Canvas Container -->
-            <div id="dance-avatar-container" class="w-full h-[350px] md:h-[450px] relative bg-black/50"></div>
+    <div
+      id="blog-modal"
+      class="overlay-modal hidden"
+      aria-hidden="true"
+    >
+      <div class="overlay-modal__backdrop" data-blog-close></div>
+      <article
+        class="overlay-modal__dialog blog-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="blog-modal-title"
+      >
+        <button
+          class="overlay-modal__close"
+          type="button"
+          aria-label="Close blog post"
+          data-blog-close
+        >
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+        <img
+          id="blog-modal-image"
+          class="blog-modal__image hidden"
+          alt=""
+        />
+        <p class="blog-modal__eyebrow">Latest post</p>
+        <time id="blog-modal-date" class="blog-modal__date"></time>
+        <h2 id="blog-modal-title" class="blog-modal__title"></h2>
+        <div id="blog-modal-tags" class="blog-modal__tags"></div>
+        <p id="blog-modal-excerpt" class="blog-modal__excerpt"></p>
+        <div id="blog-modal-body" class="blog-modal__body"></div>
+      </article>
+    </div>
+
+    <div id="dance-modal" class="dance-modal hidden" aria-hidden="true">
+      <div
+        id="dance-dialog"
+        class="dance-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dance-dialog-title"
+        aria-describedby="dance-dialog-description"
+      >
+        <div id="dance-dialog-header" class="dance-dialog__header">
+          <div class="dance-dialog__title-group">
+            <p class="dance-dialog__eyebrow">Now playing</p>
+            <h3 id="dance-dialog-title" class="dance-dialog__title">
+              <i data-lucide="music" aria-hidden="true"></i>
+              Gus is dancing
+            </h3>
+          </div>
+          <button
+            id="close-dance-btn"
+            class="dance-dialog__close"
+            type="button"
+            aria-label="Close dance modal"
+          >
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
         </div>
+
+        <p id="dance-dialog-description" class="dance-dialog__description">
+          Drag the window around. Press Escape to close.
+        </p>
+
+        <div id="dance-avatar-container" class="dance-dialog__canvas"></div>
+      </div>
     </div>
 
-    <!-- External Script (Original scripts) -->
-    <script src="public/js/script.js"></script>
-
-    <!-- Three.js Setup and Modal Logic -->
-    <script type="module" src="public/js/dance.js"></script>
-</body>
+    <script type="module" src="public/js/script.js"></script>
+  </body>
 </html>

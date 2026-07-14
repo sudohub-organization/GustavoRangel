@@ -1,6 +1,6 @@
 # Gustavo Rangel — Portfolio Site
 
-A personal portfolio website built to showcase projects, experience, and a bit of personality. It's a fully static, single-page app with smooth section transitions, a 3D interactive avatar, and a few surprises hidden inside.
+A personal portfolio website built to showcase projects, experience, and a bit of personality. It is a static-first single page with progressive JavaScript enhancements for navigation, featured project data, and the lazy-loaded 3D dance easter egg.
 
 🌐 **Live site:** [gustavorangel.sudohub.org](https://gustavorangel.sudohub.org)
 
@@ -8,10 +8,12 @@ A personal portfolio website built to showcase projects, experience, and a bit o
 
 ## ✨ Features
 
-- **Single-page navigation** — four sections (Home, Projects, Experience, Contact) with animated dot-based nav
-- **Interactive 3D avatar** — click *Dance* to open a draggable modal with a Three.js-powered dancing character
-- **Accordion project cards** — each card expands with a live 3D shape, project description, tools used, and links to the live demo or repo
-- **Experience timeline** — scrollable vertical timeline pulled from a JSON file
+- **Static-first portfolio page** — header, hero, featured work, skills, experience, and contact live in `index.html`
+- **Single-page navigation** — section links are enhanced with active-state tracking
+- **Interactive 3D avatar** — click *Dance* to lazy-load a draggable Three.js-powered dancing character
+- **Pages CMS-ready content** — hero, projects, skills, experience, contact copy, and blog posts are editable through JSON files
+- **Featured project cards** — focused cards loaded from a small JSON file with role, stack, year, and links
+- **Latest blog modal** — a compact home-section post preview expands into a readable modal
 - **Contact form** — powered by Formspree, no backend needed
 - **Floating social bubbles** — quick links to GitHub, Linktree, and Buy Me a Coffee
 - **Konami code easter egg** — ↑ ↑ ↓ ↓ ← → ← → B A 👾
@@ -21,23 +23,33 @@ A personal portfolio website built to showcase projects, experience, and a bit o
 
 ## 🗂️ Project structure
 
-```
-├── index.html                  # Main entry point
+```text
+├── index.html                  # Main portfolio page
+├── 404.html                    # Custom 404 page
+├── notready.html               # Placeholder page for unfinished routes
 ├── public/
 │   ├── css/
-│   │   ├── styles.css          # Core styles & animations
-│   │   ├── components.css      # Reusable UI component styles
-│   │   └── smallscreens.css    # Mobile/small-screen overrides
+│   │   ├── styles.css          # CSS imports
+│   │   ├── 404.css             # Shared error/placeholder page styling
+│   │   ├── base.css            # Design tokens and base element styles
+│   │   ├── layout.css          # Page and section layout
+│   │   ├── components.css      # Reusable portfolio component styles
+│   │   ├── sections.css        # Section backgrounds
+│   │   ├── utilities.css       # Small utility classes
+│   │   └── responsive.css      # Mobile/small-screen overrides
 │   ├── js/
-│   │   ├── script.js           # Navigation, project cards, timeline logic
-│   │   ├── dance.js            # Three.js avatar setup & dance modal
-│   │   └── audio.js            # Audio handling
+│   │   ├── script.js           # Progressive enhancement entrypoint
+│   │   ├── dance.js            # Lazy-loaded Three.js avatar setup
+│   │   ├── audio.js            # Audio handling
+│   │   └── modules/            # Small enhancement modules
 │   ├── data/
-│   │   ├── projects.json       # Project card content & 3D shape config
-│   │   └── timeline.json       # Experience timeline entries
-│   └── images/                 # Photos, logo, and other assets
+│   │   ├── site.json           # Editable page copy and section data
+│   │   ├── projects.json       # Featured project card content
+│   │   └── blog.json           # Homepage latest-post data
+│   ├── docs/                   # Static document exports
+│   └── images/                 # Photos, logos, and other assets
 ├── game/                       # Mini browser game (linked from header)
-├── honours/                    # Honours project showcase page
+├── honours/                    # Honours project showcase and survey pages
 └── projects/                   # Individual project sub-pages
 ```
 
@@ -45,7 +57,7 @@ A personal portfolio website built to showcase projects, experience, and a bit o
 
 ## 💻 Running locally
 
-The site uses `fetch()` to load JSON data, so it needs to be served — opening `index.html` directly via `file://` won't work.
+The page has meaningful static content without JavaScript. To load project JSON and the lazy dance feature, serve the repo locally instead of opening `index.html` directly via `file://`.
 
 ```bash
 # Node.js
@@ -83,16 +95,18 @@ Upload the repository root. No build step required — just make sure asset path
 
 ## ✏️ Updating content
 
-All content is data-driven and easy to change without touching HTML or JS:
+Pages CMS is configured through `.pages.yml` to edit the content files in `public/data/`. After the Pages CMS GitHub App is connected, update the site through the CMS UI or edit these files directly:
 
 | What | File |
 |---|---|
+| Edit hero, skills, experience, contact | `public/data/site.json` |
 | Add / edit projects | `public/data/projects.json` |
-| Add / edit experience entries | `public/data/timeline.json` |
-| Change colours, fonts, layout | `public/css/styles.css` |
-| Change mobile layout | `public/css/smallscreens.css` |
+| Add / edit blog posts | `public/data/blog.json` |
+| Change colours, fonts, layout | `public/css/*.css` |
+| Change mobile layout | `public/css/responsive.css` |
 
-Each project entry supports a title, description, URL, GitHub repo link, emoji list, tech tools, colour accent, 3D shape type, and size scale — tweak away.
+Each project entry supports `title`, `summary`, `role`, `stack`, `year`, `links`, and `featured`.
+Each blog entry supports `title`, `date`, `excerpt`, `body`, `published`, optional `coverImage`, and optional `tags`.
 
 ---
 
