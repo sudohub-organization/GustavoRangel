@@ -1,11 +1,14 @@
 [
-    {
-        "title": "Building a Portfolio That Stays Easy to Update",
-        "date": "2026-07-14",
-        "excerpt": "A short note on moving portfolio content into small data files so the site remains static, fast, and simple to edit.",
-        "body": "I am keeping this portfolio intentionally static, but the content should not be painful to update. The new setup moves editable copy, projects, and posts into JSON files that Pages CMS can manage through GitHub. That means the site can stay lightweight while still being comfortable to maintain.",
-        "published": true,
-        "coverImage": "",
-        "tags": ["Portfolio", "CMS", "Static site"]
-    }
+  {
+    "title": "Refactoring my portfolio in 2026",
+    "date": "2026-07-14",
+    "excerpt": "After nearly a year, I have decided to come back to finish what I started. ",
+    "body": "A portfolio is a developers business card. And imagine that you receive a business card that is stained with food and all wrinkly. It still does the job, it has your number on it but... does not really leave a good impression, from now in, I will take my portfolio and personal projects serious again ",
+    "published": true,
+    "tags": [
+      "Portfolio",
+      "CMS",
+      "Static site"
+    ]
+  }
 ]
