@@ -2,7 +2,7 @@
     "hero": {
         "kicker": "Software developer in Aberdeen, Scotland",
         "title": "Gustavo Rangel",
-        "copy": "I build practical web products, teaching tools, and data-backed interfaces that make complex ideas easier to use.",
+        "copy": "I turn complex ideas into practical web products, teaching tools, and data-driven interfaces.",
         "image": "/public/images/me.jpeg",
         "imageAlt": "Portrait of Gustavo Rangel",
         "actions": [
@@ -19,49 +19,79 @@
         ],
         "socialLinks": [
             {
-                "label": "LinkedIn",
-                "href": "https://www.linkedin.com/in/gustavo-rangel-professional/",
-                "icon": "linkedin"
+                "label": "Linktree",
+                "href": "https://linktr.ee/defonotgus",
+                "icon": "link-2",
+                "variant": "linktree"
             },
             {
-                "label": "GitHub",
-                "href": "https://github.com/DefoNotGus",
-                "icon": "github"
-            },
-            {
-                "label": "YouTube",
-                "href": "https://www.youtube.com/@GustavoElProfe",
-                "icon": "youtube"
+                "label": "Buy me a coffee",
+                "href": "https://www.buymeacoffee.com/defonotgus",
+                "icon": "coffee",
+                "variant": "coffee"
             }
         ]
     },
     "projects": {
         "kicker": "Featured work",
-        "title": "Some of my Projects",
+        "title": "Projects",
         "intro": "A small set of projects selected for engineering value, product thinking, and presentation strength."
+    },
+    "blog": {
+        "kicker": "Writing",
+        "title": "Blog",
+        "intro": "Notes on software, learning, portfolio work, and the practical decisions behind projects."
     },
     "skills": {
         "kicker": "Skills and stack",
-        "title": "What I can do",
+        "title": "Skills",
         "items": [
             {
                 "title": "Web",
-                "description": "JavaScript, Vue, Flask, Node.js, Express, ASP.NET Core, Blazor"
+                "description": "JavaScript, Vue, Flask, Node.js, Express, ASP.NET Core, Blazor",
+                "technologies": [
+                    "JavaScript",
+                    "Vue",
+                    "Flask",
+                    "Node.js",
+                    "Express",
+                    "ASP.NET Core",
+                    "Blazor"
+                ]
             },
             {
                 "title": "Data and ML",
-                "description": "Python, pandas, scikit-learn, NLP, matplotlib, research reporting"
+                "description": "Python, pandas, scikit-learn, NLP, matplotlib, research reporting",
+                "technologies": [
+                    "Python",
+                    "pandas",
+                    "scikit-learn",
+                    "NLP",
+                    "matplotlib",
+                    "Research reporting"
+                ]
             },
             {
                 "title": "Tools",
-                "description": "Git, GitHub, Azure, Coolify, MongoDB, MySQL, Android Studio, Blender, Three.js"
+                "description": "Git, GitHub, Azure, Coolify, MongoDB, MySQL, Android Studio, Blender, Three.js",
+                "technologies": [
+                    "Git",
+                    "GitHub",
+                    "Azure",
+                    "Coolify",
+                    "MongoDB",
+                    "MySQL",
+                    "Android Studio",
+                    "Blender",
+                    "Three.js"
+                ]
             }
         ]
     },
     "experience": {
         "kicker": "Experience",
         "title": "Work, teaching, and study.",
-        "intro": "Recent roles and education focused on software development, teaching, and practical problem solving.",
+        "intro": "Recent work, teaching, and study in software development.",
         "items": [
             {
                 "title": "Software Developer - Software Developer",

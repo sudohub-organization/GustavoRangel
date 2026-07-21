@@ -34,6 +34,7 @@ content:
               - { name: label, label: Label, type: string }
               - { name: href, label: URL, type: string }
               - { name: icon, label: Icon, type: string }
+              - { name: variant, label: Variant, type: string, required: false }
       - name: projects
         label: Projects section heading
         type: object
@@ -54,6 +55,17 @@ content:
             fields:
               - { name: title, label: Title, type: string }
               - { name: description, label: Description, type: text }
+              - name: technologies
+                label: Technologies
+                type: string
+                list: true
+      - name: blog
+        label: Blog section heading
+        type: object
+        fields:
+          - { name: kicker, label: Kicker, type: string }
+          - { name: title, label: Title, type: string }
+          - { name: intro, label: Intro, type: text }
       - name: experience
         label: Experience
         type: object
@@ -113,7 +125,7 @@ content:
       - { name: title, label: Title, type: string }
       - { name: date, label: Date, type: date }
       - { name: excerpt, label: Excerpt, type: text }
-      - { name: body, label: Body, type: text }
+      - { name: body, label: Body (Markdown), type: text }
       - { name: published, label: Published, type: boolean }
       - { name: coverImage, label: Cover image, type: image, required: false }
       - name: tags
