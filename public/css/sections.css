@@ -18,7 +18,7 @@
         linear-gradient(180deg, #15181c 0%, var(--color-section-bg) 100%);
 }
 
-.bg-gradient-blog {
+.bg-gradient-linkedin {
     background:
         radial-gradient(circle at 78% 26%, rgba(210, 107, 124, 0.08), transparent 26%),
         radial-gradient(circle at 18% 72%, rgba(110, 146, 135, 0.08), transparent 24%),

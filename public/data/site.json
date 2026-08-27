@@ -37,10 +37,10 @@
         "title": "Projects",
         "intro": "A small set of projects selected for engineering value, product thinking, and presentation strength."
     },
-    "blog": {
-        "kicker": "Writing",
-        "title": "Blog",
-        "intro": "Notes on software, learning, portfolio work, and the practical decisions behind projects."
+    "linkedin": {
+        "kicker": "LinkedIn",
+        "title": "Recent Updates",
+        "intro": "Recent posts, work updates, and professional notes from LinkedIn."
     },
     "skills": {
         "kicker": "Skills and stack",

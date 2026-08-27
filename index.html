@@ -71,6 +71,26 @@
             <li class="site-nav__item">
               <a
                 class="nav-link"
+                href="#linkedin"
+                data-section-link="linkedin"
+                aria-label="LinkedIn"
+                title="LinkedIn"
+              >
+                <svg
+                  class="nav-link__icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.32 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13Zm1.78 13.02H3.54V9H7.1v11.45ZM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0Z"
+                  />
+                </svg>
+              </a>
+            </li>
+            <li class="site-nav__item">
+              <a
+                class="nav-link"
                 href="#skills"
                 data-section-link="skills"
                 aria-label="Skills"
@@ -78,21 +98,6 @@
               >
                 <i
                   data-lucide="sparkles"
-                  class="nav-link__icon"
-                  aria-hidden="true"
-                ></i>
-              </a>
-            </li>
-            <li class="site-nav__item">
-              <a
-                class="nav-link"
-                href="#blog"
-                data-section-link="blog"
-                aria-label="Blog"
-                title="Blog"
-              >
-                <i
-                  data-lucide="newspaper"
                   class="nav-link__icon"
                   aria-hidden="true"
                 ></i>
@@ -225,24 +230,6 @@
                 data-content-image="hero.image"
               />
             </div>
-            <article id="latest-blog-card" class="blog-preview hidden">
-              <div class="blog-preview__meta">
-                <p class="blog-preview__eyebrow">Latest post</p>
-                <time id="latest-blog-date" class="blog-preview__date"></time>
-              </div>
-              <h2 id="latest-blog-title" class="blog-preview__title"></h2>
-              <p id="latest-blog-excerpt" class="blog-preview__excerpt"></p>
-              <button
-                id="latest-blog-open"
-                class="blog-preview__button"
-                type="button"
-                aria-haspopup="dialog"
-                aria-controls="blog-modal"
-              >
-                <span>Show more</span>
-                <i data-lucide="arrow-down" aria-hidden="true"></i>
-              </button>
-            </article>
           </div>
         </div>
       </section>
@@ -370,51 +357,26 @@
         </div>
       </section>
 
-      <section id="blog" class="site-section bg-gradient-blog">
+      <section id="linkedin" class="site-section bg-gradient-linkedin">
         <div class="section-shell container">
-          <div class="blog-heading" data-content-section="blog">
-            <p class="section-kicker" data-content="blog.kicker">Writing</p>
-            <h2 class="section-title" data-content="blog.title">Blog</h2>
-            <p class="section-intro" data-content="blog.intro">
-              Notes on software, learning, portfolio work, and the practical
-              decisions behind projects.
+          <div class="linkedin-heading" data-content-section="linkedin">
+            <p class="section-kicker" data-content="linkedin.kicker">LinkedIn</p>
+            <h2 class="section-title" data-content="linkedin.title">
+              Recent Updates
+            </h2>
+            <p class="section-intro" data-content="linkedin.intro">
+              Recent posts, work updates, and professional notes from LinkedIn.
             </p>
           </div>
 
-          <div id="blog-container" class="blog-grid" aria-live="polite">
-            <article class="blog-card">
-              <div class="blog-card__content">
-                <div class="blog-card__meta">
-                  <p class="blog-card__eyebrow">Post</p>
-                  <time class="blog-card__date" datetime="2026-07-14"
-                    >14 Jul 2026</time
-                  >
-                </div>
-                <h3 class="blog-card__title">Refactoring my portfolio in 2026</h3>
-                <p class="blog-card__excerpt">
-                  After nearly a year, I have decided to come back to finish
-                  what I started.
-                </p>
-                <div
-                  class="blog-card__tags"
-                  aria-label="Refactoring my portfolio in 2026 tags"
-                >
-                  <span class="blog-card__tag">Portfolio</span>
-                  <span class="blog-card__tag">CMS</span>
-                  <span class="blog-card__tag">Static site</span>
-                </div>
-                <button
-                  class="blog-card__button"
-                  type="button"
-                  data-blog-open="0"
-                  aria-haspopup="dialog"
-                  aria-controls="blog-modal"
-                >
-                  <span>Show more</span>
-                  <i data-lucide="arrow-down" aria-hidden="true"></i>
-                </button>
-              </div>
-            </article>
+          <div class="linkedin-feed" aria-label="LinkedIn feed">
+            <!-- Elfsight LinkedIn Feed | Untitled LinkedIn Feed -->
+            <script src="https://elfsightcdn.com/platform.js" async></script>
+            <div class="elfsight-app-8ffeb16f-73a2-4293-8e8b-7c3dc326ee74" data-elfsight-app-lazy></div>
+            <p class="linkedin-feed__fallback">
+              LinkedIn feed unavailable.
+              <a href="https://www.linkedin.com/in/gustavoelprofe" target="_blank" rel="noopener noreferrer">Open LinkedIn</a>
+            </p>
           </div>
         </div>
       </section>
@@ -640,40 +602,6 @@
         </div>
       </section>
     </main>
-
-    <div
-      id="blog-modal"
-      class="overlay-modal hidden"
-      aria-hidden="true"
-    >
-      <div class="overlay-modal__backdrop" data-blog-close></div>
-      <article
-        class="overlay-modal__dialog blog-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="blog-modal-title"
-      >
-        <button
-          class="overlay-modal__close"
-          type="button"
-          aria-label="Close blog post"
-          data-blog-close
-        >
-          <i data-lucide="x" aria-hidden="true"></i>
-        </button>
-        <img
-          id="blog-modal-image"
-          class="blog-modal__image hidden"
-          alt=""
-        />
-        <p class="blog-modal__eyebrow">Latest post</p>
-        <time id="blog-modal-date" class="blog-modal__date"></time>
-        <h2 id="blog-modal-title" class="blog-modal__title"></h2>
-        <div id="blog-modal-tags" class="blog-modal__tags"></div>
-        <p id="blog-modal-excerpt" class="blog-modal__excerpt"></p>
-        <div id="blog-modal-body" class="blog-modal__body"></div>
-      </article>
-    </div>
 
     <div id="dance-modal" class="dance-modal hidden" aria-hidden="true">
       <div

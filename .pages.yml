@@ -59,8 +59,8 @@ content:
                 label: Technologies
                 type: string
                 list: true
-      - name: blog
-        label: Blog section heading
+      - name: linkedin
+        label: LinkedIn section heading
         type: object
         fields:
           - { name: kicker, label: Kicker, type: string }
@@ -114,21 +114,3 @@ content:
           - { name: repo, label: Repository URL, type: string, required: false }
           - { name: caseStudy, label: Case study URL, type: string, required: false }
       - { name: featured, label: Featured, type: boolean }
-
-  - name: blog
-    label: Blog posts
-    type: file
-    path: public/data/blog.json
-    format: json
-    list: true
-    fields:
-      - { name: title, label: Title, type: string }
-      - { name: date, label: Date, type: date }
-      - { name: excerpt, label: Excerpt, type: text }
-      - { name: body, label: Body (Markdown), type: text }
-      - { name: published, label: Published, type: boolean }
-      - { name: coverImage, label: Cover image, type: image, required: false }
-      - name: tags
-        label: Tags
-        type: string
-        list: true

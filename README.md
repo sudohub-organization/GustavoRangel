@@ -11,9 +11,9 @@ A personal portfolio website built to showcase projects, experience, and a bit o
 - **Static-first portfolio page** — header, hero, featured work, skills, experience, and contact live in `index.html`
 - **Single-page navigation** — section links are enhanced with active-state tracking
 - **Interactive 3D avatar** — click *Dance* to lazy-load a draggable Three.js-powered dancing character
-- **Pages CMS-ready content** — hero, projects, skills, experience, contact copy, and blog posts are editable through JSON files
+- **Pages CMS-ready content** — hero, projects, skills, experience, contact copy, and LinkedIn feed heading are editable through JSON files
 - **Featured project cards** — focused cards loaded from a small JSON file with role, stack, year, and links
-- **Blog section** — CMS-managed posts render as a homepage grid and open in a readable modal
+- **LinkedIn feed** — embedded through Elfsight for recent professional updates
 - **Contact form** — powered by Formspree, no backend needed
 - **Floating social bubbles** — quick links to GitHub, Linktree, and Buy Me a Coffee
 - **Konami code easter egg** — ↑ ↑ ↓ ↓ ← → ← → B A 👾
@@ -44,8 +44,7 @@ A personal portfolio website built to showcase projects, experience, and a bit o
 │   │   └── modules/            # Small enhancement modules
 │   ├── data/
 │   │   ├── site.json           # Editable page copy and section data
-│   │   ├── projects.json       # Featured project card content
-│   │   └── blog.json           # Blog post content
+│   │   └── projects.json       # Featured project card content
 │   ├── docs/                   # Static document exports
 │   └── images/                 # Photos, logos, and other assets
 ├── game/                       # Mini browser game (linked from header)
@@ -99,14 +98,12 @@ Pages CMS is configured through `.pages.yml` to edit the content files in `publi
 
 | What | File |
 |---|---|
-| Edit hero, blog heading, skills, experience, contact | `public/data/site.json` |
+| Edit hero, LinkedIn heading, skills, experience, contact | `public/data/site.json` |
 | Add / edit projects | `public/data/projects.json` |
-| Add / edit blog posts | `public/data/blog.json` |
 | Change colours, fonts, layout | `public/css/*.css` |
 | Change mobile layout | `public/css/responsive.css` |
 
 Each project entry supports `title`, `summary`, `role`, `stack`, `year`, `links`, and `featured`.
-Each blog entry supports `title`, `date`, `excerpt`, Markdown-style `body`, `published`, optional `coverImage`, and optional `tags`.
 See `CMS_COMPONENTS.md` for the current CMS-editable component inventory and simplification candidates.
 
 ---

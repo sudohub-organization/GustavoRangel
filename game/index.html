@@ -68,6 +68,34 @@
         </div>
     </div>
 
+    <script type="module">
+        import { startDiscoMusic, stopDiscoMusic } from '../public/js/audio.js';
+
+        let isMusicStarted = false;
+
+        function startGameMusic() {
+            if (isMusicStarted) return;
+            isMusicStarted = true;
+            startDiscoMusic();
+        }
+
+        window.addEventListener('pointerdown', startGameMusic, { once: true });
+        window.addEventListener('keydown', startGameMusic, { once: true });
+        window.addEventListener('touchstart', startGameMusic, { once: true, passive: true });
+        window.addEventListener('beforeunload', stopDiscoMusic);
+
+        const gameOverObserver = new MutationObserver(() => {
+            if (document.body.classList.contains('game-over')) {
+                stopDiscoMusic();
+                gameOverObserver.disconnect();
+            }
+        });
+
+        gameOverObserver.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
