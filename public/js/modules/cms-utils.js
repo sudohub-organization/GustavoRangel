@@ -53,8 +53,12 @@ export function safeUrl(value) {
     const url = asNonEmptyString(value);
     if (!url) return '';
 
+    if (/^(?:javascript|data|vbscript):/i.test(url)) return '';
+
     if (
-        url.startsWith('/') ||
+        url.startsWith('./') ||
+        url.startsWith('../') ||
+        /^[A-Za-z0-9._~-][A-Za-z0-9._~/-]*(?:[?#][^\s]*)?$/.test(url) ||
         url.startsWith('#') ||
         /^https?:\/\//i.test(url) ||
         /^mailto:/i.test(url)

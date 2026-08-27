@@ -6,7 +6,7 @@
         "stack": ["Python", "Flask", "scikit-learn", "LaTeX"],
         "year": "2025",
         "links": {
-            "live": "/honours/index.html"
+            "live": "./honours/index.html"
         },
         "featured": true
     },
@@ -17,7 +17,7 @@
         "stack": ["JavaScript", "HTML", "CSS"],
         "year": "2025",
         "links": {
-            "live": "/projects/rguhack2025/index.html",
+            "live": "./projects/rguhack2025/index.html",
             "repo": "https://github.com/DefoNotGus/rguhack2025"
         },
         "featured": true
@@ -29,7 +29,7 @@
         "stack": ["JavaScript", "Three.js", "Blender"],
         "year": "2024",
         "links": {
-            "live": "/projects/avatarpage/index.html",
+            "live": "./projects/avatarpage/index.html",
             "repo": "https://github.com/DefoNotGus/My_Avatar"
         },
         "featured": true
@@ -52,7 +52,7 @@
         "stack": ["Python", "pandas", "matplotlib"],
         "year": "2024",
         "links": {
-            "live": "/public/docs/dataviz.html"
+            "live": "./public/docs/dataviz.html"
         },
         "featured": true
     },

@@ -3,7 +3,7 @@
         "kicker": "Software developer in Aberdeen, Scotland",
         "title": "Gustavo Rangel",
         "copy": "I turn complex ideas into practical web products, teaching tools, and data-driven interfaces.",
-        "image": "/public/images/me.jpeg",
+        "image": "./public/images/me.jpeg",
         "imageAlt": "Portrait of Gustavo Rangel",
         "actions": [
             {
