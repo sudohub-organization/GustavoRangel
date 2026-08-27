@@ -1,0 +1,128 @@
+{
+    "hero": {
+        "kicker": "Software developer in Aberdeen, Scotland",
+        "title": "Gustavo Rangel",
+        "copy": "I turn complex ideas into practical web products, teaching tools, and data-driven interfaces.",
+        "image": "/public/images/me.jpeg",
+        "imageAlt": "Portrait of Gustavo Rangel",
+        "actions": [
+            {
+                "label": "View Work",
+                "href": "#projects",
+                "style": "primary"
+            },
+            {
+                "label": "Contact Me",
+                "href": "#contact",
+                "style": "secondary"
+            }
+        ],
+        "socialLinks": [
+            {
+                "label": "Linktree",
+                "href": "https://linktr.ee/defonotgus",
+                "icon": "link-2",
+                "variant": "linktree"
+            },
+            {
+                "label": "Buy me a coffee",
+                "href": "https://www.buymeacoffee.com/defonotgus",
+                "icon": "coffee",
+                "variant": "coffee"
+            }
+        ]
+    },
+    "projects": {
+        "kicker": "Featured work",
+        "title": "Projects",
+        "intro": "A small set of projects selected for engineering value, product thinking, and presentation strength."
+    },
+    "linkedin": {
+        "kicker": "LinkedIn",
+        "title": "Recent Updates",
+        "intro": "Recent posts, work updates, and professional notes from LinkedIn."
+    },
+    "skills": {
+        "kicker": "Skills and stack",
+        "title": "Skills",
+        "items": [
+            {
+                "title": "Web",
+                "description": "JavaScript, Vue, Flask, Node.js, Express, ASP.NET Core, Blazor",
+                "technologies": [
+                    "JavaScript",
+                    "Vue",
+                    "Flask",
+                    "Node.js",
+                    "Express",
+                    "ASP.NET Core",
+                    "Blazor"
+                ]
+            },
+            {
+                "title": "Data and ML",
+                "description": "Python, pandas, scikit-learn, NLP, matplotlib, research reporting",
+                "technologies": [
+                    "Python",
+                    "pandas",
+                    "scikit-learn",
+                    "NLP",
+                    "matplotlib",
+                    "Research reporting"
+                ]
+            },
+            {
+                "title": "Tools",
+                "description": "Git, GitHub, Azure, Coolify, MongoDB, MySQL, Android Studio, Blender, Three.js",
+                "technologies": [
+                    "Git",
+                    "GitHub",
+                    "Azure",
+                    "Coolify",
+                    "MongoDB",
+                    "MySQL",
+                    "Android Studio",
+                    "Blender",
+                    "Three.js"
+                ]
+            }
+        ]
+    },
+    "experience": {
+        "kicker": "Experience",
+        "title": "Work, teaching, and study.",
+        "intro": "Recent work, teaching, and study in software development.",
+        "items": [
+            {
+                "title": "Software Developer - Software Developer",
+                "company": "Dev4 Online",
+                "date": "2025 - Present",
+                "description": "Designing and developing enterprise software across ASP.NET Core, Blazor, Vue, Python, and related stacks."
+            },
+            {
+                "title": "BSc Software Development (Honours)",
+                "company": "Robert Gordon University",
+                "date": "2023 - 2025",
+                "description": "Completed an honours project focused on machine learning UI and UX optimization, with hackathon participation alongside the degree."
+            },
+            {
+                "title": "College Lecturer",
+                "company": "North East Scotland College",
+                "date": "2023 - 2025",
+                "description": "Lectured in programming, databases, web development, and cyber security while developing course material and supporting students."
+            },
+            {
+                "title": "HND Software Development",
+                "company": "North East Scotland College",
+                "date": "2021 - 2023",
+                "description": "Studied Python, Java, web development, databases, cyber security, and networking, graduating with distinction."
+            }
+        ]
+    },
+    "contact": {
+        "kicker": "Contact",
+        "title": "Let's connect.",
+        "intro": "Open to opportunities, collaborations, and direct conversations about product, design, or code.",
+        "footer": "\u00a9 2026 Gustavo Rangel. All rights reserved."
+    }
+}

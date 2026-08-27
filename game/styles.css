@@ -1,38 +1,83 @@
+:root {
+    --color-primary: #f472b6;
+    --color-muted-text: #94a3b8;
+    --color-light-text: #f8fafc;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     overflow: hidden;
-    background-color: #020617;
+    background:
+        radial-gradient(circle at 18% 22%, rgba(34, 211, 238, 0.18) 0 9%, transparent 30%),
+        radial-gradient(circle at 78% 14%, rgba(244, 114, 182, 0.16) 0 7%, transparent 28%),
+        radial-gradient(circle at 54% 72%, rgba(59, 130, 246, 0.12) 0 12%, transparent 34%),
+        linear-gradient(180deg, #020617 0%, #050816 46%, #000 100%);
     font-family: 'Inter', sans-serif;
+    touch-action: none;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
 }
 
 #canvas-container {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
     z-index: 1;
+    touch-action: none;
 }
 
 #ui-layer {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
     z-index: 10;
     pointer-events: none;
 }
 
-/* Modals */
 .glass-panel {
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(12px);
+    background: rgba(15, 23, 42, 0.76);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(14px);
     pointer-events: auto;
 }
 
-/* Joystick Area Base (Hidden on Desktop) */
+.timer-label {
+    margin: 0 0 0.15rem;
+    color: var(--color-muted-text);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.timer-value {
+    margin: 0;
+    color: var(--color-light-text);
+    font-size: clamp(1.5rem, 4vw, 2.45rem);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1;
+}
+
+.speed-value {
+    margin: 0;
+    color: #67e8f9;
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
 #joystick-zone {
     position: absolute;
     bottom: 20px;
@@ -41,66 +86,250 @@ body {
     height: 150px;
     pointer-events: auto;
     display: none;
+    z-index: 35;
+    touch-action: none;
 }
 
-/* Custom Crosshair Cursor */
-#custom-cursor {
+.loss-panel {
+    border-top: 4px solid #f472b6;
+    border-radius: 1rem;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45), 0 0 60px rgba(244, 114, 182, 0.2);
+    touch-action: auto;
+}
+
+.loss-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+}
+
+.loss-title {
+    margin: 0;
+    color: white;
+    font-size: clamp(1.75rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.loss-copy {
+    margin: 0 0 1.25rem;
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.restart-btn,
+.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.8rem;
+    border: 0;
+    border-radius: 0.75rem;
+    background: #db2777;
+    color: white;
+    cursor: pointer;
+    font-weight: 800;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.restart-btn {
+    flex: 0 0 auto;
+    padding: 0.75rem 1rem;
+}
+
+.restart-btn:hover,
+.restart-btn:focus-visible,
+.submit-btn:hover,
+.submit-btn:focus-visible {
+    background: #ec4899;
+    transform: translateY(-1px);
+}
+
+.score-contact-container .site-section {
+    padding: 0;
+    background: transparent;
+}
+
+.score-contact-container .section-shell {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    padding: 0;
+}
+
+.score-contact-container .contact-copy {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.score-contact-container .section-kicker {
     display: none;
 }
 
-@media (min-width: 769px) {
-    body.game-active {
-        cursor: none;
-    }
-    
-    body.game-active #custom-cursor {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 40px;
-        height: 40px;
-        border: 2px solid #f472b6;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: transform 0.15s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    body.game-active #custom-cursor::before,
-    body.game-active #custom-cursor::after {
-        content: '';
-        position: absolute;
-        background: #f472b6;
-        transition: background 0.15s ease-out;
-    }
-
-    body.game-active #custom-cursor::before { width: 2px; height: 100%; }
-    body.game-active #custom-cursor::after { width: 100%; height: 2px; }
-    
-    body.game-active #custom-cursor.cursor-hover {
-        transform: translate(-50%, -50%) scale(1.5) rotate(45deg);
-        background-color: rgba(34, 211, 238, 0.2);
-        border-color: #22d3ee;
-    }
-
-    body.game-active #custom-cursor.cursor-hover::before,
-    body.game-active #custom-cursor.cursor-hover::after {
-        background: #22d3ee;
-    }
+.score-contact-container .section-title {
+    margin: 0;
+    color: white;
+    font-size: clamp(1.35rem, 4vw, 2rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: 0;
 }
 
-/* Custom Scrollbar for modals */
+.score-contact-container .section-intro {
+    margin: 0;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.contact-panel {
+    padding: clamp(1rem, 2vw, 1.35rem);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.8rem;
+    background: rgba(255, 255, 255, 0.04);
+    text-align: left;
+}
+
+.contact-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.form-field {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.form-label {
+    color: var(--color-muted-text);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 0.75rem;
+    background: rgba(2, 6, 23, 0.62);
+    color: white;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.12);
+}
+
+.form-input--area {
+    min-height: 7rem;
+    resize: vertical;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.8rem 1rem;
+}
+
+.score-contact-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.score-contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.score-contact-field {
+    display: grid;
+    gap: 0.5rem;
+    color: var(--color-muted-text);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.score-contact-field input,
+.score-contact-field textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 0.75rem;
+    background: rgba(2, 6, 23, 0.62);
+    color: white;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.score-contact-field textarea {
+    min-height: 7rem;
+    resize: vertical;
+}
+
+.score-contact-field input:focus,
+.score-contact-field textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.12);
+}
+
+.score-contact-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 2.8rem;
+    padding: 0.8rem 1rem;
+    border: 0;
+    border-radius: 0.75rem;
+    background: #db2777;
+    color: white;
+    cursor: pointer;
+    font-weight: 800;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.score-contact-submit:hover,
+.score-contact-submit:focus-visible {
+    background: #ec4899;
+    transform: translateY(-1px);
+}
+
+.contact-loading,
+.contact-fallback {
+    margin: 0;
+    color: #cbd5e1;
+}
+
+.contact-fallback {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.contact-fallback a {
+    color: #f9a8d4;
+    font-weight: 800;
+}
+
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
+
 ::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
+
 ::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
 }
